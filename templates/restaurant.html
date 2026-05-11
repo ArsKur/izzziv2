@@ -1,174 +1,402 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fine Dining Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --gold: #c9a84c; --dark: #0a0705; }
-        body { background-color: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .gold-text { color: var(--gold); }
-        .gold-border { border-color: var(--gold); }
-        .bg-overlay { background: linear-gradient(to bottom, rgba(10,7,5,0.3), rgba(10,7,5,0.9)); }
-        
-        /* Загрузчик как в beauty.html */
-        .loading-screen {
-            position: fixed; inset: 0; background: var(--dark);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column; gap: 20px; z-index: 999;
-            transition: opacity 0.5s;
-        }
-        .loading-screen.hidden { opacity: 0; pointer-events: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine Dining Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════
+     RESTAURANT / FINE DINING TEMPLATE
+     Референс: White Rabbit, Noma
+     Эстетика: Dark Luxury, Gold accents, Typography-focused
+     ════════════════════════════════════════════════ */
+
+  :root {
+    --bg: #0a0705;
+    --gold: #c9a84c;
+    --gold-dim: #947a36;
+    --white: #ffffff;
+    --muted: rgba(255,255,255,0.5);
+    --border: rgba(201,168,76,0.2);
+    --overlay: rgba(10,7,5,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .serif {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+  }
+
+  /* ─── LOADING SCREEN ─────────────────────────── */
+  .loading-screen {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; z-index: 1000; transition: opacity 0.8s;
+  }
+  .loading-screen.hidden { opacity: 0; pointer-events: none; }
+  .loading-logo { font-size: 24px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .loading-line { width: 100px; height: 1px; background: rgba(255,255,255,0.1); position: relative; }
+  .loading-line::after {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0;
+    background: var(--gold); animation: load 1.5s infinite;
+  }
+  @keyframes load { 0% { width: 0; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0; left: 100%; } }
+
+  /* ─── DEMO BANNER ────────────────────────────── */
+  .demo-banner {
+    background: var(--gold); color: var(--bg);
+    padding: 12px 48px; display: none; align-items: center; justify-content: center;
+    gap: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; position: relative; z-index: 500;
+  }
+  .demo-banner.show { display: flex; }
+  .demo-banner a { color: var(--bg); text-decoration: underline; }
+
+  /* ─── NAVBAR ─────────────────────────────────── */
+  .navbar {
+    position: absolute; top: 0; left: 0; right: 0; height: 100px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 60px; z-index: 100;
+  }
+  .nav-logo { font-size: 22px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+  .nav-cta {
+    padding: 12px 28px; border: 1px solid var(--gold); background: transparent;
+    color: var(--gold); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.4s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* ─── HERO ───────────────────────────────────── */
+  .hero {
+    height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
+    text-align: center; overflow: hidden;
+  }
+  #hero-bg {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.5; transition: transform 10s ease-out;
+  }
+  .hero:hover #hero-bg { transform: scale(1.1); }
+  .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; }
+  .hero-eyebrow { font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+  .hero-title { font-size: clamp(48px, 8vw, 100px); line-height: 1.1; margin-bottom: 32px; font-style: italic; }
+  .hero-desc { font-size: 18px; font-weight: 200; max-width: 600px; margin: 0 auto 40px; color: var(--muted); }
+
+  /* ─── FEATURES ───────────────────────────────── */
+  .features { padding: 140px 60px; background: var(--bg); }
+  .section-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: block; text-align: center; }
+  .section-title { font-size: 42px; text-align: center; margin-bottom: 80px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
+  .feature-card { text-align: center; padding: 40px 20px; border: 1px solid var(--border); transition: 0.4s; }
+  .feature-card:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+  .feature-icon { font-size: 32px; color: var(--gold); margin-bottom: 24px; display: block; }
+  .feature-name { font-size: 20px; margin-bottom: 16px; letter-spacing: 0.05em; }
+  .feature-text { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+  /* ─── PRODUCT CARD ───────────────────────────── */
+  .product { padding: 100px 60px; background: #0f0c0a; }
+  .product-container {
+    max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center;
+  }
+  .product-image-wrap { position: relative; padding-bottom: 120%; overflow: hidden; border: 1px solid var(--border); }
+  #product-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.3); transition: 0.6s; }
+  .product-image-wrap:hover #product-img { filter: grayscale(0); transform: scale(1.05); }
+  .product-info { padding-right: 40px; }
+  .product-name { font-size: 54px; margin-bottom: 24px; line-height: 1.2; }
+  .product-desc { font-size: 16px; color: var(--muted); margin-bottom: 40px; }
+  .product-features { list-style: none; margin-bottom: 48px; }
+  .product-features li { 
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 12px;
+  }
+  .product-features li::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+  .product-price-box { display: flex; align-items: center; gap: 32px; border-top: 1px solid var(--border); pt: 40px; padding-top: 40px; }
+  .price-value { font-size: 32px; color: var(--white); font-family: 'Playfair Display', serif; }
+  .price-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); display: block; }
+
+  /* ─── REVIEWS ────────────────────────────────── */
+  .reviews { padding: 140px 60px; text-align: center; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 60px auto 0; }
+  .review-card { padding: 40px; background: rgba(255,255,255,0.02); border-bottom: 2px solid transparent; transition: 0.3s; }
+  .review-card:hover { border-color: var(--gold); }
+  .review-text { font-style: italic; font-size: 16px; color: var(--white); margin-bottom: 24px; position: relative; }
+  .review-text::before { content: '"'; font-family: serif; color: var(--gold); font-size: 40px; position: absolute; top: -20px; left: -10px; opacity: 0.3; }
+  .review-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .review-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .review-name { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ─── FOOTER ─────────────────────────────────── */
+  .footer { padding: 100px 60px 60px; border-top: 1px solid var(--border); text-align: center; }
+  .footer-logo { font-size: 32px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 16px; display: block; }
+  .footer-city { font-size: 12px; color: var(--gold); letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 48px; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ─── MODAL / YUKASSA ────────────────────────── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+  .modal-overlay.active { display: flex; }
+  .modal { background: #151210; width: 400px; padding: 40px; border: 1px solid var(--gold); position: relative; }
+  .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--gold); cursor: pointer; font-size: 20px; }
+  .modal-title { font-size: 20px; margin-bottom: 8px; color: var(--gold); }
+  .modal-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .modal-price { font-size: 28px; margin-bottom: 32px; font-family: serif; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  .modal-input { width: 100%; background: transparent; border: 1px solid var(--border); padding: 12px; color: white; margin-bottom: 16px; font-family: inherit; }
+  .modal-input:focus { border-color: var(--gold); outline: none; }
+  .modal-submit { width: 100%; background: var(--gold); color: black; border: none; padding: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; margin-top: 8px; }
+  .success-view { display: none; text-align: center; }
+  .success-view.active { display: block; }
+  .success-icon { font-size: 48px; color: var(--gold); margin-bottom: 20px; }
+
+  @media (max-width: 900px) {
+    .features-grid, .product-container, .reviews-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 50px; }
+    .navbar { padding: 0 20px; }
+    .product-info { padding-right: 0; }
+  }
+</style>
 </head>
 <body>
 
-<!-- LOADING -->
-<div class="loading-screen" id="loading-screen">
-    <div class="font-serif text-3xl gold-text tracking-widest uppercase" id="loading-name">Restaurant</div>
-    <div class="w-48 h-px bg-white/10 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gold translate-x-[-100%] animate-[load_1.5s_infinite]"></div>
-    </div>
+<div class="loading-screen" id="loader">
+  <div class="loading-logo" id="load-name">Restaurant</div>
+  <div class="loading-line"></div>
 </div>
 
-<style> @keyframes load { 100% { transform: translateX(100%); } } </style>
+<div class="demo-banner" id="demo-banner">
+  Демо-режим: Этот сайт создан GigaChat. 
+  <a href="https://www.sberbank.ru/ru/s_m_business/reg" target="_blank">Открыть ИП в Сбере и запустить бизнес</a>
+</div>
 
-<!-- HERO -->
-<header class="relative h-screen flex items-center justify-center overflow-hidden">
-    <img id="hero_image" class="absolute inset-0 w-full h-full object-cover opacity-60" src="" alt="">
-    <div class="absolute inset-0 bg-overlay"></div>
-    
-    <div class="relative z-10 text-center px-4">
-        <div id="bizCityDisplay" class="gold-text uppercase text-xs mb-4 tracking-[0.4em]"></div>
-        <h1 id="hero_title" class="font-serif text-5xl md:text-8xl mb-6 italic tracking-tight"></h1>
-        <p id="hero_desc" class="text-stone-300 max-w-2xl mx-auto text-lg font-light leading-relaxed mb-10"></p>
-        <div class="w-px h-24 bg-gold mx-auto opacity-40"></div>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="payment-view">
+      <div class="modal-title">Бронирование стола</div>
+      <div class="modal-subtitle" id="modal-product-name">Депозит за визит</div>
+      <div class="modal-price" id="modal-price">2 500 ₽</div>
+      <input type="text" class="modal-input" placeholder="Номер карты" id="card-num" oninput="this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()">
+      <div style="display:flex; gap:10px;">
+        <input type="text" class="modal-input" placeholder="ММ/ГГ" maxlength="5">
+        <input type="password" class="modal-input" placeholder="CVC" maxlength="3">
+      </div>
+      <button class="modal-submit" onclick="processPayment()">Оплатить депозит</button>
     </div>
-    
-    <div class="absolute top-8 left-8 right-8 flex justify-between items-center z-20">
-        <div id="bizName" class="font-serif text-2xl gold-text tracking-widest uppercase"></div>
-        <a href="#booking" class="border gold-border px-6 py-2 text-[10px] uppercase tracking-widest hover:bg-gold hover:text-black transition-all">Забронировать</a>
+    <div class="success-view" id="success-view">
+      <div class="success-icon">✓</div>
+      <div class="modal-title">Благодарим вас</div>
+      <p style="font-size:14px; color:var(--muted)">Стол забронирован. Мы свяжемся с вами для подтверждения времени.</p>
     </div>
-</header>
+  </div>
+</div>
 
-<!-- НАШЕ МЕНЮ (Features) -->
-<section class="py-24 bg-dark">
-    <div class="container mx-auto px-6">
-        <div class="text-center mb-20">
-            <span class="gold-text uppercase text-[10px] tracking-widest">Гастрономическая карта</span>
-            <h2 class="font-serif text-4xl text-white mt-2 italic">Наше меню</h2>
-        </div>
-        
-        <div id="features-grid" class="grid md:grid-cols-3 gap-12">
-            <!-- Сюда попадут данные из d.features -->
-        </div>
-    </div>
+<nav class="navbar">
+  <a href="#" class="nav-logo" id="bizName">GASTRO</a>
+  <button class="nav-cta" onclick="openModal()">Забронировать</button>
+</nav>
+
+<section class="hero">
+  <img id="hero-bg" src="" alt="Atmosphere">
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">Fine Dining Experience</div>
+    <h1 class="hero-title" id="hero-title">Искусство<br>вкуса</h1>
+    <p class="hero-desc" id="hero-desc">Откройте для себя гастрономическое путешествие, где каждый ингредиент рассказывает свою историю.</p>
+    <button class="nav-cta" style="padding:18px 40px" onclick="document.getElementById('product').scrollIntoView({behavior:'smooth'})">Ознакомиться с меню</button>
+  </div>
 </section>
 
-<!-- КАРТОЧКА ТОВАРА (Product) -->
-<section id="booking" class="py-24 bg-[#0f0c0a] border-y border-stone-900">
-    <div class="container mx-auto px-6">
-        <div class="flex flex-col md:flex-row items-center gap-16">
-            <div class="md:w-1/2 relative group">
-                <div class="absolute -inset-4 border gold-border opacity-20"></div>
-                <img id="product_image" class="relative z-10 w-full aspect-[4/5] object-cover shadow-2xl" src="" alt="">
-            </div>
-            <div class="md:w-1/2">
-                <span class="gold-text uppercase text-[10px] tracking-widest mb-4 block">Фирменное блюдо</span>
-                <h2 id="product_name" class="font-serif text-5xl mb-6"></h2>
-                <p id="product_desc" class="text-stone-400 text-lg leading-relaxed mb-10 font-light"></p>
-                
-                <div id="reviews-list" class="space-y-6 mb-12">
-                    <!-- Отзывы -->
-                </div>
-
-                <button class="bg-gold text-black px-10 py-4 font-bold uppercase text-xs tracking-widest hover:bg-white transition-all">
-                    Заказать за <span id="avg_check"></span>
-                </button>
-            </div>
-        </div>
-    </div>
+<section class="features">
+  <span class="section-label" id="features-label">Наши ценности</span>
+  <h2 class="section-title" id="features-title">Почему выбирают нас</h2>
+  <div class="features-grid" id="features-grid">
+    <!-- Populated by JS -->
+  </div>
 </section>
 
-<footer class="py-12 border-t border-stone-900 text-center text-stone-600 text-[10px] tracking-[0.3em] uppercase">
-    &copy; <span id="footer_biz_name"></span> · <span id="footer_city"></span>
+<section class="product" id="product">
+  <div class="product-container">
+    <div class="product-image-wrap">
+      <img id="product-img" src="" alt="Signature Dish">
+    </div>
+    <div class="product-info">
+      <span class="section-label" style="text-align:left">Рекомендация шефа</span>
+      <h2 class="product-name" id="product-name">Сет "Традиции"</h2>
+      <p class="product-desc" id="product-desc">Уникальная подборка из восьми подач, раскрывающая богатство локальных продуктов в современном прочтении шеф-повара.</p>
+      <ul class="product-features" id="product-features">
+        <!-- Populated by JS -->
+      </ul>
+      <div class="product-price-box">
+        <div>
+          <span class="price-label">Средний чек</span>
+          <div class="price-value" id="avg_check">4 500 ₽</div>
+        </div>
+        <button class="nav-cta" style="background:var(--gold); color:black; font-weight:700;" onclick="openModal()">Забронировать</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <span class="section-label">Мнение критиков</span>
+  <h2 class="section-title">Отзывы наших гостей</h2>
+  <div class="reviews-grid" id="reviews-grid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<footer class="footer">
+  <span class="footer-logo" id="footer-logo">GASTRO</span>
+  <div class="footer-city" id="footer-city">Москва, ул. Неглинная 12</div>
+  <div class="footer-bottom">
+    <div>© 2025 All Rights Reserved</div>
+    <div style="color:var(--gold)">Powered by ИЗЗЗИ</div>
+  </div>
 </footer>
 
 <script>
-    // 1. Читаем данные из URL (?data=...)
-    const raw = new URLSearchParams(window.location.search).get('data');
-    const d = raw ? JSON.parse(decodeURIComponent(atob(raw))) : {
-        bizName: "L'Eclat",
-        bizCity: "Париж",
-        hero_title: "Искусство высокой кухни",
-        hero_desc: "Гармония вкуса и эстетики в каждом ингредиенте.",
-        hero_image_query: "luxury restaurant interior dark",
-        product_name: "Осьминог на углях",
-        product_desc: "Нежный осьминог с соусом ромеско и молодым картофелем.",
-        product_image_query: "gourmet grilled octopus",
-        avg_check: "4500",
-        features: [
-            {title: "Свежие морепродукты", desc: "Поставки каждое утро"},
-            {title: "Винная карта", desc: "Более 200 сортов вин"},
-            {title: "Приватные залы", desc: "Для ваших событий"}
-        ],
-        reviews: [
-            {name: "Анна", text: "Лучший вечер в моей жизни!"}
-        ]
-    };
+// ─── DATA RENDERING ───────────────────────────────────────────
 
-    // 2. Функция для загрузки картинок через ваш серверный прокси
-    const setImg = (id, query) => {
-        if (query) document.getElementById(id).src = `/image?q=${encodeURIComponent(query)}`;
-    };
+function render(d) {
+  // Названия и мета
+  document.title = d.bizName + " — Fine Dining";
+  document.getElementById('bizName').innerText = d.bizName;
+  document.getElementById('footer-logo').innerText = d.bizName;
+  document.getElementById('load-name').innerText = d.bizName;
+  document.getElementById('footer-city').innerText = "Ресторан в " + (d.bizCity || "городе");
+  document.getElementById('hero-eyebrow').innerText = "Ресторан в " + (d.bizCity || "городе");
 
-    // 3. Рендерим тексты
-    document.getElementById('bizName').innerText = d.bizName;
-    document.getElementById('footer_biz_name').innerText = d.bizName;
-    document.getElementById('loading-name').innerText = d.bizName;
-    document.getElementById('bizCityDisplay').innerText = `Ресторан в ${d.bizCity}`;
-    document.getElementById('footer_city').innerText = d.bizCity;
-    
-    document.getElementById('hero_title').innerText = d.hero_title;
-    document.getElementById('hero_desc').innerText = d.hero_desc;
-    document.getElementById('product_name').innerText = d.product_name;
-    document.getElementById('product_desc').innerText = d.product_desc;
-    document.getElementById('avg_check').innerText = (d.avg_check || '2500') + ' ₽';
+  // Hero
+  document.getElementById('hero-title').innerHTML = (d.hero_title || "Искусство<br>вкуса").replace(/\s+/, '<br>');
+  document.getElementById('hero-desc').innerText = d.hero_desc || "";
+  
+  // Картинка Hero
+  fetchImage('hero-bg', d.hero_image_query || 'fine dining luxury restaurant interior mood');
 
-    // 4. Рендерим картинки (через GigaChat queries)
-    setImg('hero_image', d.hero_image_query || 'fine dining atmosphere');
-    setImg('product_image', d.product_image_query || 'luxury food plating');
+  // Особенности (Features)
+  const fg = document.getElementById('features-grid');
+  fg.innerHTML = (d.features || []).map((f, i) => `
+    <div class="feature-card">
+      <span class="feature-icon">${['✧', '✦', '✻'][i % 3]}</span>
+      <h3 class="feature-name serif">${f.title}</h3>
+      <p class="feature-text">${f.desc}</p>
+    </div>
+  `).join('');
+  if (d.features_title) document.getElementById('features-title').innerText = d.features_title;
 
-    // 5. Рендерим меню (Features)
-    const featuresGrid = document.getElementById('features-grid');
-    featuresGrid.innerHTML = d.features.map((f, i) => `
-        <div class="text-center group">
-            <div class="mb-6 overflow-hidden aspect-square relative">
-                <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-                     src="/image?q=${encodeURIComponent(f.title + ' food gourmet')}" alt="">
-            </div>
-            <h3 class="font-serif text-xl gold-text mb-2">${f.title}</h3>
-            <p class="text-stone-500 text-xs uppercase tracking-tighter">${f.desc}</p>
-        </div>
-    `).join('');
+  // Продукт (Главное блюдо/Сет)
+  document.getElementById('product-name').innerText = d.product_name;
+  document.getElementById('product-desc').innerText = d.product_desc;
+  document.getElementById('avg_check').innerText = (d.avg_check || "3500") + " ₽";
+  document.getElementById('modal-price').innerText = (d.avg_check || "3500") + " ₽";
+  document.getElementById('modal-product-name').innerText = d.product_name;
+  
+  fetchImage('product-img', d.product_image_query || 'gourmet food plating minimalist');
 
-    // 6. Рендерим отзывы
-    const reviewsList = document.getElementById('reviews-list');
-    reviewsList.innerHTML = d.reviews.map(r => `
-        <div class="border-l-2 gold-border pl-6 italic text-stone-300 text-sm">
-            "${r.text}" — <span class="gold-text not-italic font-bold">${r.name}</span>
-        </div>
-    `).join('');
+  const pf = document.getElementById('product-features');
+  pf.innerHTML = (d.product_features || []).map(f => `<li>${f}</li>`).join('');
 
-    // Скрываем лоадер
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById('loading-screen').classList.add('hidden');
-        }, 1000);
-    });
+  // Отзывы
+  const rg = document.getElementById('reviews-grid');
+  rg.innerHTML = (d.reviews || []).map(r => `
+    <div class="review-card">
+      <p class="review-text">${r.text}</p>
+      <div class="review-author">
+        <div class="review-avatar">${r.avatar || r.name[0]}</div>
+        <div class="review-name">${r.name}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Демо баннер
+  if (d.isDemo) document.getElementById('demo-banner').classList.add('show');
+}
+
+// ─── UTILS ────────────────────────────────────────────────────
+
+async function fetchImage(id, query) {
+  try {
+    const response = await fetch('/image?q=' + encodeURIComponent(query));
+    if (response.ok) {
+      const blob = await response.blob();
+      document.getElementById(id).src = URL.createObjectURL(blob);
+    }
+  } catch (e) { console.error("Image load failed", e); }
+}
+
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() { 
+  document.getElementById('modal').classList.remove('active'); 
+  setTimeout(() => {
+    document.getElementById('payment-view').style.display = 'block';
+    document.getElementById('success-view').classList.remove('active');
+  }, 400);
+}
+
+function processPayment() {
+  const btn = document.querySelector('.modal-submit');
+  btn.innerText = "Авторизация...";
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('payment-view').style.display = 'none';
+    document.getElementById('success-view').classList.add('active');
+  }, 1800);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+
+window.addEventListener('DOMContentLoaded', () => {
+  const raw = new URLSearchParams(window.location.search).get('data');
+  if (raw) {
+    try {
+      const d = JSON.parse(decodeURIComponent(atob(raw)));
+      render(d);
+    } catch (e) { console.error("Data error", e); renderDemo(); }
+  } else {
+    renderDemo();
+  }
+
+  // Loader hide
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 800);
+});
+
+function renderDemo() {
+  render({
+    bizName: "WHITE VELVET",
+    bizCity: "Москва",
+    hero_title: "Симфония чувств",
+    hero_desc: "Авторская кухня, вдохновленная природой и совершенством классических техник.",
+    features_title: "Наше гостеприимство",
+    features: [
+      {title: "Локальные продукты", desc: "Мы работаем напрямую с фермерскими хозяйствами, выбирая лучшее для каждого сезона."},
+      {title: "Винная галерея", desc: "Коллекция из 500+ наименований, собранная сомелье в путешествиях по Старому Свету."},
+      {title: "Приватный сервис", desc: "Индивидуальный подход к каждому гостю для создания атмосферы исключительности."}
+    ],
+    product_name: "Гранд Сет «Наследие»",
+    product_desc: "Гастрономический сет из 9 перемен, который демонстрирует эволюцию вкусов. Трюфельное ризотто, камчатский краб и авторские десерты.",
+    product_features: ["Продолжительность: 2 часа", "Винное сопровождение", "Только по предзаказу"],
+    avg_check: "7 500",
+    reviews: [
+      {name: "Александр М.", text: "Безупречная подача и баланс вкуса. Лучшее место для особенного вечера в столице.", avatar: "А"},
+      {name: "Марина Г.", text: "Удивительная винная карта и сервис мирового уровня. Каждый раз как первый.", avatar: "М"},
+      {name: "Виктор П.", text: "Ресторан, который меняет представление о русской кухне. Текстуры и ароматы поражают.", avatar: "В"}
+    ],
+    hero_image_query: "fine dining restaurant interior elegant black gold luxury lighting",
+    product_image_query: "gourmet dessert or main dish fine dining aesthetic plating",
+    isDemo: false
+  });
+}
 </script>
 
 </body>
