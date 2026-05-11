@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty Site</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════
+     BEAUTY / SPA TEMPLATE
+     Референс: Chanel Beauty, Glossier
+     Минималистичный editorial. Serif + lots of space.
+     ════════════════════════════════════════════════ */
+
+  :root {
+    --cream:   #fafaf8;
+    --ink:     #1a1a1a;
+    --dust:    #888888;
+    --line:    rgba(0,0,0,0.09);
+    --warm:    #f5f4f1;
+    --accent:  #b08d6a; /* dusty rose-gold */
+    --radius:  0px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAVBAR ─────────────────────────────────── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 0 48px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; letter-spacing: 0.08em;
+    color: var(--ink); text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--dust); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    padding: 11px 24px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); cursor: pointer; transition: all 0.25s;
+  }
+  .nav-cta:hover { background: var(--ink); color: var(--cream); }
+
+  /* ─── ANNOUNCEMENT STRIP ─────────────────────── */
+  .strip {
+    position: fixed; top: 64px; left: 0; right: 0; z-index: 199;
+    background: var(--ink); color: var(--cream);
+    padding: 10px 48px;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+  }
+  .strip-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+  /* ─── HERO ───────────────────────────────────── */
+  .hero {
+    margin-top: 112px; /* navbar 64 + strip 38 */
+    min-height: calc(100vh - 112px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-text {
+    padding: 80px 64px 80px 48px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--line);
+  }
+
+  .hero-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero-title em { font-style: italic; font-weight: 300; }
+
+  .hero-desc {
+    font-size: 15px; line-height: 1.75; color: var(--dust);
+    max-width: 380px; margin-bottom: 48px; font-weight: 300;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 24px; }
+
+  .btn-primary {
+    padding: 15px 36px;
+    background: var(--ink); color: var(--cream);
+    border: none; font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .btn-primary:hover { background: var(--accent); }
+
+  .btn-ghost {
+    font-size: 12px; letter-spacing: 0.08em; color: var(--dust);
+    background: none; border: none; cursor: pointer; transition: color 0.2s;
+    text-decoration: underline; text-underline-offset: 4px;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+
+  .hero-image {
+    position: relative; overflow: hidden; background: var(--warm);
+  }
+  .hero-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 8s ease;
+  }
+  .hero-image:hover img { transform: scale(1.03); }
+  .hero-image-placeholder {
+    width: 100%; height: 100%; min-height: 500px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #f0ede8 0%, #e8e3dc 100%);
+  }
+  .hero-image-placeholder svg { opacity: 0.15; }
+
+  .hero-meta {
+    position: absolute; bottom: 32px; left: 32px;
+    background: rgba(250,250,248,0.9);
+    backdrop-filter: blur(8px);
+    padding: 16px 20px; border-left: 2px solid var(--accent);
+  }
+  .hero-meta-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300;
+    color: var(--ink); line-height: 1;
+  }
+  .hero-meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dust); margin-top: 4px; }
+
+  /* ─── SERVICES ───────────────────────────────── */
+  .services {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 300;
+    letter-spacing: -0.01em; line-height: 1.1; color: var(--ink);
+  }
+  .section-title em { font-style: italic; }
+
+  .section-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--dust); letter-spacing: 0.05em;
+    padding-bottom: 4px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .service-card {
+    padding: 40px 36px;
+    border: 1px solid var(--line);
+    margin: -1px 0 0 -1px;
+    cursor: pointer; transition: background 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .service-card:hover { background: var(--warm); }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px; color: var(--accent); letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; color: var(--ink);
+    margin-bottom: 12px; line-height: 1.3;
+  }
+
+  .service-desc {
+    font-size: 13px; color: var(--dust); line-height: 1.65; font-weight: 300;
+  }
+
+  .service-price {
+    margin-top: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; color: var(--ink); font-weight: 300;
+  }
+
+  /* ─── PHILOSOPHY / FEATURES ──────────────────── */
+  .philosophy {
+    background: var(--ink); color: var(--cream);
+    padding: 100px 48px;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start;
+  }
+
+  .philosophy-label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 20px;
+  }
+
+  .philosophy-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3.5vw, 48px); font-weight: 300;
+    line-height: 1.2; letter-spacing: -0.01em;
+  }
+  .philosophy-headline em { font-style: italic; }
+
+  .features-list { display: flex; flex-direction: column; gap: 0; }
+  .feature-item {
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: grid; grid-template-columns: 40px 1fr; gap: 24px; align-items: start;
+  }
+  .feature-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+
+  .feature-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px; color: var(--accent); letter-spacing: 0.1em;
+    padding-top: 3px;
+  }
+  .feature-content {}
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400; margin-bottom: 8px;
+    color: var(--cream);
+  }
+  .feature-text { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; font-weight: 300; }
+
+  /* ─── BOOKING ────────────────────────────────── */
+  .booking {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+
+  .booking-text {}
+  .booking-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .booking-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 54px); font-weight: 300;
+    line-height: 1.1; color: var(--ink); margin-bottom: 20px;
+  }
+  .booking-title em { font-style: italic; }
+  .booking-desc { font-size: 14px; color: var(--dust); line-height: 1.7; font-weight: 300; margin-bottom: 40px; }
+
+  .product-card-beauty {
+    background: var(--warm);
+    padding: 40px; position: relative;
+    cursor: pointer; transition: box-shadow 0.3s;
+  }
+  .product-card-beauty:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+
+  .product-tag {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .product-name-b {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; color: var(--ink); margin-bottom: 12px;
+  }
+  .product-desc-b { font-size: 13px; color: var(--dust); line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+
+  .product-features-b { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .product-feature-b {
+    font-size: 12px; color: var(--dust); display: flex; align-items: center; gap: 10px;
+  }
+  .product-feature-b::before { content: '—'; color: var(--accent); }
+
+  .product-price-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-top: 20px; border-top: 1px solid var(--line);
+  }
+  .product-price-b {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 300; color: var(--ink); line-height: 1;
+  }
+  .product-price-old-b { font-size: 14px; color: var(--dust); text-decoration: line-through; margin-left: 8px; }
+
+  .product-img-beauty {
+    width: 80px; height: 80px; background: var(--line);
+    overflow: hidden; flex-shrink: 0;
+  }
+  .product-img-beauty img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ─── REVIEWS ────────────────────────────────── */
+  .reviews {
+    background: var(--warm);
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 56px;
+  }
+  .review-item {
+    padding: 36px 32px;
+    border: 1px solid var(--line);
+    margin: -1px 0 0 -1px;
+  }
+  .review-stars { color: var(--accent); font-size: 13px; letter-spacing: 4px; margin-bottom: 16px; }
+  .review-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; font-style: italic; color: var(--ink); line-height: 1.6; margin-bottom: 20px; }
+  .review-author-row { display: flex; align-items: center; gap: 12px; }
+  .review-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--ink); color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
+  }
+  .review-name { font-size: 12px; letter-spacing: 0.08em; color: var(--ink); font-weight: 500; }
+  .review-verified { font-size: 11px; color: var(--dust); margin-top: 2px; }
+
+  /* ─── FOOTER ─────────────────────────────────── */
+  .footer {
+    background: var(--ink); color: var(--cream);
+    padding: 60px 48px 40px;
+  }
+  .footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px; flex-wrap: wrap; gap: 32px;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; color: var(--cream); margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; }
+  .footer-cta {
+    padding: 14px 32px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent; color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .footer-cta:hover { background: var(--cream); color: var(--ink); }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .footer-copy { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
+  .footer-izzzi { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+  .footer-izzzi span { color: rgba(255,255,255,0.5); }
+
+  /* ─── PAYMENT MODAL ──────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(26,26,26,0.5); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--cream); width: 440px; max-width: 95vw;
+    padding: 48px; position: relative;
+    animation: slideUp 0.35s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 20px; right: 20px;
+    background: none; border: none; font-size: 18px; cursor: pointer; color: var(--dust);
+  }
+  .modal-header { margin-bottom: 32px; }
+  .modal-brand { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--ink); }
+  .modal-amount { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--ink); margin-bottom: 28px; }
+  .modal-input {
+    width: 100%; border: 1px solid var(--line); padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink);
+    background: var(--cream); outline: none; margin-bottom: 12px; transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: var(--ink); }
+  .modal-input::placeholder { color: rgba(0,0,0,0.25); }
+  .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .modal-submit {
+    width: 100%; padding: 16px;
+    background: var(--ink); color: var(--cream); border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.2s; margin-top: 8px;
+  }
+  .modal-submit:hover { background: var(--accent); }
+  .modal-secure { font-size: 11px; color: var(--dust); text-align: center; margin-top: 12px; letter-spacing: 0.06em; }
+  .modal-success { text-align: center; display: none; }
+  .modal-success.show { display: block; }
+  .modal-success-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ink); color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin: 0 auto 20px;
+  }
+  .modal-success-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--ink); margin-bottom: 8px; }
+  .modal-success-text { font-size: 13px; color: var(--dust); line-height: 1.65; }
+
+  /* ─── BACK BUTTON ────────────────────────────── */
+  .back-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    padding: 12px 20px;
+    background: rgba(250,250,248,0.92); border: 1px solid var(--line);
+    backdrop-filter: blur(8px);
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dust); cursor: pointer; transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--ink); }
+
+  /* ─── LOADING STATE ──────────────────────────── */
+  .loading-screen {
+    position: fixed; inset: 0; background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px; z-index: 999;
+    transition: opacity 0.5s;
+  }
+  .loading-screen.hidden { opacity: 0; pointer-events: none; }
+  .loading-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300; color: var(--ink); letter-spacing: 0.06em;
+  }
+  .loading-bar { width: 200px; height: 1px; background: var(--line); position: relative; overflow: hidden; }
+  .loading-bar::after {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: var(--ink);
+    animation: loadBar 1.8s ease-in-out infinite;
+  }
+  @keyframes loadBar { from { left: -100%; } to { left: 100%; } }
+
+  /* ─── DEMO BANNER ────────────────────────────── */
+  .demo-banner {
+    background: var(--ink); color: var(--cream);
+    padding: 20px 48px;
+    display: none; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;
+    text-align: center;
+  }
+  .demo-banner.show { display: flex; }
+  .demo-banner-text { font-size: 13px; color: rgba(255,255,255,0.7); }
+  .demo-banner-btn {
+    padding: 10px 24px; background: var(--accent); color: var(--cream); border: none;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: opacity 0.2s;
+  }
+  .demo-banner-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-image { min-height: 320px; border-right: none; border-top: 1px solid var(--line); }
+    .hero-text { padding: 60px 24px; border-right: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .philosophy { grid-template-columns: 1fr; gap: 40px; }
+    .booking { grid-template-columns: 1fr; }
+    .navbar { padding: 0 24px; }
+    .nav-links { display: none; }
+    .services, .booking, .reviews, .footer { padding-left: 24px; padding-right: 24px; }
+    .strip { padding: 10px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo" id="loading-logo-text">Beauty</div>
+  <div class="loading-bar"></div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-view">
+      <div class="modal-header">
+        <div class="modal-brand">ЮKassa · Безопасная оплата</div>
+        <div class="modal-title" id="modal-product-name">Запись на процедуру</div>
+      </div>
+      <div class="modal-amount" id="modal-amount">2 990 ₽</div>
+      <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" id="card-num" maxlength="19" oninput="fmtCard(this)">
+      <div class="modal-row">
+        <input type="text" class="modal-input" placeholder="ММ / ГГ" maxlength="5" oninput="fmtExpiry(this)">
+        <input type="password" class="modal-input" placeholder="CVC" maxlength="3">
+      </div>
+      <input type="text" class="modal-input" placeholder="Имя держателя" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <button class="modal-submit" onclick="simulatePay()">Оплатить безопасно</button>
+      <div class="modal-secure">256-bit шифрование · PCI DSS</div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-icon">✓</div>
+      <div class="modal-success-title">Запись подтверждена</div>
+      <div class="modal-success-text">Мы свяжемся с вами для подтверждения времени. Спасибо за доверие.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" id="nav-logo" href="#">Studio</a>
+  <ul class="nav-links">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Записаться</button>
+</nav>
+
+<!-- STRIP -->
+<div class="strip">
+  <span id="strip-city">Москва</span>
+  <div class="strip-dot"></div>
+  <span id="strip-type">Beauty & Spa</span>
+  <div class="strip-dot"></div>
+  <span>Запись онлайн</span>
+</div>
+
+<!-- DEMO BANNER -->
+<div class="demo-banner" id="demo-banner">
+  <div class="demo-banner-text">Это демо-версия сайта. Запустите свой настоящий бизнес в ИЗЗЗИ.</div>
+  <a class="demo-banner-btn" href="https://www.sberbank.ru/ru/s_m_business/reg#start_reg" target="_blank">Открыть ИП бесплатно</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow" id="hero-eyebrow">Beauty Studio</div>
+    <h1 class="hero-title" id="hero-title">Красота<br>в деталях</h1>
+    <p class="hero-desc" id="hero-desc">Профессиональный уход в атмосфере спокойствия и внимания к каждому гостю.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openModal()">Записаться на сеанс</button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Смотреть услуги →</button>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-image-placeholder" id="hero-img-wrap">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><rect x="10" y="10" width="60" height="60" rx="2" stroke="#1a1a1a" stroke-width="1"/><circle cx="40" cy="35" r="12" stroke="#1a1a1a" stroke-width="1"/><path d="M20 70 Q40 55 60 70" stroke="#1a1a1a" stroke-width="1" fill="none"/></svg>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-num" id="hero-meta-num">127</div>
+      <div class="hero-meta-label">довольных гостей</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Наши услуги</div>
+      <div class="section-title" id="services-title">Процедуры<br><em>для вас</em></div>
+    </div>
+    <div class="section-count" id="services-count">03 услуги</div>
+  </div>
+  <div class="services-grid" id="services-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- PHILOSOPHY / FEATURES -->
+<section class="philosophy" id="about">
+  <div>
+    <div class="philosophy-label">Наш подход</div>
+    <div class="philosophy-headline" id="philosophy-headline">Почему<br><em>выбирают нас</em></div>
+  </div>
+  <div class="features-list" id="features-list">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- BOOKING / PRODUCT -->
+<section class="booking" id="booking">
+  <div class="booking-text">
+    <div class="booking-eyebrow">Записаться</div>
+    <div class="booking-title" id="booking-title">Первый шаг<br>к <em>идеальному</em><br>образу</div>
+    <div class="booking-desc" id="booking-desc">Выберите процедуру и удобное время. Мы свяжемся для подтверждения.</div>
+    <button class="btn-primary" onclick="openModal()">Записаться прямо сейчас</button>
+  </div>
+  <div class="product-card-beauty" onclick="openModal()">
+    <div class="product-tag" id="product-tag-b">Популярное</div>
+    <div class="product-name-b" id="product-name-b">Комплексный уход</div>
+    <div class="product-desc-b" id="product-desc-b">Профессиональный уход с использованием премиальных средств.</div>
+    <div class="product-features-b" id="product-features-b"></div>
+    <div class="product-price-row">
+      <div>
+        <span class="product-price-b" id="product-price-b">2 990 ₽</span>
+        <span class="product-price-old-b" id="product-price-old-b">4 500 ₽</span>
+      </div>
+      <button class="btn-primary" onclick="event.stopPropagation(); openModal()">Записаться</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Отзывы</div>
+      <div class="section-title">Наши<br><em>гости говорят</em></div>
+    </div>
+  </div>
+  <div class="reviews-grid" id="reviews-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand" id="footer-brand">Studio</div>
+      <div class="footer-tagline" id="footer-tagline">Beauty & Spa</div>
+    </div>
+    <button class="footer-cta" onclick="openModal()">Записаться на сеанс</button>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy" id="footer-copy">© 2025 Studio. Все права защищены.</div>
+    <div class="footer-izzzi">Сайт создан в <span>ИЗЗЗИ</span></div>
+  </div>
+</footer>
+
+<button class="back-btn" onclick="history.back()">← Назад к настройкам</button>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BEAUTY TEMPLATE
+// Slot schema, prompt builder, render(data)
+// ═══════════════════════════════════════════════════════════════
+
+// ─── SLOT SCHEMA ──────────────────────────────────────────────
+const SLOTS = {
+  hero_title:       "2-4 word evocative headline",
+  hero_desc:        "1-2 sentence poetic description of the beauty service",
+  features_title:   "3-5 word section title",
+  features: [{
+    title: "advantage title 3-4 words",
+    desc:  "one sentence description"
+  }],
+  services: [{
+    name:  "service name 2-4 words",
+    desc:  "1-2 sentence description",
+    price: "price number only"
+  }],
+  reviews: [{
+    name:  "client name",
+    text:  "short review 1-2 sentences",
+    avatar:"first letter of name"
+  }],
+  product_name:  "main service name",
+  product_desc:  "2-3 sentence product description",
+  product_features: ["feature 1", "feature 2", "feature 3"],
+  hero_image_query:    "2-3 english words for hero photo search",
+  product_image_query: "2-3 english words for product photo search"
+};
+
+// ─── PROMPT BUILDER ───────────────────────────────────────────
+function buildPrompt(bizData) {
+  return `Ты создаёшь контент для премиального beauty / spa сайта.
+Бизнес: ${bizData.bizName}
+Описание: ${bizData.bizDesc || ''}
+Город: ${bizData.bizCity || 'Москва'}
+
+Tone of voice: минималистичный, элегантный, редакционный. Как Glossier или Chanel Beauty.
+Короткие фразы. Много воздуха в тексте. Без восклицательных знаков.
+
+Верни ТОЛЬКО JSON без markdown:
+{
+  "hero_title": "2-4 слова, поэтичный заголовок",
+  "hero_desc": "1-2 предложения, мягко и атмосферно",
+  "features_title": "3-4 слова",
+  "features": [
+    {"title": "3-4 слова", "desc": "1 предложение"},
+    {"title": "3-4 слова", "desc": "1 предложение"},
+    {"title": "3-4 слова", "desc": "1 предложение"}
+  ],
+  "services": [
+    {"name": "Название услуги", "desc": "1-2 предложения", "price": "число"},
+    {"name": "Название услуги", "desc": "1-2 предложения", "price": "число"},
+    {"name": "Название услуги", "desc": "1-2 предложения", "price": "число"}
+  ],
+  "product_name": "главная услуга",
+  "product_desc": "2-3 предложения",
+  "product_features": ["деталь 1", "деталь 2", "деталь 3"],
+  "reviews": [
+    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"},
+    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"},
+    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"}
+  ],
+  "hero_image_query": "2-3 english words",
+  "product_image_query": "2-3 english words"
+}`;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────
+function render(data) {
+  const name = data.bizName || 'Studio';
+
+  // Navbar + strip
+  document.getElementById('nav-logo').textContent = name;
+  document.getElementById('strip-city').textContent = data.bizCity || 'Москва';
+  document.getElementById('strip-type').textContent = data.bizType || 'Beauty & Spa';
+
+  // Hero
+  document.getElementById('hero-eyebrow').textContent = name;
+  document.getElementById('hero-title').innerHTML = (data.hero_title || 'Красота в деталях').replace(/\s+/, '<br>');
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
+
+  // Services
+  const svcs = data.services || [];
+  document.getElementById('services-count').textContent = `0${svcs.length} услуг${svcs.length === 1 ? 'а' : 'и'}`;
+  document.getElementById('services-title').innerHTML = (data.features_title || 'Наши процедуры') + '<br><em>для вас</em>';
+  const grid = document.getElementById('services-grid');
+  grid.innerHTML = '';
+  svcs.forEach((s, i) => {
+    const price = s.price ? `<div class="service-price">${Number(s.price).toLocaleString('ru-RU')} ₽</div>` : '';
+    grid.innerHTML += `
+      <div class="service-card" onclick="openModal()">
+        <div class="service-num">0${i + 1}</div>
+        <div class="service-name">${s.name}</div>
+        <div class="service-desc">${s.desc}</div>
+        ${price}
+      </div>`;
+  });
+
+  // Philosophy / features
+  document.getElementById('philosophy-headline').innerHTML = (data.features_title || 'Почему выбирают нас') + '<br><em>каждый раз</em>';
+  const flist = document.getElementById('features-list');
+  flist.innerHTML = '';
+  (data.features || []).forEach((f, i) => {
+    flist.innerHTML += `
+      <div class="feature-item">
+        <div class="feature-num">0${i + 1}</div>
+        <div class="feature-content">
+          <div class="feature-title">${f.title}</div>
+          <div class="feature-text">${f.desc}</div>
+        </div>
+      </div>`;
+  });
+
+  // Product / booking
+  let basePrice = parseInt(data.avg_check) || 2990;
+  let price = Math.round(basePrice / 100) * 100 - 10;
+  if (price < 190) price = 190;
+  let oldPrice = Math.round(price * 1.35 / 100) * 100 - 10;
+
+  document.getElementById('booking-title').innerHTML = 'Первый шаг<br>к <em>идеальному</em><br>образу';
+  document.getElementById('booking-desc').textContent = data.product_desc || '';
+  document.getElementById('product-tag-b').textContent = data.bizType || 'Популярное';
+  document.getElementById('product-name-b').textContent = data.product_name || name;
+  document.getElementById('product-desc-b').textContent = data.product_desc || '';
+  document.getElementById('product-price-b').textContent = `${price.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('product-price-old-b').textContent = `${oldPrice.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('modal-amount').textContent = `${price.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('modal-product-name').textContent = data.product_name || name;
+
+  const pfeat = document.getElementById('product-features-b');
+  pfeat.innerHTML = '';
+  (data.product_features || []).forEach(f => {
+    pfeat.innerHTML += `<div class="product-feature-b">${f}</div>`;
+  });
+
+  // Reviews
+  const rg = document.getElementById('reviews-grid');
+  rg.innerHTML = '';
+  (data.reviews || []).forEach(r => {
+    rg.innerHTML += `
+      <div class="review-item">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"${r.text}"</div>
+        <div class="review-author-row">
+          <div class="review-avatar">${r.avatar || r.name[0]}</div>
+          <div>
+            <div class="review-name">${r.name}</div>
+            <div class="review-verified">Верифицированный гость</div>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Footer
+  document.getElementById('footer-brand').textContent = name;
+  document.getElementById('footer-tagline').textContent = data.bizCity ? `${data.bizCity} · ${data.bizType || 'Beauty'}` : 'Beauty & Spa';
+  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
+  document.getElementById('hero-meta-num').textContent = Math.floor(Math.random() * 200) + 80;
+
+  // Hero image
+  loadHeroImage(data.hero_image_query || 'beauty spa interior');
+
+  // Demo banner
+  if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
+}
+
+// ─── IMAGE LOADING ────────────────────────────────────────────
+async function loadHeroImage(query) {
+  try {
+    const resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error('no image');
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const wrap = document.getElementById('hero-img-wrap');
+    wrap.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; min-height:500px;';
+    wrap.appendChild(img);
+  } catch(e) {
+    // keep placeholder
+  }
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
+}
+function simulatePay() {
+  const btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Обработка...';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const payload = params.get('data');
+
+  if (payload) {
+    try {
+      const data = JSON.parse(decodeURIComponent(atob(payload)));
+      // Update loading logo
+      document.getElementById('loading-logo-text').textContent = data.bizName || 'Beauty';
+      render(data);
+    } catch (e) {
+      console.error('Ошибка разбора данных:', e);
+      render({});
+    }
+  } else {
+    // Demo mode
+    render({
+      bizName: 'Atelier Beauty',
+      bizCity: 'Москва',
+      bizType: 'Beauty & Spa',
+      hero_title: 'Красота в деталях',
+      hero_desc: 'Атмосфера спокойствия и профессионального ухода. Каждый визит — маленький ритуал для вас.',
+      features_title: 'Наш подход',
+      features: [
+        { title: 'Индивидуальный уход', desc: 'Каждая программа составляется под конкретного гостя.' },
+        { title: 'Премиальные средства', desc: 'Используем только проверенные профессиональные бренды.' },
+        { title: 'Эксперты своего дела', desc: 'Мастера с опытом от 5 лет и регулярным обучением.' }
+      ],
+      services: [
+        { name: 'Уход за кожей лица', desc: 'Глубокое очищение, питание и увлажнение премиальными средствами.', price: '3500' },
+        { name: 'Маникюр и педикюр', desc: 'Классический или аппаратный уход с покрытием на выбор.', price: '2200' },
+        { name: 'SPA-программа', desc: 'Расслабляющий массаж и уходовые процедуры по телу.', price: '5500' }
+      ],
+      product_name: 'SPA-программа "Баланс"',
+      product_desc: 'Комплексная программа для полного восстановления. Расслабляющий массаж, уход за лицом и ароматерапия.',
+      product_features: ['90 минут удовольствия', 'Премиальные масла', 'Бокал игристого в подарок'],
+      avg_check: '4500',
+      reviews: [
+        { name: 'Елена В.', text: 'Невероятная атмосфера и профессионализм. Ухожу с ощущением полного обновления.', avatar: 'Е' },
+        { name: 'Мария К.', text: 'Постоянный клиент уже три года. Здесь умеют слушать и понимать пожелания.', avatar: 'М' },
+        { name: 'Анна Р.', text: 'Лучший подарок себе — запись сюда. Качество на уровне столичных студий.', avatar: 'А' }
+      ],
+      hero_image_query: 'beauty spa minimalist',
+      isDemo: false
+    });
+  }
+
+  // Hide loader
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    setTimeout(() => document.getElementById('loading-screen').remove(), 500);
+  }, 800);
+});
+</script>
+</body>
+</html>
