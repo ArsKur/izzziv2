@@ -35,19 +35,6 @@
     overflow-x: hidden;
   }
 
-  /* ─── DEMO BANNER ────────────────────────────── */
-  .demo-banner {
-    display: none;
-    background: var(--dark);
-    color: var(--white);
-    text-align: center;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .demo-banner.show { display: block; }
 
   /* ─── NAVBAR ─────────────────────────────────── */
   .navbar {
@@ -209,18 +196,23 @@
   /* ─── PROMO STRIP ────────────────────────────── */
   .promo-strip {
     background: var(--dark);
-    padding: 14px 40px;
-    display: flex; align-items: center; gap: 40px; overflow: hidden;
+    padding: 13px 48px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 0;
   }
   .promo-item {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     white-space: nowrap;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px; font-weight: 700;
-    color: var(--white);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    padding: 0 28px;
     flex-shrink: 0;
   }
-  .promo-item span { color: var(--orange); }
+  .promo-item + .promo-item {
+    border-left: 1px solid rgba(255,255,255,0.12);
+  }
+  .promo-item span { color: var(--orange); font-weight: 800; }
 
   /* ─── FEATURES ───────────────────────────────── */
   .features {
@@ -632,8 +624,6 @@
   </div>
 </div>
 
-<!-- Demo Banner -->
-<div class="demo-banner" id="demo-banner">🍕 Демо-режим — пример шаблона Street Food</div>
 
 <!-- Navbar -->
 <nav class="navbar">
@@ -919,7 +909,7 @@ function render(data) {
   // Hero image
   loadHeroImage(data.hero_image_query || 'street food burger restaurant');
 
-  if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
+
 }
 
 // ─── IMAGES ────────────────────────────────────────────────────
