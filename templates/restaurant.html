@@ -3,165 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <title>Fine Dining Experience</title>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        gold: '#c9a84c',
-                        dark: '#0a0705',
-                    },
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Montserrat', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0a0705; color: #fff; scroll-behavior: smooth; }
-        .bg-overlay { background: linear-gradient(to bottom, rgba(10,7,5,0.2), rgba(10,7,5,0.9)); }
-        /* Анимация появления */
-        .fade-in { animation: fadeIn 2s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        :root { --gold: #c9a84c; --dark: #0a0705; }
+        body { background-color: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .gold-text { color: var(--gold); }
+        .gold-border { border-color: var(--gold); }
+        .bg-overlay { background: linear-gradient(to bottom, rgba(10,7,5,0.3), rgba(10,7,5,0.9)); }
+        
+        /* Загрузчик как в beauty.html */
+        .loading-screen {
+            position: fixed; inset: 0; background: var(--dark);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 20px; z-index: 999;
+            transition: opacity 0.5s;
+        }
+        .loading-screen.hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="font-sans">
+<body>
 
-    <!-- Hero Section -->
-    <header class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Заменил путь на source.unsplash.com для демонстрации -->
-        <img id="hero_image" class="absolute inset-0 w-full h-full object-cover fade-in" src="" alt="Hero">
-        <div class="absolute inset-0 bg-overlay"></div>
-        
-        <div class="relative z-10 text-center px-4">
-            <div id="bizCityDisplay" class="text-gold uppercase text-sm mb-4 tracking-[0.4em] font-semibold"></div>
-            <h1 id="hero_title" class="font-serif text-5xl md:text-8xl mb-6 italic tracking-tight"></h1>
-            <p id="hero_desc" class="text-stone-300 max-w-2xl mx-auto text-lg font-light leading-relaxed mb-10"></p>
-            <div class="w-px h-24 bg-gold mx-auto opacity-40"></div>
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+    <div class="font-serif text-3xl gold-text tracking-widest uppercase" id="loading-name">Restaurant</div>
+    <div class="w-48 h-px bg-white/10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gold translate-x-[-100%] animate-[load_1.5s_infinite]"></div>
+    </div>
+</div>
+
+<style> @keyframes load { 100% { transform: translateX(100%); } } </style>
+
+<!-- HERO -->
+<header class="relative h-screen flex items-center justify-center overflow-hidden">
+    <img id="hero_image" class="absolute inset-0 w-full h-full object-cover opacity-60" src="" alt="">
+    <div class="absolute inset-0 bg-overlay"></div>
+    
+    <div class="relative z-10 text-center px-4">
+        <div id="bizCityDisplay" class="gold-text uppercase text-xs mb-4 tracking-[0.4em]"></div>
+        <h1 id="hero_title" class="font-serif text-5xl md:text-8xl mb-6 italic tracking-tight"></h1>
+        <p id="hero_desc" class="text-stone-300 max-w-2xl mx-auto text-lg font-light leading-relaxed mb-10"></p>
+        <div class="w-px h-24 bg-gold mx-auto opacity-40"></div>
+    </div>
+    
+    <div class="absolute top-8 left-8 right-8 flex justify-between items-center z-20">
+        <div id="bizName" class="font-serif text-2xl gold-text tracking-widest uppercase"></div>
+        <a href="#booking" class="border gold-border px-6 py-2 text-[10px] uppercase tracking-widest hover:bg-gold hover:text-black transition-all">Забронировать</a>
+    </div>
+</header>
+
+<!-- НАШЕ МЕНЮ (Features) -->
+<section class="py-24 bg-dark">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-20">
+            <span class="gold-text uppercase text-[10px] tracking-widest">Гастрономическая карта</span>
+            <h2 class="font-serif text-4xl text-white mt-2 italic">Наше меню</h2>
         </div>
         
-        <div class="absolute top-8 left-8 right-8 flex justify-between items-center z-20">
-            <div id="bizName" class="font-serif text-2xl text-gold tracking-widest uppercase"></div>
-            <div class="hidden md:block h-px w-20 bg-gold opacity-30"></div>
+        <div id="features-grid" class="grid md:grid-cols-3 gap-12">
+            <!-- Сюда попадут данные из d.features -->
         </div>
-    </header>
+    </div>
+</section>
 
-    <!-- Наше меню (Features) -->
-    <section class="py-24 bg-dark">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <span class="text-gold uppercase text-xs tracking-widest">Selected Experience</span>
-                <h2 class="font-serif text-5xl text-white mt-2">Гастрономия</h2>
+<!-- КАРТОЧКА ТОВАРА (Product) -->
+<section id="booking" class="py-24 bg-[#0f0c0a] border-y border-stone-900">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2 relative group">
+                <div class="absolute -inset-4 border gold-border opacity-20"></div>
+                <img id="product_image" class="relative z-10 w-full aspect-[4/5] object-cover shadow-2xl" src="" alt="">
             </div>
-            
-            <div id="features" class="grid md:grid-cols-3 gap-10">
-                <!-- Карточки меню -->
-            </div>
-        </div>
-    </section>
+            <div class="md:w-1/2">
+                <span class="gold-text uppercase text-[10px] tracking-widest mb-4 block">Фирменное блюдо</span>
+                <h2 id="product_name" class="font-serif text-5xl mb-6"></h2>
+                <p id="product_desc" class="text-stone-400 text-lg leading-relaxed mb-10 font-light"></p>
+                
+                <div id="reviews-list" class="space-y-6 mb-12">
+                    <!-- Отзывы -->
+                </div>
 
-    <!-- Карточка фирменного блюда (Product) -->
-    <section class="py-24 bg-[#0f0c0a] border-y border-stone-900">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center gap-16">
-                <div class="md:w-1/2 relative group">
-                    <div class="absolute -inset-4 border border-gold opacity-10 group-hover:opacity-40 transition-all duration-700"></div>
-                    <img id="product_image" class="relative z-10 w-full aspect-[4/5] object-cover shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]" src="" alt="Dish">
-                </div>
-                <div class="md:w-1/2">
-                    <div class="inline-block px-4 py-1 border border-gold/30 text-gold uppercase text-[10px] tracking-widest mb-6">Шедевр сезона</div>
-                    <h2 id="product_name" class="font-serif text-5xl md:text-6xl mb-8 text-white leading-tight"></h2>
-                    <p id="product_desc" class="text-stone-400 text-xl leading-relaxed mb-12 font-light italic"></p>
-                    
-                    <div id="reviews" class="space-y-8 mb-12">
-                        <!-- Отзывы -->
-                    </div>
-                </div>
+                <button class="bg-gold text-black px-10 py-4 font-bold uppercase text-xs tracking-widest hover:bg-white transition-all">
+                    Заказать за <span id="avg_check"></span>
+                </button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- CTA Section -->
-    <section class="py-32 bg-dark text-center relative">
-        <div class="container mx-auto px-6">
-            <h2 class="font-serif text-4xl md:text-6xl mb-10 text-white italic">Прикоснитесь к прекрасному</h2>
-            <button class="group relative px-12 py-5 bg-gold text-dark font-bold uppercase tracking-widest overflow-hidden transition-all">
-                <span class="relative z-10">Забронировать стол</span>
-                <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-            </button>
+<footer class="py-12 border-t border-stone-900 text-center text-stone-600 text-[10px] tracking-[0.3em] uppercase">
+    &copy; <span id="footer_biz_name"></span> · <span id="footer_city"></span>
+</footer>
+
+<script>
+    // 1. Читаем данные из URL (?data=...)
+    const raw = new URLSearchParams(window.location.search).get('data');
+    const d = raw ? JSON.parse(decodeURIComponent(atob(raw))) : {
+        bizName: "L'Eclat",
+        bizCity: "Париж",
+        hero_title: "Искусство высокой кухни",
+        hero_desc: "Гармония вкуса и эстетики в каждом ингредиенте.",
+        hero_image_query: "luxury restaurant interior dark",
+        product_name: "Осьминог на углях",
+        product_desc: "Нежный осьминог с соусом ромеско и молодым картофелем.",
+        product_image_query: "gourmet grilled octopus",
+        avg_check: "4500",
+        features: [
+            {title: "Свежие морепродукты", desc: "Поставки каждое утро"},
+            {title: "Винная карта", desc: "Более 200 сортов вин"},
+            {title: "Приватные залы", desc: "Для ваших событий"}
+        ],
+        reviews: [
+            {name: "Анна", text: "Лучший вечер в моей жизни!"}
+        ]
+    };
+
+    // 2. Функция для загрузки картинок через ваш серверный прокси
+    const setImg = (id, query) => {
+        if (query) document.getElementById(id).src = `/image?q=${encodeURIComponent(query)}`;
+    };
+
+    // 3. Рендерим тексты
+    document.getElementById('bizName').innerText = d.bizName;
+    document.getElementById('footer_biz_name').innerText = d.bizName;
+    document.getElementById('loading-name').innerText = d.bizName;
+    document.getElementById('bizCityDisplay').innerText = `Ресторан в ${d.bizCity}`;
+    document.getElementById('footer_city').innerText = d.bizCity;
+    
+    document.getElementById('hero_title').innerText = d.hero_title;
+    document.getElementById('hero_desc').innerText = d.hero_desc;
+    document.getElementById('product_name').innerText = d.product_name;
+    document.getElementById('product_desc').innerText = d.product_desc;
+    document.getElementById('avg_check').innerText = (d.avg_check || '2500') + ' ₽';
+
+    // 4. Рендерим картинки (через GigaChat queries)
+    setImg('hero_image', d.hero_image_query || 'fine dining atmosphere');
+    setImg('product_image', d.product_image_query || 'luxury food plating');
+
+    // 5. Рендерим меню (Features)
+    const featuresGrid = document.getElementById('features-grid');
+    featuresGrid.innerHTML = d.features.map((f, i) => `
+        <div class="text-center group">
+            <div class="mb-6 overflow-hidden aspect-square relative">
+                <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                     src="/image?q=${encodeURIComponent(f.title + ' food gourmet')}" alt="">
+            </div>
+            <h3 class="font-serif text-xl gold-text mb-2">${f.title}</h3>
+            <p class="text-stone-500 text-xs uppercase tracking-tighter">${f.desc}</p>
         </div>
-    </section>
+    `).join('');
 
-    <footer class="py-12 bg-dark border-t border-stone-900 text-center">
-        <div id="footerInfo" class="text-stone-600 text-xs tracking-[0.3em] uppercase"></div>
-    </footer>
+    // 6. Рендерим отзывы
+    const reviewsList = document.getElementById('reviews-list');
+    reviewsList.innerHTML = d.reviews.map(r => `
+        <div class="border-l-2 gold-border pl-6 italic text-stone-300 text-sm">
+            "${r.text}" — <span class="gold-text not-italic font-bold">${r.name}</span>
+        </div>
+    `).join('');
 
-    <script>
-        // Функция для формирования правильной ссылки на картинку
-        // Если вы работаете на сервере, где есть /image, замените 'https://source.unsplash.com/featured/?' на '/image?q='
-        const getImg = (q) => `https://source.unsplash.com/featured/1200x1600/?${encodeURIComponent(q)}`;
+    // Скрываем лоадер
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loading-screen').classList.add('hidden');
+        }, 1000);
+    });
+</script>
 
-        try {
-            const raw = new URLSearchParams(window.location.search).get('data');
-            const d = raw ? JSON.parse(decodeURIComponent(atob(raw))) : {
-                bizName: "STEFANO'S",
-                bizCity: "Флоренция",
-                hero_title: "Вкус Истины",
-                hero_desc: "Традиции тосканской кухни в современном прочтении от обладателя трех звезд Мишлен.",
-                hero_image_query: "luxury restaurant food wine dark",
-                features: ["Карпаччо из осьминога", "Ризотто с трюфелем", "Стейк Фиорентина"],
-                product_name: "Золотое Ризотто",
-                product_desc: "Фирменное блюдо с использованием 24-каратного съедобного золота, шафрана и редких сортов сыра из частных сыроварен.",
-                product_image_query: "gourmet risotto gold leaf plating",
-                reviews: [
-                    "«Это лучшее, что я пробовал в этом году» — Ресторанный критик",
-                    "«Атмосфера, которая заставляет время замереть» — Vogue Lifestyle"
-                ]
-            };
-
-            // Заполнение данных
-            document.getElementById('bizName').innerText = d.bizName;
-            document.getElementById('bizCityDisplay').innerText = `Ресторан в ${d.bizCity}`;
-            document.getElementById('footerInfo').innerText = `${d.bizName} — ${d.bizCity}`;
-            
-            document.getElementById('hero_title').innerText = d.hero_title;
-            document.getElementById('hero_desc').innerText = d.hero_desc;
-            document.getElementById('hero_image').src = getImg(d.hero_image_query);
-
-            document.getElementById('product_name').innerText = d.product_name;
-            document.getElementById('product_desc').innerText = d.product_desc;
-            document.getElementById('product_image').src = getImg(d.product_image_query);
-
-            // Особенности (Menu)
-            const featuresContainer = document.getElementById('features');
-            featuresContainer.innerHTML = d.features.slice(0, 3).map(f => `
-                <div class="group cursor-pointer">
-                    <div class="relative overflow-hidden mb-6 aspect-[3/4]">
-                        <img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                             src="${getImg(f + ' dish')}" alt="${f}">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                    <h3 class="font-serif text-2xl text-gold mb-1">${f}</h3>
-                    <p class="text-stone-500 text-xs uppercase tracking-widest">Signature Dish</p>
-                </div>
-            `).join('');
-
-            // Отзывы
-            const reviewsContainer = document.getElementById('reviews');
-            reviewsContainer.innerHTML = d.reviews.map(r => `
-                <div class="relative pl-8 border-l border-gold/40">
-                    <p class="text-stone-300 italic text-lg font-light">"${r}"</p>
-                </div>
-            `).join('');
-
-        } catch (e) {
-            console.error("Data error:", e);
-        }
-    </script>
 </body>
 </html>
