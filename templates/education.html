@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   ONLINE EDUCATION TEMPLATE
+   Референс: Skillbox × editorial dark academy
+   Тёмный, неоново-синий, модульная структура курса,
+   результаты вместо отзывов.
+   ════════════════════════════════════════════════ */
+
+:root {
+  --bg:       #080b14;
+  --bg2:      #0d1120;
+  --bg3:      #111827;
+  --blue:     #3b82f6;
+  --blue2:    #60a5fa;
+  --cyan:     #06b6d4;
+  --white:    #f8fafc;
+  --muted:    rgba(248,250,252,0.45);
+  --line:     rgba(255,255,255,0.07);
+  --card:     rgba(255,255,255,0.035);
+  --radius:   14px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* Atmospheric bg glow */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(59,130,246,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(6,182,212,0.06) 0%, transparent 60%);
+}
+
+/* ─── LOADING ──────────────────────────────────── */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 28px;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loading-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(24px, 4vw, 40px); font-weight: 800;
+  color: var(--white); letter-spacing: -0.03em;
+}
+.loading-logo span { color: var(--blue); }
+.loading-progress {
+  width: 160px; height: 2px;
+  background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
+}
+.loading-fill {
+  height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 2px;
+  animation: loadFill 0.85s cubic-bezier(0.4,0,0.2,1) 0.05s both;
+  transform-origin: left;
+}
+@keyframes loadFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ─── NAVBAR ───────────────────────────────────── */
+.navbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(8,11,20,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 48px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; /* for z-index */
+}
+.navbar { position: sticky; }
+
+.nav-brand {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-brand-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.nav-brand-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 800;
+  color: var(--white); letter-spacing: -0.02em;
+}
+
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  text-decoration: none; padding: 7px 14px; border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--white); background: var(--card); }
+
+.nav-cta {
+  padding: 10px 24px;
+  background: var(--blue); color: var(--white);
+  border: none; border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 0 24px rgba(59,130,246,0.3);
+}
+.nav-cta:hover { background: var(--blue2); transform: translateY(-1px); box-shadow: 0 4px 28px rgba(59,130,246,0.45); }
+
+/* ─── HERO ─────────────────────────────────────── */
+.hero {
+  position: relative; z-index: 1;
+  padding: 100px 48px 80px;
+  display: grid; grid-template-columns: 1fr 480px;
+  gap: 64px; align-items: center;
+  max-width: 1280px; margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--blue2);
+  margin-bottom: 24px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue); box-shadow: 0 0 8px var(--blue);
+  animation: blinkDot 2s infinite;
+}
+@keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(38px, 5vw, 68px); font-weight: 800;
+  line-height: 1.0; letter-spacing: -0.04em;
+  color: var(--white); margin-bottom: 24px;
+}
+.hero-title-line2 {
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; display: block;
+}
+
+.hero-desc {
+  font-size: 16px; line-height: 1.75;
+  color: var(--muted); max-width: 460px;
+  margin-bottom: 44px; font-weight: 300;
+}
+
+.hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+.btn-blue {
+  padding: 15px 34px;
+  background: var(--blue); color: var(--white);
+  border: none; border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 0 32px rgba(59,130,246,0.35);
+}
+.btn-blue:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 36px rgba(59,130,246,0.5); }
+
+.btn-ghost {
+  padding: 15px 28px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.15); }
+
+/* Hero stats row */
+.hero-stats {
+  display: flex; gap: 36px; margin-top: 48px;
+  padding-top: 36px; border-top: 1px solid var(--line);
+}
+.hero-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px; font-weight: 800; color: var(--white);
+  letter-spacing: -0.03em;
+}
+.hero-stat-val span { color: var(--blue); }
+.hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 400; }
+
+/* Hero card — course preview */
+.hero-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  position: relative;
+}
+.hero-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+
+.hero-card-img {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #1a2540 0%, #0d1a35 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+#hero-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.hero-card-img-placeholder {
+  font-size: 72px; opacity: 0.25;
+  position: absolute;
+}
+.hero-card-play {
+  position: absolute;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(59,130,246,0.9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; cursor: pointer;
+  box-shadow: 0 0 40px rgba(59,130,246,0.5);
+  transition: transform 0.2s;
+}
+.hero-card-play:hover { transform: scale(1.1); }
+
+.hero-card-body { padding: 24px 24px 20px; }
+.hero-card-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--blue2); margin-bottom: 10px;
+}
+.hero-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.3;
+}
+.hero-card-meta {
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.hero-card-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--muted); font-weight: 400;
+}
+.meta-dot { color: var(--blue); font-size: 14px; }
+
+.hero-card-progress { padding: 16px 24px 20px; border-top: 1px solid var(--line); }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted); margin-bottom: 8px;
+}
+.progress-label span { color: var(--blue2); font-weight: 600; }
+.progress-track {
+  height: 4px; background: rgba(255,255,255,0.06);
+  border-radius: 4px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 4px; width: 35%;
+  transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── FEATURES / USP ───────────────────────────── */
+.features-section {
+  position: relative; z-index: 1;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 72px 48px;
+}
+.features-inner { max-width: 1280px; margin: 0 auto; }
+
+.section-eyebrow {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--blue2); font-weight: 600; margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 3.2vw, 42px); font-weight: 800;
+  letter-spacing: -0.04em; color: var(--white); line-height: 1.1;
+  margin-bottom: 52px;
+}
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+}
+.feature-card {
+  background: var(--card); padding: 36px 32px;
+  border: 1px solid var(--line);
+  transition: background 0.25s, border-color 0.25s;
+  position: relative; overflow: hidden;
+}
+.feature-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.feature-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+.feature-card:hover::after { transform: scaleX(1); }
+
+.feature-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--blue); margin-bottom: 20px;
+}
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.25;
+}
+.feature-desc {
+  font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 300;
+}
+
+/* ─── CURRICULUM / MODULES ─────────────────────── */
+.curriculum-section {
+  position: relative; z-index: 1;
+  padding: 80px 48px;
+  max-width: 1280px; margin: 0 auto;
+}
+
+.curriculum-layout {
+  display: grid; grid-template-columns: 1fr 380px;
+  gap: 80px; align-items: start;
+}
+
+.module-list { display: flex; flex-direction: column; gap: 2px; }
+
+.module-item {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.module-item:hover { border-color: rgba(59,130,246,0.3); }
+.module-item.open { border-color: rgba(59,130,246,0.4); }
+
+.module-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px; cursor: pointer;
+  user-select: none;
+}
+.module-num {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: rgba(59,130,246,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 700; color: var(--blue2);
+  flex-shrink: 0;
+}
+.module-item.done .module-num {
+  background: rgba(34,197,94,0.15); color: #4ade80;
+}
+.module-info { flex: 1; }
+.module-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.module-meta { font-size: 12px; color: var(--muted); }
+.module-chevron {
+  font-size: 12px; color: var(--muted);
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+.module-item.open .module-chevron { transform: rotate(180deg); }
+
+.module-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.module-body-inner {
+  padding: 0 24px 20px; border-top: 1px solid var(--line);
+}
+.lesson-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.lesson-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--muted); font-weight: 400;
+  padding: 8px 12px; border-radius: 8px;
+  transition: background 0.15s;
+}
+.lesson-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+.lesson-icon { font-size: 14px; flex-shrink: 0; }
+
+/* Sidebar enroll card */
+.enroll-card {
+  background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 20px;
+  overflow: hidden; position: sticky; top: 80px;
+}
+.enroll-card::before {
+  content: ''; display: block; height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+.enroll-card-body { padding: 28px; }
+.enroll-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--blue2); font-weight: 600; margin-bottom: 8px;
+}
+.enroll-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 40px; font-weight: 800; color: var(--white);
+  letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px;
+}
+.enroll-price-note { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+.enroll-btn {
+  width: 100%; padding: 16px;
+  background: var(--blue); color: var(--white);
+  border: none; border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 12px;
+  box-shadow: 0 0 32px rgba(59,130,246,0.3);
+}
+.enroll-btn:hover { background: var(--blue2); transform: translateY(-1px); }
+.enroll-free-btn {
+  width: 100%; padding: 13px;
+  background: transparent; border: 1px solid var(--line);
+  border-radius: 12px; color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.enroll-free-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.15); }
+.enroll-features { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.enroll-feat-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--muted);
+}
+.enroll-feat-item::before {
+  content: '✓'; width: 20px; height: 20px; flex-shrink: 0;
+  background: rgba(59,130,246,0.15); color: var(--blue2);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+}
+
+/* ─── RESULTS (вместо отзывов) ─────────────────── */
+.results-section {
+  position: relative; z-index: 1;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  padding: 80px 48px;
+}
+.results-inner { max-width: 1280px; margin: 0 auto; }
+
+/* Big number stat row */
+.results-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px; margin-top: 52px; margin-bottom: 56px;
+}
+.result-stat {
+  background: var(--card); border: 1px solid var(--line);
+  padding: 32px 28px; transition: border-color 0.2s;
+}
+.result-stat:hover { border-color: rgba(59,130,246,0.3); }
+.result-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+  letter-spacing: -0.04em; color: var(--white); line-height: 1;
+  margin-bottom: 8px;
+}
+.result-stat-val em {
+  color: var(--blue); font-style: normal;
+}
+.result-stat-label { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+
+/* Student outcome cards */
+.outcomes-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.outcome-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 16px; padding: 28px 24px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s, transform 0.2s;
+}
+.outcome-card:hover { border-color: rgba(59,130,246,0.35); transform: translateY(-3px); }
+.outcome-before-after {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+}
+.outcome-role {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 5px 10px; border-radius: 6px;
+}
+.outcome-role--before { background: rgba(255,255,255,0.06); color: var(--muted); }
+.outcome-role--after  { background: rgba(59,130,246,0.15); color: var(--blue2); }
+.outcome-arrow { color: var(--blue); font-size: 14px; }
+
+.outcome-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.outcome-text {
+  font-size: 13px; line-height: 1.65; color: var(--muted); font-weight: 300;
+}
+.outcome-salary {
+  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line);
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700; color: var(--white);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.outcome-salary-delta { color: #4ade80; font-size: 13px; font-weight: 600; }
+
+/* ─── FOOTER ───────────────────────────────────── */
+footer {
+  background: var(--bg); border-top: 1px solid var(--line);
+  padding: 52px 48px 36px; position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 32px; flex-wrap: wrap;
+}
+.footer-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.footer-brand-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.footer-brand-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 800; color: var(--white);
+}
+.footer-city { font-size: 13px; color: var(--muted); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+/* ─── MODAL ────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(8,11,20,0.85); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 20px; width: 100%; max-width: 460px;
+  margin: 20px; padding: 44px 36px;
+  position: relative;
+  transform: translateY(10px) scale(0.98); transition: transform 0.3s;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 60px rgba(59,130,246,0.08);
+}
+.modal::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 20px 20px 0 0;
+}
+.modal-overlay.active .modal { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 50%; width: 32px; height: 32px;
+  font-size: 15px; cursor: pointer; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.modal-close:hover { color: var(--white); border-color: rgba(255,255,255,0.15); }
+.modal-eyebrow {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--blue2); font-weight: 600; margin-bottom: 10px;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--white); margin-bottom: 6px; line-height: 1.2;
+}
+.modal-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 38px; font-weight: 800; letter-spacing: -0.04em;
+  color: var(--white); margin-bottom: 28px;
+}
+.modal-amount span { color: var(--blue); }
+.modal-field { margin-bottom: 16px; }
+.modal-field label {
+  display: block; font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 8px;
+}
+.modal-field input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line); border-radius: 10px;
+  color: var(--white); font-family: 'DM Sans', sans-serif;
+  font-size: 15px; outline: none; transition: border-color 0.2s;
+}
+.modal-field input:focus { border-color: var(--blue); background: rgba(59,130,246,0.06); }
+.modal-field input::placeholder { color: rgba(255,255,255,0.2); }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-submit {
+  width: 100%; margin-top: 20px; padding: 16px;
+  background: var(--blue); color: var(--white); border: none;
+  border-radius: 12px; font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 0 28px rgba(59,130,246,0.3);
+}
+.modal-submit:hover:not(:disabled) { background: var(--blue2); transform: translateY(-1px); }
+.modal-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-secure { text-align: center; margin-top: 12px; font-size: 11px; color: var(--muted); }
+
+.modal-success { display: none; text-align: center; padding: 16px 0; }
+.modal-success.show { display: block; }
+.success-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 20px;
+  box-shadow: 0 0 36px rgba(59,130,246,0.4);
+}
+.success-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 10px;
+}
+.success-sub { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* ─── ANIMATIONS ───────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-eyebrow { animation: fadeUp 0.5s ease 0.05s both; }
+.hero-title   { animation: fadeUp 0.5s ease 0.15s both; }
+.hero-desc    { animation: fadeUp 0.5s ease 0.25s both; }
+.hero-actions { animation: fadeUp 0.5s ease 0.35s both; }
+.hero-stats   { animation: fadeUp 0.5s ease 0.45s both; }
+.hero-card    { animation: fadeUp 0.6s ease 0.2s both; }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading-screen">
+  <div class="loading-logo" id="loading-logo">EDU<span>.</span></div>
+  <div class="loading-progress"><div class="loading-fill"></div></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" style="position:sticky;top:0;z-index:200;">
+  <a href="#" class="nav-brand">
+    <div class="nav-brand-icon">🎓</div>
+    <span class="nav-brand-name" id="nav-brand-name">EduPlatform</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#curriculum">Программа</a></li>
+    <li><a href="#results">Результаты</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Записаться</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow" id="hero-eyebrow">Онлайн-курс · Старт в любой день</div>
+    <h1 class="hero-title">
+      <span id="hero-title-l1">Освой новую</span><br>
+      <span class="hero-title-line2" id="hero-title-l2">профессию</span>
+    </h1>
+    <p class="hero-desc" id="hero-desc">Практический курс с трудоустройством. Учись в своём темпе, получай обратную связь от практиков.</p>
+    <div class="hero-actions">
+      <button class="btn-blue" onclick="openModal()">Начать обучение</button>
+      <button class="btn-ghost" onclick="document.getElementById('curriculum').scrollIntoView({behavior:'smooth'})">Смотреть программу</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val" id="stat-students">2<span>400+</span></div>
+        <div class="hero-stat-label">выпускников</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-duration">6<span>мес</span></div>
+        <div class="hero-stat-label">длительность</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-employ">87<span>%</span></div>
+        <div class="hero-stat-label">трудоустроены</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="hero-card-img">
+      <span class="hero-card-img-placeholder">📺</span>
+      <img id="hero-img" alt="">
+      <div class="hero-card-play" onclick="openModal()">▶</div>
+    </div>
+    <div class="hero-card-body">
+      <div class="hero-card-label">Главный модуль</div>
+      <div class="hero-card-title" id="card-course-name">Введение в профессию</div>
+      <div class="hero-card-meta">
+        <div class="hero-card-meta-item"><span class="meta-dot">◆</span> <span id="card-lessons">12 уроков</span></div>
+        <div class="hero-card-meta-item"><span class="meta-dot">◆</span> <span id="card-duration">2.5 часа</span></div>
+        <div class="hero-card-meta-item"><span class="meta-dot">◆</span> Сертификат</div>
+      </div>
+    </div>
+    <div class="hero-card-progress">
+      <div class="progress-label"><span>Прогресс потока</span><span id="progress-pct">35%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="features-inner">
+    <div class="section-eyebrow">Формат</div>
+    <h2 class="section-title" id="features-title">Почему это работает</h2>
+    <div class="features-grid" id="features-grid"></div>
+  </div>
+</section>
+
+<!-- Curriculum -->
+<section class="curriculum-section" id="curriculum">
+  <div class="section-eyebrow">Программа курса</div>
+  <h2 class="section-title" id="curriculum-title">Что вы изучите</h2>
+  <div class="curriculum-layout">
+    <div class="module-list" id="module-list"></div>
+    <div class="enroll-card">
+      <div class="enroll-card-body">
+        <div class="enroll-label">Стоимость курса</div>
+        <div class="enroll-price" id="enroll-price">29 900 ₽</div>
+        <div class="enroll-price-note" id="enroll-price-note">или 4 983 ₽/мес · рассрочка без %</div>
+        <button class="enroll-btn" onclick="openModal()">Записаться на курс</button>
+        <button class="enroll-free-btn" onclick="openModal()">Бесплатный урок →</button>
+        <div class="enroll-features" id="enroll-features"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="results-section" id="results">
+  <div class="results-inner">
+    <div class="section-eyebrow">Результаты студентов</div>
+    <h2 class="section-title" id="results-title">После курса</h2>
+    <div class="results-stats" id="results-stats"></div>
+    <div class="outcomes-grid" id="outcomes-grid"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-brand-icon">🎓</div>
+        <div class="footer-brand-name" id="footer-name">EduPlatform</div>
+      </div>
+      <div class="footer-city" id="footer-city" style="margin-top:6px;margin-left:42px;">Москва</div>
+    </div>
+    <div class="footer-copy" id="footer-copy">© 2025</div>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-view">
+      <div class="modal-eyebrow">ЮKassa · Безопасная оплата</div>
+      <div class="modal-title" id="modal-course-name">Запись на курс</div>
+      <div class="modal-amount" id="modal-amount"><span>от </span>29 900 ₽</div>
+      <div class="modal-field">
+        <label>Номер карты</label>
+        <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><label>Срок</label><input type="text" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)"></div>
+        <div class="modal-field"><label>CVV</label><input type="text" placeholder="•••" maxlength="3"></div>
+      </div>
+      <div class="modal-field">
+        <label>Имя владельца</label>
+        <input type="text" placeholder="IVAN IVANOV">
+      </div>
+      <button class="modal-submit" onclick="simulatePay()">Оплатить — <span id="modal-amount-btn">29 900 ₽</span></button>
+      <div class="modal-secure">🔒 SSL · ЮKassa · Возврат в течение 14 дней</div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Вы записаны!</div>
+      <div class="success-sub">Доступ к курсу придёт на почту.<br>Добро пожаловать в поток 🚀</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DEMO DATA ────────────────────────────────────────────────
+function getDemoData() {
+  return {
+    bizName: 'Skillflow',
+    bizCity: 'Москва',
+    bizType: 'Онлайн-курс',
+    hero_title: 'Освой новую\nпрофессию',
+    hero_desc: 'Практический курс с обратной связью от практикующих специалистов. Учись в своём темпе и получи оффер в течение 3 месяцев после выпуска.',
+    features_title: 'Почему это работает',
+    features: [
+      { title: 'Практика с первого дня',   desc: 'Каждый модуль — реальный проект. К концу курса у вас готовое портфолио из 5+ работ.' },
+      { title: 'Живая обратная связь',      desc: 'Код-ревью, разбор домашних заданий, Q&A-сессии с наставниками каждую неделю.' },
+      { title: 'Карьерный трек включён',    desc: 'Помощь с резюме, подготовка к собеседованиям, прямые рекомендации партнёрам.' }
+    ],
+    product_name: 'Курс: Веб-разработчик с нуля',
+    product_desc: 'Полный цикл от HTML до деплоя. JavaScript, React, Node.js, базы данных.',
+    avg_check: '29900',
+    products: [
+      { name: 'Модуль 1: Основы', lessons: '8 уроков · 3 ч', desc: 'HTML, CSS, базовая вёрстка', lessons_list: ['Введение в HTML', 'Структура документа', 'CSS основы', 'Flexbox и Grid', 'Адаптивность', 'Первый проект'] },
+      { name: 'Модуль 2: JavaScript', lessons: '12 уроков · 5 ч', desc: 'Синтаксис, DOM, события', lessons_list: ['Переменные и типы', 'Функции', 'DOM-манипуляции', 'События', 'Fetch API', 'Промисы', 'Проект: интерактив'] },
+      { name: 'Модуль 3: React', lessons: '10 уроков · 4.5 ч', desc: 'Компоненты, хуки, роутинг', lessons_list: ['Что такое React', 'JSX', 'Компоненты', 'useState/useEffect', 'React Router', 'Финальный проект'] },
+      { name: 'Модуль 4: Backend', lessons: '8 уроков · 3.5 ч', desc: 'Node.js, Express, БД', lessons_list: ['Node.js основы', 'Express сервер', 'REST API', 'PostgreSQL', 'Деплой'] }
+    ],
+    product_features: ['Пожизненный доступ к материалам', 'Сертификат по окончании', 'Поддержка 6 месяцев после выпуска', 'Карьерный центр и трудоустройство'],
+    looks: [
+      { name: 'Анна Соколова', before: 'Менеджер', after: 'Frontend Dev', text: 'За 5 месяцев перешла из найма в офисе на удалённую работу с ростом зарплаты в 2.3 раза.', salary_after: '180 000 ₽', delta: '+130%', image_query: 'young woman laptop coding' },
+      { name: 'Максим Ершов', before: 'Дизайнер', after: 'Fullstack Dev', text: 'Уже знал дизайн, добавил разработку — стал закрывать полный цикл. Первый заказ через месяц после выпуска.', salary_after: '220 000 ₽', delta: '+85%', image_query: 'young man developer laptop' },
+      { name: 'Ольга Бирюкова', before: 'Без опыта', after: 'Junior Dev', text: 'Пришла совсем с нуля, без технического бэкграунда. Через 6 месяцев — оффер от IT-компании.', salary_after: '120 000 ₽', delta: 'первая работа', image_query: 'woman studying online course' }
+    ],
+    hero_image_query: 'online learning laptop course',
+    isDemo: false
+  };
+}
+
+// ─── RENDER ──────────────────────────────────────────────────
+function render(data) {
+  const name = data.bizName || 'EduPlatform';
+
+  document.title = name;
+  document.getElementById('loading-logo').innerHTML = `${name.substring(0,4).toUpperCase()}<span>.</span>`;
+  document.getElementById('nav-brand-name').textContent = name;
+  document.getElementById('footer-name').textContent = name;
+  document.getElementById('footer-city').textContent = data.bizCity || 'Москва';
+  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}`;
+
+  // Hero
+  const titleParts = (data.hero_title || 'Освой новую\nпрофессию').split('\n');
+  document.getElementById('hero-title-l1').textContent = titleParts[0] || '';
+  document.getElementById('hero-title-l2').textContent = titleParts[1] || '';
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
+  document.getElementById('hero-eyebrow').textContent = `${data.bizType || 'Онлайн-курс'} · Старт в любой день`;
+  document.getElementById('card-course-name').textContent = data.product_name || name;
+
+  // Modal defaults
+  const price = parseInt(data.avg_check) || 29900;
+  const priceStr = price.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('enroll-price').textContent = priceStr;
+  document.getElementById('enroll-price-note').textContent =
+    `или ${Math.round(price/6).toLocaleString('ru-RU')} ₽/мес · рассрочка без %`;
+  document.getElementById('modal-course-name').textContent = data.product_name || name;
+  document.getElementById('modal-amount').innerHTML = `<span>от </span>${priceStr}`;
+  document.getElementById('modal-amount-btn').textContent = priceStr;
+
+  // Features
+  document.getElementById('features-title').textContent = data.features_title || 'Почему это работает';
+  const fg = document.getElementById('features-grid');
+  fg.innerHTML = '';
+  (data.features || []).forEach((f, i) => {
+    fg.innerHTML += `
+      <div class="feature-card">
+        <div class="feature-num">0${i+1}</div>
+        <div class="feature-title">${f.title}</div>
+        <div class="feature-desc">${f.desc}</div>
+      </div>`;
+  });
+
+  // Enroll card features
+  const ef = document.getElementById('enroll-features');
+  ef.innerHTML = '';
+  (data.product_features || []).forEach(f => {
+    ef.innerHTML += `<div class="enroll-feat-item">${f}</div>`;
+  });
+
+  // Modules / curriculum
+  const modules = data.products || [];
+  const ml = document.getElementById('module-list');
+  ml.innerHTML = '';
+  modules.forEach((m, i) => {
+    const lessonsHtml = (m.lessons_list || [m.desc]).map(l =>
+      `<div class="lesson-item"><span class="lesson-icon">▷</span>${l}</div>`
+    ).join('');
+    ml.innerHTML += `
+      <div class="module-item" id="mod-${i}">
+        <div class="module-header" onclick="toggleModule(${i})">
+          <div class="module-num">0${i+1}</div>
+          <div class="module-info">
+            <div class="module-title">${m.name}</div>
+            <div class="module-meta">${m.lessons || m.desc || ''}</div>
+          </div>
+          <div class="module-chevron">▾</div>
+        </div>
+        <div class="module-body" id="mod-body-${i}">
+          <div class="module-body-inner">
+            <div class="lesson-list">${lessonsHtml}</div>
+          </div>
+        </div>
+      </div>`;
+  });
+  // Open first module
+  if (modules.length) setTimeout(() => toggleModule(0), 100);
+
+  document.getElementById('curriculum-title').textContent =
+    `Что вы изучите · ${modules.length || 4} модуля`;
+
+  // Results stats
+  const stats = [
+    { val: '2 400', unit: '+', label: 'выпускников прошли курс' },
+    { val: '87',    unit: '%', label: 'трудоустроены в течение 3 месяцев' },
+    { val: '×2.1',  unit: '',  label: 'средний рост зарплаты' },
+    { val: '4.9',   unit: '/5',label: 'средняя оценка курса' }
+  ];
+  const rs = document.getElementById('results-stats');
+  rs.innerHTML = stats.map(s => `
+    <div class="result-stat">
+      <div class="result-stat-val">${s.val}<em>${s.unit}</em></div>
+      <div class="result-stat-label">${s.label}</div>
+    </div>`).join('');
+  document.getElementById('results-title').textContent = 'Результаты выпускников';
+
+  // Outcomes (looks field repurposed)
+  const outcomes = data.looks || [];
+  const og = document.getElementById('outcomes-grid');
+  og.innerHTML = '';
+  outcomes.forEach(o => {
+    og.innerHTML += `
+      <div class="outcome-card">
+        <div class="outcome-before-after">
+          <span class="outcome-role outcome-role--before">${o.before || 'до'}</span>
+          <span class="outcome-arrow">→</span>
+          <span class="outcome-role outcome-role--after">${o.after || 'после'}</span>
+        </div>
+        <div class="outcome-name">${o.name}</div>
+        <div class="outcome-text">${o.text}</div>
+        <div class="outcome-salary">
+          <span>${o.salary_after || ''}</span>
+          <span class="outcome-salary-delta">${o.delta || ''}</span>
+        </div>
+      </div>`;
+  });
+  if (!outcomes.length) document.getElementById('outcomes-grid').style.display = 'none';
+
+  // Hero image
+  loadImg('hero-img', data.hero_image_query || 'online learning laptop');
+}
+
+// ─── MODULE TOGGLE ────────────────────────────────────────────
+function toggleModule(i) {
+  const item = document.getElementById(`mod-${i}`);
+  const body = document.getElementById(`mod-body-${i}`);
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.module-item').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.module-body').style.maxHeight = '0';
+  });
+  // Open clicked if was closed
+  if (!isOpen) {
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 200 + 'px';
+  }
+}
+
+// ─── IMAGE LOADER ─────────────────────────────────────────────
+async function loadImg(imgId, query) {
+  try {
+    const r = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!r.ok) throw 0;
+    const url = URL.createObjectURL(await r.blob());
+    const img = document.getElementById(imgId);
+    if (!img) return;
+    img.src = url; img.style.display = 'block';
+    img.previousElementSibling && (img.previousElementSibling.style.display = 'none');
+  } catch(e) {}
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
+}
+function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
+function simulatePay() {
+  const btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Обработка...'; btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+
+// ─── PROGRESS BAR ANIMATION ───────────────────────────────────
+function animateProgress() {
+  const fill = document.getElementById('progress-fill');
+  const pct = document.getElementById('progress-pct');
+  if (!fill) return;
+  let val = 0;
+  const target = 35;
+  const step = () => {
+    val = Math.min(val + 1, target);
+    fill.style.width = val + '%';
+    pct.textContent = val + '%';
+    if (val < target) requestAnimationFrame(step);
+  };
+  setTimeout(() => requestAnimationFrame(step), 1000);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const payload = new URLSearchParams(window.location.search).get('data');
+  if (payload) {
+    try {
+      render(JSON.parse(decodeURIComponent(atob(payload))));
+    } catch(e) { render(getDemoData()); }
+  } else {
+    render(getDemoData());
+  }
+  animateProgress();
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    setTimeout(() => document.getElementById('loading-screen').remove(), 500);
+  }, 850);
+});
+</script>
+</body>
+</html>
