@@ -449,12 +449,17 @@ function render(data) {
   const baseP    = parseInt(data.avg_check) || 8500000;
   const grid     = document.getElementById('objects-grid');
   grid.innerHTML = '';
+  const cardQueries = [
+    data.hero_image_query || 'modern apartment building exterior',
+    'luxury residential complex facade',
+    'new residential building architecture'
+  ];
   feats.forEach((f, i) => {
     const p = Math.round((baseP * (0.75 + i * 0.28)) / 100000) * 100000;
     grid.innerHTML += `
       <div class="obj-card" onclick="openModal()">
-        <div class="obj-img">
-          <div class="obj-img-ph">
+        <div class="obj-img" id="obj-img-${i}">
+          <div class="obj-img-ph" id="obj-img-ph-${i}">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="12" width="32" height="23" rx="2" stroke="#b0aa9e" stroke-width="1.2"/><path d="M1 12L20 2l19 10" stroke="#b0aa9e" stroke-width="1.2" fill="none"/><rect x="15" y="22" width="10" height="13" rx="1" stroke="#b0aa9e" stroke-width="1"/></svg>
           </div>
           <div class="obj-badge ${badgeCls[i]}">${badgeT[i]}</div>
@@ -470,6 +475,10 @@ function render(data) {
           </div>
         </div>
       </div>`;
+  });
+  // Загружаем картинки в карточки после рендера
+  feats.forEach((f, i) => {
+    loadCardImage(cardQueries[i] || 'apartment building', `obj-img-ph-${i}`);
   });
 
   // Features grid
@@ -529,6 +538,7 @@ function render(data) {
   document.getElementById('footer-copy').textContent   = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
   loadHeroImage(data.hero_image_query || 'modern residential complex Moscow');
+  loadCardImage((data.hero_image_query || 'luxury apartment interior') + ' interior', 'product-img-wrap');
   if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
 }
 
@@ -543,6 +553,24 @@ async function loadHeroImage(q) {
     img.src = url; img.alt = '';
     img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     w.appendChild(img);
+  } catch(e) {}
+}
+
+// Загружает картинку в любой placeholder по id
+async function loadCardImage(q, placeholderId) {
+  try {
+    const r = await fetch('/image?q=' + encodeURIComponent(q));
+    if (!r.ok) throw new Error();
+    const url = URL.createObjectURL(await r.blob());
+    const ph = document.getElementById(placeholderId);
+    if (!ph) return;
+    const img = document.createElement('img');
+    img.src = url; img.alt = '';
+    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;';
+    // Делаем родителя position:relative если нужно
+    ph.style.position = 'relative';
+    ph.innerHTML = '';
+    ph.appendChild(img);
   } catch(e) {}
 }
 
