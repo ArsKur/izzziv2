@@ -3,401 +3,1033 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fine Dining Experience</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+<title>Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-  /* ════════════════════════════════════════════════
-     RESTAURANT / FINE DINING TEMPLATE
-     Референс: White Rabbit, Noma
-     Эстетика: Dark Luxury, Gold accents, Typography-focused
-     ════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   RESTAURANT / FINE DINING TEMPLATE
+   Референс: Gorynich Moscow
+   Тёмный, сырой, премиальный. Не ресторан — место.
+   ════════════════════════════════════════════════ */
 
-  :root {
-    --bg: #0a0705;
-    --gold: #c9a84c;
-    --gold-dim: #947a36;
-    --white: #ffffff;
-    --muted: rgba(255,255,255,0.5);
-    --border: rgba(201,168,76,0.2);
-    --overlay: rgba(10,7,5,0.7);
-  }
+:root {
+  --void:    #0c0b09;
+  --dark:    #141210;
+  --carbon:  #1e1c18;
+  --iron:    #2a2720;
+  --dust:    rgba(255,255,255,0.35);
+  --ash:     rgba(255,255,255,0.12);
+  --cream:   #f0ece3;
+  --fire:    #c4622a;
+  --ember:   #e07a3a;
+  --gold:    #b8922a;
+  --line:    rgba(255,255,255,0.07);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-  html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+/* ─── NOISE TEXTURE ─────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
 
-  h1, h2, h3, .serif {
-    font-family: 'Playfair Display', serif;
-    font-weight: 400;
-  }
+/* ─── LOADING ──────────────────────────────────── */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--void);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; }
+.loading-wordmark {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--cream); opacity: 0;
+  animation: fadeWord 0.8s ease 0.2s forwards;
+}
+@keyframes fadeWord { to { opacity: 1; } }
 
-  /* ─── LOADING SCREEN ─────────────────────────── */
-  .loading-screen {
-    position: fixed; inset: 0; background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; z-index: 1000; transition: opacity 0.8s;
-  }
-  .loading-screen.hidden { opacity: 0; pointer-events: none; }
-  .loading-logo { font-size: 24px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-  .loading-line { width: 100px; height: 1px; background: rgba(255,255,255,0.1); position: relative; }
-  .loading-line::after {
-    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0;
-    background: var(--gold); animation: load 1.5s infinite;
-  }
-  @keyframes load { 0% { width: 0; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0; left: 100%; } }
+/* ─── DEMO BANNER ──────────────────────────────── */
+.demo-banner {
+  display: none; position: fixed;
+  top: 0; left: 0; right: 0; z-index: 300;
+  background: var(--fire); color: #fff;
+  padding: 10px 24px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  text-align: center; display: none; align-items: center; justify-content: center; gap: 20px;
+}
+.demo-banner.show { display: flex; }
+.demo-banner-btn {
+  padding: 5px 16px; border: 1px solid rgba(255,255,255,0.6);
+  color: #fff; text-decoration: none; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase; transition: all 0.2s;
+}
+.demo-banner-btn:hover { background: #fff; color: var(--fire); }
 
-  /* ─── DEMO BANNER ────────────────────────────── */
-  .demo-banner {
-    background: var(--gold); color: var(--bg);
-    padding: 12px 48px; display: none; align-items: center; justify-content: center;
-    gap: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.1em; position: relative; z-index: 500;
-  }
-  .demo-banner.show { display: flex; }
-  .demo-banner a { color: var(--bg); text-decoration: underline; }
+/* ─── NAVBAR ───────────────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 0 48px; height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(12,11,9,0.95) 0%, rgba(12,11,9,0) 100%);
+  transition: background 0.3s;
+}
+.navbar.scrolled {
+  background: rgba(12,11,9,0.97);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
 
-  /* ─── NAVBAR ─────────────────────────────────── */
-  .navbar {
-    position: absolute; top: 0; left: 0; right: 0; height: 100px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 60px; z-index: 100;
-  }
-  .nav-logo { font-size: 22px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); text-decoration: none; }
-  .nav-cta {
-    padding: 12px 28px; border: 1px solid var(--gold); background: transparent;
-    color: var(--gold); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.4s;
-  }
-  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+.nav-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--cream); text-decoration: none;
+}
 
-  /* ─── HERO ───────────────────────────────────── */
-  .hero {
-    height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
-    text-align: center; overflow: hidden;
-  }
-  #hero-bg {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    opacity: 0.5; transition: transform 10s ease-out;
-  }
-  .hero:hover #hero-bg { transform: scale(1.1); }
-  .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; }
-  .hero-eyebrow { font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
-  .hero-title { font-size: clamp(48px, 8vw, 100px); line-height: 1.1; margin-bottom: 32px; font-style: italic; }
-  .hero-desc { font-size: 18px; font-weight: 200; max-width: 600px; margin: 0 auto 40px; color: var(--muted); }
+.nav-links {
+  display: flex; gap: 40px; list-style: none;
+}
+.nav-links a {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dust); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cream); }
 
-  /* ─── FEATURES ───────────────────────────────── */
-  .features { padding: 140px 60px; background: var(--bg); }
-  .section-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: block; text-align: center; }
-  .section-title { font-size: 42px; text-align: center; margin-bottom: 80px; }
-  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
-  .feature-card { text-align: center; padding: 40px 20px; border: 1px solid var(--border); transition: 0.4s; }
-  .feature-card:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
-  .feature-icon { font-size: 32px; color: var(--gold); margin-bottom: 24px; display: block; }
-  .feature-name { font-size: 20px; margin-bottom: 16px; letter-spacing: 0.05em; }
-  .feature-text { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.nav-cta {
+  padding: 10px 22px;
+  border: 1px solid var(--fire);
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--fire); cursor: pointer; transition: all 0.25s;
+}
+.nav-cta:hover { background: var(--fire); color: var(--cream); }
 
-  /* ─── PRODUCT CARD ───────────────────────────── */
-  .product { padding: 100px 60px; background: #0f0c0a; }
-  .product-container {
-    max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center;
-  }
-  .product-image-wrap { position: relative; padding-bottom: 120%; overflow: hidden; border: 1px solid var(--border); }
-  #product-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.3); transition: 0.6s; }
-  .product-image-wrap:hover #product-img { filter: grayscale(0); transform: scale(1.05); }
-  .product-info { padding-right: 40px; }
-  .product-name { font-size: 54px; margin-bottom: 24px; line-height: 1.2; }
-  .product-desc { font-size: 16px; color: var(--muted); margin-bottom: 40px; }
-  .product-features { list-style: none; margin-bottom: 48px; }
-  .product-features li { 
-    font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold);
-    margin-bottom: 12px; display: flex; align-items: center; gap: 12px;
-  }
-  .product-features li::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
-  .product-price-box { display: flex; align-items: center; gap: 32px; border-top: 1px solid var(--border); pt: 40px; padding-top: 40px; }
-  .price-value { font-size: 32px; color: var(--white); font-family: 'Playfair Display', serif; }
-  .price-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); display: block; }
+/* ─── HERO ─────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 100vh; min-height: 700px;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
 
-  /* ─── REVIEWS ────────────────────────────────── */
-  .reviews { padding: 140px 60px; text-align: center; }
-  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 60px auto 0; }
-  .review-card { padding: 40px; background: rgba(255,255,255,0.02); border-bottom: 2px solid transparent; transition: 0.3s; }
-  .review-card:hover { border-color: var(--gold); }
-  .review-text { font-style: italic; font-size: 16px; color: var(--white); margin-bottom: 24px; position: relative; }
-  .review-text::before { content: '"'; font-family: serif; color: var(--gold); font-size: 40px; position: absolute; top: -20px; left: -10px; opacity: 0.3; }
-  .review-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
-  .review-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
-  .review-name { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--carbon);
+}
+.hero-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; opacity: 0.65;
+  transform: scale(1.05);
+  transition: transform 12s ease, opacity 1s ease;
+}
+.hero-bg.loaded img { transform: scale(1); opacity: 0.75; }
+.hero-placeholder {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at 60% 40%, #2a1f10 0%, #0c0b09 70%);
+}
 
-  /* ─── FOOTER ─────────────────────────────────── */
-  .footer { padding: 100px 60px 60px; border-top: 1px solid var(--border); text-align: center; }
-  .footer-logo { font-size: 32px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 16px; display: block; }
-  .footer-city { font-size: 12px; color: var(--gold); letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 48px; }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+/* Vignette */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(to top, rgba(12,11,9,0.92) 0%, rgba(12,11,9,0.3) 50%, rgba(12,11,9,0.1) 100%),
+    linear-gradient(to right, rgba(12,11,9,0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
 
-  /* ─── MODAL / YUKASSA ────────────────────────── */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-  .modal-overlay.active { display: flex; }
-  .modal { background: #151210; width: 400px; padding: 40px; border: 1px solid var(--gold); position: relative; }
-  .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--gold); cursor: pointer; font-size: 20px; }
-  .modal-title { font-size: 20px; margin-bottom: 8px; color: var(--gold); }
-  .modal-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.1em; }
-  .modal-price { font-size: 28px; margin-bottom: 32px; font-family: serif; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-  .modal-input { width: 100%; background: transparent; border: 1px solid var(--border); padding: 12px; color: white; margin-bottom: 16px; font-family: inherit; }
-  .modal-input:focus { border-color: var(--gold); outline: none; }
-  .modal-submit { width: 100%; background: var(--gold); color: black; border: none; padding: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; margin-top: 8px; }
-  .success-view { display: none; text-align: center; }
-  .success-view.active { display: block; }
-  .success-icon { font-size: 48px; color: var(--gold); margin-bottom: 20px; }
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 48px 72px;
+  max-width: 700px;
+}
 
-  @media (max-width: 900px) {
-    .features-grid, .product-container, .reviews-grid { grid-template-columns: 1fr; }
-    .hero-title { font-size: 50px; }
-    .navbar { padding: 0 20px; }
-    .product-info { padding-right: 0; }
-  }
+.hero-label {
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 14px;
+}
+.hero-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--fire); }
+
+.hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(44px, 7vw, 96px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 28px;
+}
+.hero-title .accent { color: var(--fire); }
+
+.hero-desc {
+  font-size: 14px; line-height: 1.8; color: var(--dust);
+  max-width: 420px; margin-bottom: 48px;
+}
+
+.hero-actions { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+
+.btn-fire {
+  padding: 16px 40px;
+  background: var(--fire); color: var(--cream);
+  border: none; font-family: 'Montserrat', sans-serif;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+}
+.btn-fire::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--ember);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+.btn-fire:hover::after { transform: translateX(0); }
+.btn-fire span { position: relative; z-index: 1; }
+
+.btn-outline {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: none; border: none; cursor: pointer;
+  transition: color 0.2s; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-outline:hover { color: var(--cream); }
+
+/* Scroll indicator */
+.hero-scroll {
+  position: absolute; bottom: 48px; right: 48px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.hero-scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, transparent, var(--fire));
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+.hero-scroll-text {
+  font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--dust); writing-mode: vertical-rl;
+}
+
+/* ─── STRIP ────────────────────────────────────── */
+.info-strip {
+  background: var(--carbon);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 48px;
+  display: flex; align-items: center; gap: 0;
+  overflow: hidden;
+}
+.strip-item {
+  flex: 1; padding: 0 40px;
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.strip-item:first-child { padding-left: 0; }
+.strip-item:last-child { border-right: none; }
+.strip-label {
+  font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--dust);
+}
+.strip-value {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px; font-weight: 400; color: var(--cream);
+  letter-spacing: 0.05em;
+}
+.strip-value .fire { color: var(--fire); }
+
+/* ─── FEATURES ─────────────────────────────────── */
+.features {
+  padding: 100px 48px;
+  position: relative;
+}
+.features::before {
+  content: '';
+  position: absolute; top: 0; left: 48px; right: 48px;
+  height: 1px; background: var(--line);
+}
+
+.features-header {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 80px; align-items: start; margin-bottom: 80px;
+}
+
+.features-label {
+  font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 20px;
+}
+.features-headline {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700; text-transform: uppercase;
+  line-height: 1.1; letter-spacing: -0.02em;
+  color: var(--cream);
+}
+
+.features-intro {
+  padding-top: 40px;
+  font-size: 14px; line-height: 1.8; color: var(--dust);
+  max-width: 500px;
+}
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.feature-card {
+  padding: 40px 36px;
+  border: 1px solid var(--line);
+  margin: -1px 0 0 -1px;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--fire), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.feature-card:hover { background: rgba(255,255,255,0.02); }
+.feature-card:hover::before { transform: scaleX(1); }
+
+.feature-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: 0.2em;
+  color: var(--fire); margin-bottom: 24px;
+}
+.feature-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 15px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--cream);
+  margin-bottom: 14px; line-height: 1.3;
+}
+.feature-desc {
+  font-size: 13px; color: var(--dust); line-height: 1.7; font-weight: 300;
+}
+
+/* ─── MENU DARK ────────────────────────────────── */
+.menu-dark {
+  background: var(--carbon);
+  padding: 100px 48px;
+  border-top: 1px solid var(--line);
+}
+
+.menu-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 64px;
+}
+.menu-headline-wrap {}
+.menu-eyebrow { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--fire); margin-bottom: 14px; }
+.menu-headline {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: -0.02em; color: var(--cream);
+  line-height: 1;
+}
+.menu-count {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px; color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em; padding-bottom: 6px;
+}
+
+.menu-list {
+  display: flex; flex-direction: column; gap: 0;
+}
+.menu-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 40px 1fr auto;
+  gap: 28px; align-items: center;
+  cursor: pointer; transition: all 0.25s;
+  position: relative;
+}
+.menu-item:first-child { border-top: 1px solid var(--line); }
+.menu-item:hover { padding-left: 12px; }
+.menu-item-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.1em;
+  transition: color 0.25s;
+}
+.menu-item:hover .menu-item-num { color: var(--fire); }
+.menu-item-body {}
+.menu-item-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px; font-weight: 400; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--cream); margin-bottom: 6px;
+}
+.menu-item-desc { font-size: 12px; color: var(--dust); line-height: 1.5; }
+.menu-item-price {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px; font-weight: 300; color: var(--cream);
+  white-space: nowrap; text-align: right;
+}
+
+/* ─── SIGNATURE DISH ───────────────────────────── */
+.signature {
+  padding: 100px 48px;
+  border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+
+.signature-text {}
+.signature-eyebrow {
+  font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 20px;
+}
+.signature-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: -0.02em; color: var(--cream);
+  line-height: 1; margin-bottom: 20px;
+}
+.signature-desc {
+  font-size: 14px; color: var(--dust); line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.signature-features {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px;
+}
+.sig-feat {
+  font-size: 12px; color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; gap: 12px;
+}
+.sig-feat::before { content: ''; display: block; width: 18px; height: 1px; background: var(--fire); flex-shrink: 0; }
+
+.signature-price-row {
+  display: flex; align-items: center; gap: 32px;
+  padding-top: 28px; border-top: 1px solid var(--line);
+}
+.sig-price {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 36px; font-weight: 300; color: var(--cream);
+}
+.sig-price-old {
+  font-size: 16px; color: rgba(255,255,255,0.25);
+  text-decoration: line-through; margin-left: 2px;
+}
+
+.signature-visual {
+  position: relative;
+}
+.sig-img-wrap {
+  width: 100%; aspect-ratio: 4/5;
+  background: var(--carbon);
+  overflow: hidden; position: relative;
+}
+.sig-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sig-placeholder {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at 40% 60%, #2a1f10 0%, #141210 80%);
+  display: flex; align-items: center; justify-content: center;
+}
+.sig-border-deco {
+  position: absolute; bottom: -20px; right: -20px; z-index: -1;
+  width: calc(100% - 40px); height: calc(100% - 40px);
+  border: 1px solid var(--fire); opacity: 0.3;
+}
+
+/* ─── REVIEWS ──────────────────────────────────── */
+.reviews {
+  background: var(--dark);
+  padding: 100px 48px;
+  border-top: 1px solid var(--line);
+}
+
+.reviews-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 60px;
+}
+.reviews-eyebrow { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--fire); margin-bottom: 14px; }
+.reviews-headline {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: -0.02em; color: var(--cream); line-height: 1;
+}
+
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.review-item {
+  padding: 40px 36px;
+  border: 1px solid var(--line);
+  margin: -1px 0 0 -1px;
+  transition: background 0.25s;
+}
+.review-item:hover { background: rgba(255,255,255,0.02); }
+.review-stars {
+  font-size: 11px; letter-spacing: 5px; color: var(--fire);
+  margin-bottom: 20px;
+}
+.review-text {
+  font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.75);
+  font-style: italic; margin-bottom: 28px;
+  font-family: 'Montserrat', sans-serif; font-weight: 300;
+}
+.review-author-row { display: flex; align-items: center; gap: 14px; }
+.review-avatar {
+  width: 38px; height: 38px;
+  background: var(--iron); color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+}
+.review-name { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); font-weight: 400; }
+.review-verified { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 3px; letter-spacing: 0.05em; }
+
+/* ─── FOOTER ───────────────────────────────────── */
+.footer {
+  background: var(--void);
+  padding: 64px 48px 40px;
+  border-top: 1px solid var(--line);
+}
+.footer-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding-bottom: 48px; border-bottom: 1px solid var(--line);
+  margin-bottom: 32px; flex-wrap: wrap; gap: 32px;
+}
+.footer-brand {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream); margin-bottom: 8px;
+}
+.footer-tagline { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; }
+.footer-cta {
+  padding: 14px 32px;
+  border: 1px solid var(--fire);
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--fire); cursor: pointer; transition: all 0.25s;
+}
+.footer-cta:hover { background: var(--fire); color: var(--cream); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+.footer-izzzi { font-size: 10px; color: rgba(255,255,255,0.15); letter-spacing: 0.08em; }
+.footer-izzzi span { color: rgba(255,255,255,0.4); }
+
+/* ─── PAYMENT MODAL ────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--dark);
+  border: 1px solid var(--line);
+  width: 440px; max-width: 95vw;
+  padding: 48px; position: relative;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: none; font-size: 18px; cursor: pointer;
+  color: rgba(255,255,255,0.3); transition: color 0.2s;
+}
+.modal-close:hover { color: var(--cream); }
+.modal-header { margin-bottom: 32px; }
+.modal-brand {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 8px;
+}
+.modal-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--cream);
+}
+.modal-amount {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 32px; font-weight: 300; color: var(--cream);
+  margin-bottom: 28px; padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.modal-input {
+  width: 100%; padding: 14px 16px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+  color: var(--cream); font-family: 'Montserrat', sans-serif;
+  font-size: 14px; font-weight: 300; margin-bottom: 12px;
+  transition: border-color 0.2s; outline: none;
+}
+.modal-input:focus { border-color: var(--fire); }
+.modal-input::placeholder { color: rgba(255,255,255,0.2); }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-submit {
+  width: 100%; padding: 16px;
+  background: var(--fire); color: var(--cream);
+  border: none; font-family: 'Montserrat', sans-serif;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.25s; margin-top: 8px;
+}
+.modal-submit:hover { background: var(--ember); }
+.modal-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-secure { text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 12px; letter-spacing: 0.08em; }
+.modal-success { display: none; text-align: center; padding: 20px 0; }
+.modal-success.show { display: block; }
+.modal-success-icon {
+  width: 56px; height: 56px; border: 1px solid var(--fire);
+  color: var(--fire); font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.modal-success-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--cream); margin-bottom: 12px;
+}
+.modal-success-text { font-size: 13px; color: var(--dust); line-height: 1.6; }
+
+/* ─── BACK BTN ─────────────────────────────────── */
+.back-btn {
+  position: fixed; bottom: 24px; left: 24px; z-index: 100;
+  padding: 10px 18px;
+  background: rgba(12,11,9,0.9); border: 1px solid var(--line);
+  color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif;
+  font-size: 11px; cursor: pointer; transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+.back-btn:hover { color: var(--cream); border-color: rgba(255,255,255,0.2); }
+
+/* ─── RESPONSIVE ───────────────────────────────── */
+@media (max-width: 900px) {
+  .navbar { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero-content { padding: 0 24px 64px; }
+  .info-strip { padding: 20px 24px; gap: 0; overflow-x: auto; }
+  .strip-item { min-width: 140px; padding: 0 24px; }
+  .features { padding: 60px 24px; }
+  .features-header { grid-template-columns: 1fr; gap: 24px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .menu-dark { padding: 60px 24px; }
+  .menu-item { grid-template-columns: 30px 1fr auto; gap: 16px; }
+  .signature { padding: 60px 24px; grid-template-columns: 1fr; gap: 48px; }
+  .reviews { padding: 60px 24px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .footer { padding: 48px 24px 32px; }
+}
 </style>
 </head>
 <body>
 
-<div class="loading-screen" id="loader">
-  <div class="loading-logo" id="load-name">Restaurant</div>
-  <div class="loading-line"></div>
+<!-- LOADING -->
+<div id="loading-screen">
+  <div class="loading-wordmark" id="loading-logo-text">Ресторан</div>
 </div>
 
-<div class="demo-banner" id="demo-banner">
-  Демо-режим: Этот сайт создан GigaChat. 
-  <a href="https://www.sberbank.ru/ru/s_m_business/reg" target="_blank">Открыть ИП в Сбере и запустить бизнес</a>
-</div>
-
-<div class="modal-overlay" id="modal">
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div id="payment-view">
-      <div class="modal-title">Бронирование стола</div>
-      <div class="modal-subtitle" id="modal-product-name">Депозит за визит</div>
-      <div class="modal-price" id="modal-price">2 500 ₽</div>
-      <input type="text" class="modal-input" placeholder="Номер карты" id="card-num" oninput="this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()">
-      <div style="display:flex; gap:10px;">
-        <input type="text" class="modal-input" placeholder="ММ/ГГ" maxlength="5">
+    <div id="modal-form-view">
+      <div class="modal-header">
+        <div class="modal-brand">Бронирование стола</div>
+        <div class="modal-title" id="modal-product-name">Специальное предложение</div>
+      </div>
+      <div class="modal-amount" id="modal-amount">2 990 ₽</div>
+      <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" id="card-num" maxlength="19" oninput="fmtCard(this)">
+      <div class="modal-row">
+        <input type="text" class="modal-input" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)">
         <input type="password" class="modal-input" placeholder="CVC" maxlength="3">
       </div>
-      <button class="modal-submit" onclick="processPayment()">Оплатить депозит</button>
+      <input type="text" class="modal-input" placeholder="Имя держателя" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <button class="modal-submit" onclick="simulatePay()"><span>Оплатить безопасно</span></button>
+      <div class="modal-secure">256-bit шифрование · PCI DSS · ЮKassa</div>
     </div>
-    <div class="success-view" id="success-view">
-      <div class="success-icon">✓</div>
-      <div class="modal-title">Благодарим вас</div>
-      <p style="font-size:14px; color:var(--muted)">Стол забронирован. Мы свяжемся с вами для подтверждения времени.</p>
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-icon">✓</div>
+      <div class="modal-success-title">Стол забронирован</div>
+      <div class="modal-success-text">Мы свяжемся с вами для подтверждения брони. Ждём вас.</div>
     </div>
   </div>
 </div>
 
-<nav class="navbar">
-  <a href="#" class="nav-logo" id="bizName">GASTRO</a>
-  <button class="nav-cta" onclick="openModal()">Забронировать</button>
+<!-- DEMO BANNER -->
+<div class="demo-banner" id="demo-banner">
+  <div>Это демо-версия сайта. Запустите свой бизнес в ИЗЗЗИ.</div>
+  <a class="demo-banner-btn" href="https://www.sberbank.ru/ru/s_m_business/reg#start_reg" target="_blank">Открыть ИП бесплатно</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a class="nav-logo" id="nav-logo" href="#">Ресторан</a>
+  <ul class="nav-links">
+    <li><a href="#menu">Меню</a></li>
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Забронировать стол</button>
 </nav>
 
-<section class="hero">
-  <img id="hero-bg" src="" alt="Atmosphere">
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg">
+    <div class="hero-placeholder" id="hero-img-wrap"></div>
+  </div>
   <div class="hero-content">
-    <div class="hero-eyebrow" id="hero-eyebrow">Fine Dining Experience</div>
-    <h1 class="hero-title" id="hero-title">Искусство<br>вкуса</h1>
-    <p class="hero-desc" id="hero-desc">Откройте для себя гастрономическое путешествие, где каждый ингредиент рассказывает свою историю.</p>
-    <button class="nav-cta" style="padding:18px 40px" onclick="document.getElementById('product').scrollIntoView({behavior:'smooth'})">Ознакомиться с меню</button>
+    <div class="hero-label" id="hero-eyebrow">Fine Dining · Москва</div>
+    <h1 class="hero-title" id="hero-title">ОГонь<br><span class="accent">&</span><br>Металл</h1>
+    <p class="hero-desc" id="hero-desc">Пространство, где огонь — главный повар. Живой гриль, сезонные продукты и атмосфера, которая не отпускает.</p>
+    <div class="hero-actions">
+      <button class="btn-fire" onclick="openModal()"><span>Забронировать стол</span></button>
+      <button class="btn-outline" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Смотреть меню →</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-text">Scroll</div>
   </div>
 </section>
 
-<section class="features">
-  <span class="section-label" id="features-label">Наши ценности</span>
-  <h2 class="section-title" id="features-title">Почему выбирают нас</h2>
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="strip-item">
+    <div class="strip-label">Город</div>
+    <div class="strip-value" id="strip-city">Москва</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-label">Формат</div>
+    <div class="strip-value" id="strip-type">Fine Dining</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-label">Режим работы</div>
+    <div class="strip-value">12:00 — 00:00</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-label">Бронь</div>
+    <div class="strip-value"><span class="fire">Онлайн</span></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="about">
+  <div class="features-header">
+    <div>
+      <div class="features-label">Наш подход</div>
+      <div class="features-headline" id="features-headline">Почему<br>выбирают<br>нас</div>
+    </div>
+    <div class="features-intro" id="features-intro">Мы не просто готовим еду — мы создаём впечатление. Каждая деталь продумана, каждое блюдо — результат честного ремесла.</div>
+  </div>
   <div class="features-grid" id="features-grid">
-    <!-- Populated by JS -->
+    <!-- populated by render() -->
   </div>
 </section>
 
-<section class="product" id="product">
-  <div class="product-container">
-    <div class="product-image-wrap">
-      <img id="product-img" src="" alt="Signature Dish">
+<!-- MENU LIST -->
+<section class="menu-dark" id="menu">
+  <div class="menu-header">
+    <div class="menu-headline-wrap">
+      <div class="menu-eyebrow">Фирменные позиции</div>
+      <div class="menu-headline" id="menu-headline">Меню</div>
     </div>
-    <div class="product-info">
-      <span class="section-label" style="text-align:left">Рекомендация шефа</span>
-      <h2 class="product-name" id="product-name">Сет "Традиции"</h2>
-      <p class="product-desc" id="product-desc">Уникальная подборка из восьми подач, раскрывающая богатство локальных продуктов в современном прочтении шеф-повара.</p>
-      <ul class="product-features" id="product-features">
-        <!-- Populated by JS -->
-      </ul>
-      <div class="product-price-box">
-        <div>
-          <span class="price-label">Средний чек</span>
-          <div class="price-value" id="avg_check">4 500 ₽</div>
-        </div>
-        <button class="nav-cta" style="background:var(--gold); color:black; font-weight:700;" onclick="openModal()">Забронировать</button>
+    <div class="menu-count" id="menu-count">03 блюда</div>
+  </div>
+  <div class="menu-list" id="menu-list">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- SIGNATURE DISH / PRODUCT -->
+<section class="signature" id="signature">
+  <div class="signature-text">
+    <div class="signature-eyebrow">Хит сезона</div>
+    <div class="signature-title" id="sig-title">Сигнатурное блюдо</div>
+    <div class="signature-desc" id="sig-desc">Описание блюда</div>
+    <div class="signature-features" id="sig-features"></div>
+    <div class="signature-price-row">
+      <div>
+        <span class="sig-price" id="sig-price">2 990 ₽</span>
+        <span class="sig-price-old" id="sig-price-old"></span>
       </div>
+      <button class="btn-fire" onclick="openModal()"><span>Забронировать</span></button>
     </div>
   </div>
-</section>
-
-<section class="reviews">
-  <span class="section-label">Мнение критиков</span>
-  <h2 class="section-title">Отзывы наших гостей</h2>
-  <div class="reviews-grid" id="reviews-grid">
-    <!-- Populated by JS -->
+  <div class="signature-visual">
+    <div class="sig-img-wrap" id="sig-img-wrap">
+      <div class="sig-placeholder"></div>
+    </div>
+    <div class="sig-border-deco"></div>
   </div>
 </section>
 
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-header">
+    <div>
+      <div class="reviews-eyebrow">Гости о нас</div>
+      <div class="reviews-headline" id="reviews-headline">Отзывы</div>
+    </div>
+  </div>
+  <div class="reviews-grid" id="reviews-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer class="footer">
-  <span class="footer-logo" id="footer-logo">GASTRO</span>
-  <div class="footer-city" id="footer-city">Москва, ул. Неглинная 12</div>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand" id="footer-brand">Ресторан</div>
+      <div class="footer-tagline" id="footer-tagline">Fine Dining · Москва</div>
+    </div>
+    <button class="footer-cta" onclick="openModal()">Забронировать стол</button>
+  </div>
   <div class="footer-bottom">
-    <div>© 2025 All Rights Reserved</div>
-    <div style="color:var(--gold)">Powered by ИЗЗЗИ</div>
+    <div class="footer-copy" id="footer-copy">© 2025 Ресторан. Все права защищены.</div>
+    <div class="footer-izzzi">Сайт создан в <span>ИЗЗЗИ</span></div>
   </div>
 </footer>
 
-<script>
-// ─── DATA RENDERING ───────────────────────────────────────────
+<button class="back-btn" onclick="history.back()">← Назад</button>
 
-function render(d) {
-  // Названия и мета
-  document.title = d.bizName + " — Fine Dining";
-  document.getElementById('bizName').innerText = d.bizName;
-  document.getElementById('footer-logo').innerText = d.bizName;
-  document.getElementById('load-name').innerText = d.bizName;
-  document.getElementById('footer-city').innerText = "Ресторан в " + (d.bizCity || "городе");
-  document.getElementById('hero-eyebrow').innerText = "Ресторан в " + (d.bizCity || "городе");
+<script>
+// ═══════════════════════════════════════════════════════════════
+// RESTAURANT TEMPLATE
+// JS logic ported from beauty.html
+// ═══════════════════════════════════════════════════════════════
+
+// ─── NAVBAR SCROLL ────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── RENDER ───────────────────────────────────────────────────
+function render(data) {
+  const name = data.bizName || 'Ресторан';
+
+  // Navbar
+  document.getElementById('nav-logo').textContent = name;
+  document.getElementById('loading-logo-text').textContent = name;
+
+  // Strip
+  document.getElementById('strip-city').textContent = data.bizCity || 'Москва';
+  document.getElementById('strip-type').textContent = data.bizType || 'Fine Dining';
 
   // Hero
-  document.getElementById('hero-title').innerHTML = (d.hero_title || "Искусство<br>вкуса").replace(/\s+/, '<br>');
-  document.getElementById('hero-desc').innerText = d.hero_desc || "";
-  
-  // Картинка Hero
-  fetchImage('hero-bg', d.hero_image_query || 'fine dining luxury restaurant interior mood');
+  document.getElementById('hero-eyebrow').textContent = (data.bizType || 'Fine Dining') + ' · ' + (data.bizCity || 'Москва');
+  const ht = (data.hero_title || 'Огонь и Металл');
+  // Split into max 2 lines for dramatic effect
+  const words = ht.split(' ');
+  const mid = Math.ceil(words.length / 2);
+  document.getElementById('hero-title').innerHTML =
+    words.slice(0, mid).join(' ') + '<br><span class="accent">&</span><br>' + words.slice(mid).join(' ');
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
 
-  // Особенности (Features)
+  // Features / about
+  document.getElementById('features-headline').innerHTML = (data.features_title || 'Наш подход').toUpperCase().replace(' ', '<br>');
   const fg = document.getElementById('features-grid');
-  fg.innerHTML = (d.features || []).map((f, i) => `
-    <div class="feature-card">
-      <span class="feature-icon">${['✧', '✦', '✻'][i % 3]}</span>
-      <h3 class="feature-name serif">${f.title}</h3>
-      <p class="feature-text">${f.desc}</p>
-    </div>
-  `).join('');
-  if (d.features_title) document.getElementById('features-title').innerText = d.features_title;
+  fg.innerHTML = '';
+  (data.features || []).forEach((f, i) => {
+    fg.innerHTML += `
+      <div class="feature-card">
+        <div class="feature-num">0${i + 1}</div>
+        <div class="feature-title">${f.title}</div>
+        <div class="feature-desc">${f.desc}</div>
+      </div>`;
+  });
 
-  // Продукт (Главное блюдо/Сет)
-  document.getElementById('product-name').innerText = d.product_name;
-  document.getElementById('product-desc').innerText = d.product_desc;
-  document.getElementById('avg_check').innerText = (d.avg_check || "3500") + " ₽";
-  document.getElementById('modal-price').innerText = (d.avg_check || "3500") + " ₽";
-  document.getElementById('modal-product-name').innerText = d.product_name;
-  
-  fetchImage('product-img', d.product_image_query || 'gourmet food plating minimalist');
+  // Menu list (from features, acting as menu items for this niche)
+  const menuItems = data.services || data.features || [];
+  document.getElementById('menu-count').textContent = `0${menuItems.length} позиц${menuItems.length === 1 ? 'ия' : 'ии'}`;
+  const ml = document.getElementById('menu-list');
+  ml.innerHTML = '';
+  menuItems.forEach((item, i) => {
+    const price = item.price ? `<div class="menu-item-price">${Number(item.price).toLocaleString('ru-RU')} ₽</div>` : '';
+    ml.innerHTML += `
+      <div class="menu-item" onclick="openModal()">
+        <div class="menu-item-num">0${i + 1}</div>
+        <div class="menu-item-body">
+          <div class="menu-item-name">${item.name || item.title}</div>
+          <div class="menu-item-desc">${item.desc}</div>
+        </div>
+        ${price}
+      </div>`;
+  });
 
-  const pf = document.getElementById('product-features');
-  pf.innerHTML = (d.product_features || []).map(f => `<li>${f}</li>`).join('');
+  // Signature / product
+  let basePrice = parseInt(data.avg_check) || 3500;
+  let price = Math.round(basePrice / 100) * 100 - 10;
+  if (price < 290) price = 290;
+  let oldPrice = Math.round(price * 1.3 / 100) * 100 - 10;
 
-  // Отзывы
+  document.getElementById('sig-title').textContent = data.product_name || name;
+  document.getElementById('sig-desc').textContent = data.product_desc || '';
+  document.getElementById('sig-price').textContent = `${price.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('sig-price-old').textContent = `${oldPrice.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('modal-amount').textContent = `${price.toLocaleString('ru-RU')} ₽`;
+  document.getElementById('modal-product-name').textContent = data.product_name || name;
+
+  const sf = document.getElementById('sig-features');
+  sf.innerHTML = '';
+  (data.product_features || []).forEach(f => {
+    sf.innerHTML += `<div class="sig-feat">${f}</div>`;
+  });
+
+  // Reviews
   const rg = document.getElementById('reviews-grid');
-  rg.innerHTML = (d.reviews || []).map(r => `
-    <div class="review-card">
-      <p class="review-text">${r.text}</p>
-      <div class="review-author">
-        <div class="review-avatar">${r.avatar || r.name[0]}</div>
-        <div class="review-name">${r.name}</div>
-      </div>
-    </div>
-  `).join('');
+  rg.innerHTML = '';
+  (data.reviews || []).forEach(r => {
+    rg.innerHTML += `
+      <div class="review-item">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"${r.text}"</div>
+        <div class="review-author-row">
+          <div class="review-avatar">${r.avatar || r.name[0]}</div>
+          <div>
+            <div class="review-name">${r.name}</div>
+            <div class="review-verified">Верифицированный гость</div>
+          </div>
+        </div>
+      </div>`;
+  });
 
-  // Демо баннер
-  if (d.isDemo) document.getElementById('demo-banner').classList.add('show');
+  // Footer
+  document.getElementById('footer-brand').textContent = name;
+  document.getElementById('footer-tagline').textContent =
+    (data.bizCity || 'Москва') + ' · ' + (data.bizType || 'Fine Dining');
+  document.getElementById('footer-copy').textContent =
+    `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
+
+  // Hero image
+  loadHeroImage(data.hero_image_query || 'dark restaurant interior fire grill');
+
+  // Demo banner
+  if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
 }
 
-// ─── UTILS ────────────────────────────────────────────────────
-
-async function fetchImage(id, query) {
+// ─── IMAGE LOADING ────────────────────────────────────────────
+async function loadHeroImage(query) {
   try {
-    const response = await fetch('/image?q=' + encodeURIComponent(query));
-    if (response.ok) {
-      const blob = await response.blob();
-      document.getElementById(id).src = URL.createObjectURL(blob);
-    }
-  } catch (e) { console.error("Image load failed", e); }
+    const resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error('no image');
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+
+    // Hero bg
+    const wrap = document.getElementById('hero-img-wrap');
+    wrap.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
+    wrap.appendChild(img);
+    document.getElementById('hero-bg').classList.add('loaded');
+  } catch(e) {
+    // keep placeholder gradient
+  }
 }
 
+// ─── MODAL ────────────────────────────────────────────────────
 function openModal() { document.getElementById('modal').classList.add('active'); }
-function closeModal() { 
-  document.getElementById('modal').classList.remove('active'); 
-  setTimeout(() => {
-    document.getElementById('payment-view').style.display = 'block';
-    document.getElementById('success-view').classList.remove('active');
-  }, 400);
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
 }
-
-function processPayment() {
+function simulatePay() {
   const btn = document.querySelector('.modal-submit');
-  btn.innerText = "Авторизация...";
+  btn.textContent = 'Обработка...';
   btn.disabled = true;
   setTimeout(() => {
-    document.getElementById('payment-view').style.display = 'none';
-    document.getElementById('success-view').classList.add('active');
-  }, 1800);
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
 }
 
 // ─── INIT ─────────────────────────────────────────────────────
-
 window.addEventListener('DOMContentLoaded', () => {
-  const raw = new URLSearchParams(window.location.search).get('data');
-  if (raw) {
+  const params = new URLSearchParams(window.location.search);
+  const payload = params.get('data');
+
+  if (payload) {
     try {
-      const d = JSON.parse(decodeURIComponent(atob(raw)));
-      render(d);
-    } catch (e) { console.error("Data error", e); renderDemo(); }
+      const data = JSON.parse(decodeURIComponent(atob(payload)));
+      document.getElementById('loading-logo-text').textContent = data.bizName || 'Ресторан';
+      render(data);
+    } catch(e) {
+      console.error('Ошибка разбора данных:', e);
+      render({});
+    }
   } else {
-    renderDemo();
+    render({
+      bizName: 'Горыныч',
+      bizCity: 'Москва',
+      bizType: 'Гриль-ресторан',
+      hero_title: 'Огонь Вкус',
+      hero_desc: 'Живой огонь и честные продукты. Пространство, где металл встречает вкус, а простота становится искусством.',
+      features_title: 'Наш подход',
+      features: [
+        { title: 'Живой огонь', desc: 'Всё готовится на открытом огне — никаких компромиссов с настоящим вкусом.' },
+        { title: 'Сезонный продукт', desc: 'Меню меняется с природой. Сегодняшнее блюдо — вчерашний фермерский урожай.' },
+        { title: 'Честный ремесёл', desc: 'Без лишних украшений. Вкус говорит сам за себя.' }
+      ],
+      services: [
+        { name: 'Говядина на гриле', desc: 'Рибай 400г, томлённый на углях. Подаётся с дымным соусом и сезонными овощами.', price: '2800' },
+        { name: 'Осьминог на жару', desc: 'Средиземноморский осьминог с лимонной заправкой и хрустящими каперсами.', price: '1900' },
+        { name: 'Меню шефа', desc: 'Шесть перемен блюд по выбору шефа — лучшее, что есть сегодня на кухне.', price: '5500' }
+      ],
+      product_name: 'Меню шефа',
+      product_desc: 'Шесть блюд, отобранных шефом из лучшего сегодняшнего дня. Сезонные продукты, живой огонь, никаких лишних слов.',
+      product_features: ['6 перемен блюд', 'Сезонные продукты', 'Вино в подарок к ужину'],
+      avg_check: '4500',
+      reviews: [
+        { name: 'Андрей К.', text: 'Лучший рибай в Москве. Без преувеличений. Атмосфера на уровне — сырая, настоящая.', avatar: 'А' },
+        { name: 'Катя М.', text: 'Приходим сюда на все важные даты. Меню шефа — каждый раз новый опыт.', avatar: 'К' },
+        { name: 'Роман Г.', text: 'Невероятный осьминог. Такого больше нигде не ел. Обязательно вернусь.', avatar: 'Р' }
+      ],
+      hero_image_query: 'dark restaurant fire grill atmospheric',
+      isDemo: false
+    });
   }
 
-  // Loader hide
+  // Hide loader
   setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 800);
+    document.getElementById('loading-screen').classList.add('hidden');
+    setTimeout(() => {
+      const ls = document.getElementById('loading-screen');
+      if (ls) ls.remove();
+    }, 600);
+  }, 900);
 });
-
-function renderDemo() {
-  render({
-    bizName: "WHITE VELVET",
-    bizCity: "Москва",
-    hero_title: "Симфония чувств",
-    hero_desc: "Авторская кухня, вдохновленная природой и совершенством классических техник.",
-    features_title: "Наше гостеприимство",
-    features: [
-      {title: "Локальные продукты", desc: "Мы работаем напрямую с фермерскими хозяйствами, выбирая лучшее для каждого сезона."},
-      {title: "Винная галерея", desc: "Коллекция из 500+ наименований, собранная сомелье в путешествиях по Старому Свету."},
-      {title: "Приватный сервис", desc: "Индивидуальный подход к каждому гостю для создания атмосферы исключительности."}
-    ],
-    product_name: "Гранд Сет «Наследие»",
-    product_desc: "Гастрономический сет из 9 перемен, который демонстрирует эволюцию вкусов. Трюфельное ризотто, камчатский краб и авторские десерты.",
-    product_features: ["Продолжительность: 2 часа", "Винное сопровождение", "Только по предзаказу"],
-    avg_check: "7 500",
-    reviews: [
-      {name: "Александр М.", text: "Безупречная подача и баланс вкуса. Лучшее место для особенного вечера в столице.", avatar: "А"},
-      {name: "Марина Г.", text: "Удивительная винная карта и сервис мирового уровня. Каждый раз как первый.", avatar: "М"},
-      {name: "Виктор П.", text: "Ресторан, который меняет представление о русской кухне. Текстуры и ароматы поражают.", avatar: "В"}
-    ],
-    hero_image_query: "fine dining restaurant interior elegant black gold luxury lighting",
-    product_image_query: "gourmet dessert or main dish fine dining aesthetic plating",
-    isDemo: false
-  });
-}
 </script>
-
 </body>
 </html>
