@@ -259,74 +259,187 @@ body {
   flex-shrink: 0;
 }
 
-/* ─── FEATURES / ADVANTAGES ───────────────────── */
-.features {
-  padding: 100px 48px;
-  border-bottom: 1px solid var(--border);
-}
-.features-header {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-  align-items: end; margin-bottom: 72px;
-}
-.features-eyebrow {
+/* ─── SECTION EYEBROW (shared) ────────────────── */
+.section-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--red); margin-bottom: 16px;
   display: flex; align-items: center; gap: 12px;
 }
-.features-eyebrow::before { content: ''; display: block; width: 28px; height: 2px; background: var(--red); }
-.features-title {
+.section-eyebrow::before { content: ''; display: block; width: 28px; height: 2px; background: var(--red); }
+.section-big-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(48px, 6vw, 80px);
-  line-height: 0.95;
-  letter-spacing: 0.02em;
+  line-height: 0.95; letter-spacing: 0.02em;
   color: var(--white);
 }
-.features-title .dim { color: rgba(255,255,255,0.22); }
-.features-sub {
+.section-big-title .dim { color: rgba(255,255,255,0.22); }
+
+/* ─── TRANSFORMATIONS (ДО / ПОСЛЕ) ───────────── */
+.transformations {
+  padding: 100px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.transformations-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: end; margin-bottom: 72px;
+}
+.transformations-sub {
   font-size: 15px; color: var(--muted); line-height: 1.7; font-weight: 300;
   align-self: end;
 }
-.features-grid {
+.transforms-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
 }
-.feature-card {
+.transform-card {
   background: var(--card);
-  padding: 48px 36px;
   border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s;
+}
+.transform-card:hover { transform: scale(1.01); z-index: 2; }
+.transform-images {
+  position: relative;
+  aspect-ratio: 3/4;
+  display: grid; grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.transform-half {
   position: relative; overflow: hidden;
-  transition: background 0.3s;
-  cursor: default;
-}
-.feature-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 2px; background: var(--red);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.35s ease;
-}
-.feature-card:hover { background: #1a1a1a; }
-.feature-card:hover::before { transform: scaleX(1); }
-.feature-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px; line-height: 1;
-  color: rgba(255,255,255,0.06);
-  position: absolute; top: 16px; right: 24px;
-  letter-spacing: 0;
-}
-.feature-icon {
-  width: 44px; height: 44px; background: var(--red);
+  background: #1a1a1a;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 24px;
+}
+.transform-half img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(30%);
+}
+.transform-half-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #1c1c1c 0%, #111 100%);
+}
+.transform-half-placeholder svg { opacity: 0.12; }
+.transform-label {
+  position: absolute; bottom: 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: 0.15em;
+  padding: 5px 10px;
+  z-index: 2;
+}
+.transform-label.before {
+  left: 8px; background: rgba(0,0,0,0.7); color: var(--muted);
+}
+.transform-label.after {
+  right: 8px; background: var(--red); color: var(--white);
+}
+.transform-divider {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 2px; background: var(--red); z-index: 3;
+  transform: translateX(-50%);
+}
+.transform-divider::after {
+  content: '//';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; color: var(--white);
+  background: var(--red);
+  padding: 6px 8px;
+  letter-spacing: 0.05em;
+}
+.transform-info {
+  padding: 22px 24px;
+}
+.transform-name {
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--white); margin-bottom: 6px;
+}
+.transform-stats {
+  display: flex; gap: 20px;
+}
+.transform-stat {
+  display: flex; flex-direction: column;
+}
+.transform-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; line-height: 1; color: var(--red); letter-spacing: 0.03em;
+}
+.transform-stat-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-top: 2px;
+}
+
+/* ─── SCHEDULE (РАСПИСАНИЕ) ───────────────────── */
+.schedule {
+  padding: 100px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.schedule-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 56px; gap: 32px; flex-wrap: wrap;
+}
+.schedule-days {
+  display: flex; gap: 4px; flex-wrap: wrap;
+}
+.day-btn {
+  padding: 10px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.day-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+.day-btn.active {
+  background: var(--red); border-color: var(--red); color: var(--white);
   clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
 }
-.feature-icon svg { width: 20px; height: 20px; fill: var(--white); }
-.feature-title {
-  font-family: 'Barlow', sans-serif;
-  font-size: 18px; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--white); margin-bottom: 14px; line-height: 1.2;
+.schedule-grid {
+  display: flex; flex-direction: column; gap: 2px;
 }
-.feature-desc { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+.schedule-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 120px 100px;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 20px 28px;
+  transition: background 0.2s;
+  gap: 24px;
+}
+.schedule-row:hover { background: #1a1a1a; }
+.schedule-time {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 0.04em; color: var(--white); line-height: 1;
+}
+.schedule-time span { font-size: 13px; color: var(--muted); }
+.schedule-info {}
+.schedule-class {
+  font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--white); margin-bottom: 3px;
+}
+.schedule-trainer {
+  font-size: 12px; color: var(--muted); font-weight: 400;
+}
+.schedule-duration {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-align: right;
+}
+.schedule-intensity {
+  display: flex; gap: 3px; justify-content: flex-end;
+}
+.intensity-dot {
+  width: 8px; height: 8px; background: var(--border);
+}
+.intensity-dot.on { background: var(--red); }
+.schedule-empty {
+  text-align: center; padding: 48px;
+  font-size: 14px; color: var(--muted);
+  border: 1px solid var(--border);
+  font-style: italic;
+}
 
 /* ─── PRODUCT / MAIN OFFER ────────────────────── */
 .offer {
@@ -422,58 +535,7 @@ body {
 }
 .btn-buy:hover { background: var(--red2); transform: scale(1.04); }
 
-/* ─── REVIEWS ─────────────────────────────────── */
-.reviews {
-  padding: 100px 48px;
-  border-bottom: 1px solid var(--border);
-}
-.reviews-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 64px;
-}
-.reviews-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(40px, 5vw, 68px); letter-spacing: 0.02em; color: var(--white); line-height: 0.95;
-}
-.reviews-title .dim { color: rgba(255,255,255,0.18); }
-.reviews-count {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px; letter-spacing: 0.08em; color: var(--muted);
-  padding-bottom: 6px;
-}
-.reviews-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-}
-.review-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 36px 30px;
-  position: relative;
-  transition: background 0.25s;
-}
-.review-card:hover { background: #1a1a1a; }
-.review-stars {
-  display: flex; gap: 4px; margin-bottom: 20px;
-}
-.star {
-  width: 14px; height: 14px; background: var(--red);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-.review-text {
-  font-size: 15px; font-weight: 300; font-style: italic;
-  color: rgba(255,255,255,0.8); line-height: 1.65; margin-bottom: 28px;
-}
-.review-author-row { display: flex; align-items: center; gap: 14px; }
-.review-avatar {
-  width: 40px; height: 40px; flex-shrink: 0;
-  background: var(--red);
-  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--white);
-  letter-spacing: 0.05em;
-}
-.review-name { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--white); }
-.review-verified { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+
 
 /* ─── FOOTER ──────────────────────────────────── */
 .footer {
@@ -601,12 +663,13 @@ body {
   .nav-links { display: none; }
   .hero-content { padding: 0 20px 64px; }
   .hero-stats { display: none; }
-  .features { padding: 72px 20px; }
-  .features-header { grid-template-columns: 1fr; gap: 24px; }
-  .features-grid { grid-template-columns: 1fr; }
+  .transformations { padding: 72px 20px; }
+  .transformations-header { grid-template-columns: 1fr; gap: 24px; }
+  .transforms-grid { grid-template-columns: 1fr; }
+  .schedule { padding: 72px 20px; }
+  .schedule-row { grid-template-columns: 70px 1fr; gap: 12px; }
+  .schedule-duration, .schedule-intensity { display: none; }
   .offer { padding: 72px 20px; grid-template-columns: 1fr; gap: 48px; }
-  .reviews { padding: 72px 20px; }
-  .reviews-grid { grid-template-columns: 1fr; }
   .footer { padding: 56px 20px 32px; }
   .demo-banner { padding: 14px 20px; }
 }
@@ -651,9 +714,9 @@ body {
 <nav class="navbar">
   <a class="nav-logo" id="nav-logo" href="#">GYM</a>
   <ul class="nav-links">
-    <li><a href="#features">Программы</a></li>
+    <li><a href="#transformations">Результаты</a></li>
     <li><a href="#offer">Абонементы</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#schedule">Расписание</a></li>
   </ul>
   <button class="nav-cta" onclick="openModal()">Первое занятие</button>
 </nav>
@@ -680,7 +743,7 @@ body {
     <p class="hero-desc" id="hero-desc">Профессиональный зал для тех, кто не останавливается на достигнутом.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="openModal()">Записаться бесплатно</button>
-      <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Смотреть программы →</button>
+      <button class="btn-outline" onclick="document.getElementById('transformations').scrollIntoView({behavior:'smooth'})">Смотреть результаты →</button>
     </div>
   </div>
 
@@ -703,16 +766,16 @@ body {
   </div>
 </div>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="features-header">
+<!-- TRANSFORMATIONS -->
+<section class="transformations" id="transformations">
+  <div class="transformations-header">
     <div>
-      <div class="features-eyebrow">Наши преимущества</div>
-      <div class="features-title" id="features-title">ПОЧЕМУ<br>МЫ<span class="dim"> ///</span></div>
+      <div class="section-eyebrow">Реальные результаты</div>
+      <div class="section-big-title" id="transforms-title">ДО<br>И <span class="dim">ПОСЛЕ</span></div>
     </div>
-    <div class="features-sub" id="features-sub">Современное оборудование, опытные тренеры и атмосфера, которая мотивирует каждый день.</div>
+    <div class="transformations-sub" id="transforms-sub">Наши клиенты — живое доказательство. Никакого фотошопа, только труд и правильная программа.</div>
   </div>
-  <div class="features-grid" id="features-grid">
+  <div class="transforms-grid" id="transforms-grid">
     <!-- populated by render() -->
   </div>
 </section>
@@ -748,16 +811,18 @@ body {
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="reviews" id="reviews">
-  <div class="reviews-header">
+<!-- SCHEDULE -->
+<section class="schedule" id="schedule">
+  <div class="schedule-header">
     <div>
-      <div class="features-eyebrow">Реальные отзывы</div>
-      <div class="reviews-title">РЕЗУЛЬТАТЫ<br><span class="dim">ГОВОРЯТ САМИ</span></div>
+      <div class="section-eyebrow">Групповые тренировки</div>
+      <div class="section-big-title">РАСПИСАНИЕ<br><span class="dim">ЗАНЯТИЙ</span></div>
     </div>
-    <div class="reviews-count" id="reviews-count">03 отзыва</div>
+    <div class="schedule-days" id="schedule-days">
+      <!-- populated by render() -->
+    </div>
   </div>
-  <div class="reviews-grid" id="reviews-grid">
+  <div class="schedule-grid" id="schedule-grid">
     <!-- populated by render() -->
   </div>
 </section>
@@ -788,19 +853,15 @@ body {
 const SLOTS = {
   hero_title:     "2-4 word aggressive fitness headline",
   hero_desc:      "1-2 sentence motivational description",
-  features_title: "3-5 word section title",
-  features: [{
-    title: "advantage title 3-4 words",
-    desc:  "one sentence description"
-  }],
-  reviews: [{
-    name:   "client name",
-    text:   "short review 1-2 sentences",
-    avatar: "first letter of name"
-  }],
   product_name:     "main membership/program name",
   product_desc:     "2-3 sentence product description",
   product_features: ["feature 1", "feature 2", "feature 3"],
+  transforms: [{
+    name: "Имя, возраст",
+    weightLost: "−X кг",
+    months: "X мес",
+    query: "2-3 english words for transformation photo"
+  }],
   hero_image_query: "2-3 english words for hero photo search"
 };
 
@@ -818,19 +879,13 @@ Tone of voice: агрессивный, мотивирующий, мощный. �
 {
   "hero_title": "2-4 слова, мощный заголовок",
   "hero_desc": "1-2 предложения, мотивирующе",
-  "features_title": "3-4 слова",
-  "features": [
-    {"title": "3-4 слова", "desc": "1 предложение"},
-    {"title": "3-4 слова", "desc": "1 предложение"},
-    {"title": "3-4 слова", "desc": "1 предложение"}
-  ],
   "product_name": "название абонемента",
   "product_desc": "2-3 предложения",
   "product_features": ["деталь 1", "деталь 2", "деталь 3"],
-  "reviews": [
-    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"},
-    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"},
-    {"name": "Имя", "text": "1-2 предложения", "avatar": "буква"}
+  "transforms": [
+    {"name": "Имя, возраст", "weightLost": "−X кг", "months": "X мес", "query": "2-3 english words"},
+    {"name": "Имя, возраст", "weightLost": "−X кг", "months": "X мес", "query": "2-3 english words"},
+    {"name": "Имя, возраст", "weightLost": "−X кг", "months": "X мес", "query": "2-3 english words"}
   ],
   "hero_image_query": "2-3 english words for gym photo"
 }`;
@@ -870,25 +925,89 @@ function render(data) {
       ${t.toUpperCase()}
     </span>`).join('');
 
-  // Features
-  const featureIcons = [
-    `<svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>`,
-    `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`,
-    `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`
+  // Transformations (До / После)
+  const transforms = data.transforms || [
+    { name: 'Алексей, 34', weightLost: '−14 кг', months: '3 мес', query: 'athletic man fitness' },
+    { name: 'Мария, 28', weightLost: '−9 кг', months: '2 мес', query: 'fit woman sport' },
+    { name: 'Игорь, 41', weightLost: '−18 кг', months: '5 мес', query: 'strong man gym' }
   ];
-  document.getElementById('features-title').innerHTML = (data.features_title || 'ПОЧЕМУ МЫ').toUpperCase() + '<span class="dim"> ///</span>';
-  document.getElementById('features-sub').textContent = data.hero_desc || 'Современное оборудование и профессиональные тренеры.';
-  const fgrid = document.getElementById('features-grid');
-  fgrid.innerHTML = '';
-  (data.features || []).forEach((f, i) => {
-    fgrid.innerHTML += `
-      <div class="feature-card">
-        <div class="feature-num">0${i+1}</div>
-        <div class="feature-icon">${featureIcons[i % featureIcons.length]}</div>
-        <div class="feature-title">${f.title}</div>
-        <div class="feature-desc">${f.desc}</div>
+  document.getElementById('transforms-sub').textContent = data.hero_desc || 'Наши клиенты — живое доказательство. Никакого фотошопа, только труд и правильная программа.';
+  const tgrid = document.getElementById('transforms-grid');
+  tgrid.innerHTML = '';
+  transforms.forEach((t, i) => {
+    tgrid.innerHTML += `
+      <div class="transform-card">
+        <div class="transform-images">
+          <div class="transform-half transform-half-placeholder" id="tf-before-${i}">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(255,255,255,0.15)"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <div class="transform-half transform-half-placeholder" id="tf-after-${i}">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(255,255,255,0.15)"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <div class="transform-divider"></div>
+          <div class="transform-label before">ДО</div>
+          <div class="transform-label after">ПОСЛЕ</div>
+        </div>
+        <div class="transform-info">
+          <div class="transform-name">${t.name}</div>
+          <div class="transform-stats">
+            <div class="transform-stat">
+              <div class="transform-stat-num">${t.weightLost}</div>
+              <div class="transform-stat-label">результат</div>
+            </div>
+            <div class="transform-stat">
+              <div class="transform-stat-num">${t.months}</div>
+              <div class="transform-stat-label">программа</div>
+            </div>
+          </div>
+        </div>
       </div>`;
+    loadTransformImages(i, t.query || 'fitness transformation');
   });
+
+  // Schedule
+  const DAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  const schedule = data.schedule || [
+    { day: 0, time: '07:00', name: 'Morning HIIT', trainer: 'Виктор Соколов', duration: '45 мин', intensity: 3 },
+    { day: 0, time: '10:00', name: 'Yoga Flow', trainer: 'Анна Белова', duration: '60 мин', intensity: 1 },
+    { day: 0, time: '18:30', name: 'Crossfit WOD', trainer: 'Денис Козлов', duration: '50 мин', intensity: 3 },
+    { day: 0, time: '20:00', name: 'Stretching', trainer: 'Мария Орлова', duration: '40 мин', intensity: 1 },
+    { day: 1, time: '08:00', name: 'Boxing Cardio', trainer: 'Артём Лебедев', duration: '60 мин', intensity: 3 },
+    { day: 1, time: '12:00', name: 'Pilates', trainer: 'Анна Белова', duration: '55 мин', intensity: 2 },
+    { day: 1, time: '19:00', name: 'Tabata', trainer: 'Виктор Соколов', duration: '45 мин', intensity: 3 },
+    { day: 2, time: '07:30', name: 'TRX Functional', trainer: 'Денис Козлов', duration: '50 мин', intensity: 2 },
+    { day: 2, time: '11:00', name: 'Zumba', trainer: 'Мария Орлова', duration: '60 мин', intensity: 2 },
+    { day: 2, time: '18:00', name: 'Power Lifting', trainer: 'Артём Лебедев', duration: '60 мин', intensity: 3 },
+    { day: 3, time: '07:00', name: 'Morning HIIT', trainer: 'Виктор Соколов', duration: '45 мин', intensity: 3 },
+    { day: 3, time: '19:30', name: 'Yoga Flow', trainer: 'Анна Белова', duration: '60 мин', intensity: 1 },
+    { day: 4, time: '08:00', name: 'Crossfit WOD', trainer: 'Денис Козлов', duration: '50 мин', intensity: 3 },
+    { day: 4, time: '12:00', name: 'Stretching', trainer: 'Мария Орлова', duration: '40 мин', intensity: 1 },
+    { day: 4, time: '18:00', name: 'Boxing Cardio', trainer: 'Артём Лебедев', duration: '60 мин', intensity: 3 },
+    { day: 5, time: '10:00', name: 'TRX Functional', trainer: 'Денис Козлов', duration: '50 мин', intensity: 2 },
+    { day: 5, time: '12:00', name: 'Zumba', trainer: 'Мария Орлова', duration: '60 мин', intensity: 2 },
+    { day: 5, time: '14:00', name: 'Power Lifting', trainer: 'Артём Лебедев', duration: '60 мин', intensity: 3 },
+    { day: 6, time: '11:00', name: 'Yoga Flow', trainer: 'Анна Белова', duration: '60 мин', intensity: 1 },
+    { day: 6, time: '13:00', name: 'HIIT Weekend', trainer: 'Виктор Соколов', duration: '45 мин', intensity: 3 }
+  ];
+
+  let activeDay = new Date().getDay();
+  activeDay = activeDay === 0 ? 6 : activeDay - 1;
+
+  const daysContainer = document.getElementById('schedule-days');
+  daysContainer.innerHTML = '';
+  DAYS.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (i === activeDay ? ' active' : '');
+    btn.textContent = d;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderScheduleDay(schedule, i);
+    });
+    daysContainer.appendChild(btn);
+  });
+
+  renderScheduleDay(schedule, activeDay);
 
   // Product / offer
   let basePrice = parseInt(data.avg_check) || 3200;
@@ -909,28 +1028,6 @@ function render(data) {
   pfeat.innerHTML = '';
   (data.product_features || []).forEach(f => {
     pfeat.innerHTML += `<div class="product-feat-item">${f}</div>`;
-  });
-
-  // Reviews
-  const rg = document.getElementById('reviews-grid');
-  rg.innerHTML = '';
-  const revs = data.reviews || [];
-  document.getElementById('reviews-count').textContent = `0${revs.length} отзыв${revs.length === 1 ? '' : 'а'}`;
-  revs.forEach(r => {
-    rg.innerHTML += `
-      <div class="review-card">
-        <div class="review-stars">
-          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
-        </div>
-        <div class="review-text">"${r.text}"</div>
-        <div class="review-author-row">
-          <div class="review-avatar">${r.avatar || r.name[0]}</div>
-          <div>
-            <div class="review-name">${r.name}</div>
-            <div class="review-verified">Верифицированный клиент</div>
-          </div>
-        </div>
-      </div>`;
   });
 
   // Footer
@@ -960,6 +1057,50 @@ async function loadHeroImage(query) {
   } catch(e) {
     // keep dark background
   }
+}
+
+// ─── SCHEDULE DAY RENDER ──────────────────────────────────────
+function renderScheduleDay(schedule, dayIndex) {
+  const sg = document.getElementById('schedule-grid');
+  const dayClasses = schedule.filter(c => c.day === dayIndex);
+  if (dayClasses.length === 0) {
+    sg.innerHTML = '<div class="schedule-empty">В этот день групповых занятий нет. Приходи на индивидуальную тренировку.</div>';
+    return;
+  }
+  sg.innerHTML = '';
+  dayClasses.forEach(c => {
+    const dots = [1,2,3].map(n => `<div class="intensity-dot${n <= c.intensity ? ' on' : ''}"></div>`).join('');
+    sg.innerHTML += `
+      <div class="schedule-row">
+        <div class="schedule-time">${c.time}<span> ч</span></div>
+        <div class="schedule-info">
+          <div class="schedule-class">${c.name}</div>
+          <div class="schedule-trainer">${c.trainer}</div>
+        </div>
+        <div class="schedule-duration">${c.duration}</div>
+        <div class="schedule-intensity">${dots}</div>
+      </div>`;
+  });
+}
+
+// ─── TRANSFORM IMAGES ─────────────────────────────────────────
+async function loadTransformImages(idx, query) {
+  try {
+    const r1 = await fetch('/image?q=' + encodeURIComponent(query + ' before'));
+    if (r1.ok) {
+      const b1 = await r1.blob();
+      const el = document.getElementById('tf-before-' + idx);
+      if (el) { el.innerHTML = ''; const img = document.createElement('img'); img.src = URL.createObjectURL(b1); el.appendChild(img); }
+    }
+  } catch(e) {}
+  try {
+    const r2 = await fetch('/image?q=' + encodeURIComponent(query + ' after fit'));
+    if (r2.ok) {
+      const b2 = await r2.blob();
+      const el = document.getElementById('tf-after-' + idx);
+      if (el) { el.innerHTML = ''; const img = document.createElement('img'); img.src = URL.createObjectURL(b2); el.appendChild(img); }
+    }
+  } catch(e) {}
 }
 
 // ─── MODAL ────────────────────────────────────────────────────
@@ -1009,20 +1150,14 @@ window.addEventListener('DOMContentLoaded', () => {
       bizType: 'Фитнес',
       hero_title: 'TRAIN HARD. WIN.',
       hero_desc: 'Профессиональный зал для тех, кто ставит цели и достигает их. Никаких компромиссов.',
-      features_title: 'Почему мы',
-      features: [
-        { title: 'Оборудование уровня PRO', desc: 'Тренажёры последнего поколения от ведущих мировых брендов.' },
-        { title: 'Персональные программы', desc: 'Каждый клиент получает индивидуальный план тренировок и питания.' },
-        { title: 'Сертифицированные тренеры', desc: 'Команда с опытом подготовки спортсменов международного уровня.' }
-      ],
       product_name: 'Безлимит на месяц',
       product_desc: 'Неограниченный доступ ко всем тренажёрным зонам, групповым занятиям и бассейну. Без переплат.',
       product_features: ['Все зоны и групповые занятия', 'Персональный вводный инструктаж', 'Доступ к мобильному приложению'],
       avg_check: '3500',
-      reviews: [
-        { name: 'Дмитрий К.', text: 'За три месяца сбросил 12 кг. Тренеры реально помогают, а не просто стоят рядом.', avatar: 'Д' },
-        { name: 'Анна М.', text: 'Оборудование топовое, атмосфера мотивирует. Теперь хожу каждый день без пропусков.', avatar: 'А' },
-        { name: 'Сергей В.', text: 'Лучший зал в городе без преувеличений. Результаты появились уже через месяц.', avatar: 'С' }
+      transforms: [
+        { name: 'Алексей, 34', weightLost: '−14 кг', months: '3 мес', query: 'athletic man fitness' },
+        { name: 'Мария, 28', weightLost: '−9 кг', months: '2 мес', query: 'fit woman sport' },
+        { name: 'Игорь, 41', weightLost: '−18 кг', months: '5 мес', query: 'strong man gym' }
       ],
       hero_image_query: 'gym dark training weights',
       isDemo: false
