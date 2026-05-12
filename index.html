@@ -715,6 +715,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // ═══════════════════════════════════════════════════════════════
 function getFallbackData(bizName, bizDesc, bizCity, bizType) {
   const templateKey = detectTemplate(bizName, bizDesc, bizType);
+  const basePrice = 3490;
   return {
     template: templateKey,
     hero_title: `${bizName} — профессионально и с душой`,
@@ -728,13 +729,20 @@ function getFallbackData(bizName, bizDesc, bizCity, bizType) {
     target_audience: 'Жители города со средним и выше достатком',
     main_pain: 'Сложно найти надёжного исполнителя',
     marketing_channel: 'СберТаргет',
-    avg_check: '3490',
+    avg_check: String(basePrice),
     kpi_forecast: 'Охват 5 000 человек и до 30 заявок в первый месяц',
     product_name: `Услуга от ${bizName}`,
     product_desc: `Профессиональное выполнение вашего заказа. ${bizDesc}`,
     product_features: ['Быстрое выполнение', 'Гарантия качества', 'Поддержка 24/7'],
     product_image_query: 'professional service',
     hero_image_query: 'modern business interior',
+    products: [
+      { name: `${bizName} — Базовый`, desc: 'Стандартный пакет услуг с гарантией качества.', price: String(basePrice), badge: 'hit', image_query: 'professional service business' },
+      { name: `${bizName} — Стандарт`, desc: 'Расширенный пакет с дополнительными опциями.', price: String(Math.round(basePrice * 1.5)), badge: 'new', image_query: 'premium service quality' },
+      { name: `${bizName} — Премиум`, desc: 'Полный пакет с персональным менеджером.', price: String(Math.round(basePrice * 2.2)), badge: '', image_query: 'luxury premium business' },
+      { name: 'Консультация', desc: 'Бесплатный разбор вашей ситуации и рекомендации.', price: '0', badge: 'sale', image_query: 'business consultation meeting' }
+    ],
+    looks: [],
     reviews: [
       { name: 'Александра М.', text: 'Очень довольна результатом! Всё сделали быстро и качественно.', avatar: 'А' },
       { name: 'Дмитрий К.', text: 'Отличный сервис, приятные цены. Заказывал уже несколько раз.', avatar: 'Д' },
@@ -797,6 +805,17 @@ ${templateList}
   "product_image_query": "2-3 слова на английском для поиска фото товара/услуги на стоке",
   "hero_image_query": "2-3 слова на английском для hero фото фона",
   "product_features": ["характеристика 1", "характеристика 2", "характеристика 3"],
+  "products": [
+    {"name": "название товара/услуги 1", "desc": "описание 1 предложение", "price": "цена только число", "badge": "new", "image_query": "2-3 слова на английском для фото"},
+    {"name": "название товара/услуги 2", "desc": "описание 1 предложение", "price": "цена только число", "badge": "hit", "image_query": "2-3 слова на английском для фото"},
+    {"name": "название товара/услуги 3", "desc": "описание 1 предложение", "price": "цена только число", "badge": "", "image_query": "2-3 слова на английском для фото"},
+    {"name": "название товара/услуги 4", "desc": "описание 1 предложение", "price": "цена только число", "badge": "sale", "image_query": "2-3 слова на английском для фото"}
+  ],
+  "looks": [
+    {"label": "Look 01", "name": "название образа/комплекта", "items": "перечисление позиций через запятую", "price": "суммарная цена только число", "image_query": "2-3 слова на английском"},
+    {"label": "Look 02", "name": "название образа/комплекта", "items": "перечисление позиций через запятую", "price": "суммарная цена только число", "image_query": "2-3 слова на английском"},
+    {"label": "Look 03", "name": "название образа/комплекта", "items": "перечисление позиций через запятую", "price": "суммарная цена только число", "image_query": "2-3 слова на английском"}
+  ],
   "reviews": [
     {"name": "Имя клиента", "text": "короткий отзыв 1-2 предложения реалистичный", "avatar": "заглавная буква имени"},
     {"name": "Имя клиента", "text": "короткий отзыв 1-2 предложения реалистичный", "avatar": "заглавная буква имени"},
