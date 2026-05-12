@@ -3,32 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{COMPANY}} — Deploy. Scale. Ship.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Geist:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<title>SaaS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════════════
+   IT / SaaS TEMPLATE
+   Референс: Vercel × Linear
+   Тёмный технологичный, терминал, метрики,
+   пайплайн, прайсинг — без отзывов и "почему мы"
+   ════════════════════════════════════════════════ */
+
 :root {
-  --bg:       #000000;
-  --surface:  #0a0a0a;
-  --surface2: #111111;
-  --border:   rgba(255,255,255,0.08);
-  --border2:  rgba(255,255,255,0.14);
-  --text:     #ededed;
-  --muted:    #888;
-  --muted2:   #555;
-  --accent:   #ffffff;
-  --green:    #22c55e;
-  --blue:     #3b82f6;
-  --purple:   #a855f7;
-  --amber:    #f59e0b;
-  --red:      #ef4444;
-  --mono:     'JetBrains Mono', monospace;
-  --sans:     'Geist', sans-serif;
-  --radius:   8px;
+  --bg:     #000000;
+  --bg2:    #080808;
+  --bg3:    #0f0f0f;
+  --line:   rgba(255,255,255,0.08);
+  --line2:  rgba(255,255,255,0.14);
+  --text:   #ededed;
+  --muted:  rgba(255,255,255,0.45);
+  --muted2: rgba(255,255,255,0.22);
+  --white:  #ffffff;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+  --amber:  #f59e0b;
+  --mono:   'JetBrains Mono', monospace;
+  --sans:   'Geist', sans-serif;
+  --r:      8px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -41,693 +44,557 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── NOISE OVERLAY ────────────────────────────────── */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity: 0.4;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 75%);
+  opacity: .45;
 }
 
-/* ── NAVBAR ───────────────────────────────────────── */
+/* ── LOADING ─────────────────────────────────── */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+  transition: opacity .5s, visibility .5s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loading-logo {
+  font-family: var(--mono); font-size: 22px; font-weight: 700;
+  color: var(--white); letter-spacing: -.02em;
+}
+.loading-logo span { color: var(--muted2); }
+.loading-bar { width: 140px; height: 1px; background: var(--line2); overflow: hidden; }
+.loading-fill {
+  height: 100%; background: var(--white);
+  animation: loadFill .9s cubic-bezier(.4,0,.2,1) .05s both;
+  transform-origin: left;
+}
+@keyframes loadFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ── NAVBAR ──────────────────────────────────── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; gap: 0;
-  padding: 0 32px;
-  height: 56px;
-  background: rgba(0,0,0,0.8);
+  display: flex; align-items: center;
+  padding: 0 32px; height: 54px;
+  background: rgba(0,0,0,.85);
   backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--line);
+  transition: transform .3s ease;
 }
-
 .nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 15px; font-weight: 600; color: var(--accent);
-  letter-spacing: -0.02em; text-decoration: none; margin-right: 32px;
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--mono); font-size: 14px; font-weight: 700;
+  color: var(--white); letter-spacing: -.02em; margin-right: 32px;
 }
-.nav-logo-mark {
-  width: 24px; height: 24px; background: var(--accent);
-  border-radius: 4px; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+.nav-logo-tri {
+  width: 22px; height: 22px;
+  background: var(--white); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
 }
-.nav-logo-mark svg { width: 14px; height: 14px; fill: #000; }
-
-.nav-links {
-  display: flex; gap: 0; list-style: none; flex: 1;
-}
+.nav-logo-tri svg { width: 12px; height: 12px; fill: #000; }
+.nav-links { display: flex; list-style: none; }
 .nav-links a {
-  display: block; padding: 0 16px; line-height: 56px;
-  color: var(--muted); text-decoration: none; font-size: 14px;
-  transition: color 0.2s;
+  display: block; padding: 0 14px; line-height: 54px;
+  color: var(--muted); text-decoration: none; font-size: 13px;
+  transition: color .2s;
 }
 .nav-links a:hover { color: var(--text); }
-
-.nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
 
 .btn-ghost {
-  padding: 6px 14px; border-radius: var(--radius);
-  background: transparent; border: 1px solid var(--border2);
+  padding: 6px 14px; border-radius: var(--r);
+  background: transparent; border: 1px solid var(--line2);
   color: var(--text); font-family: var(--sans); font-size: 13px;
-  font-weight: 500; cursor: pointer; transition: all 0.2s;
+  font-weight: 500; cursor: pointer; transition: all .2s;
   text-decoration: none; display: inline-block;
 }
-.btn-ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+.btn-ghost:hover { background: rgba(255,255,255,.06); }
 
 .btn-primary {
-  padding: 6px 16px; border-radius: var(--radius);
-  background: var(--accent); border: none;
+  padding: 6px 16px; border-radius: var(--r);
+  background: var(--white); border: none;
   color: #000; font-family: var(--sans); font-size: 13px;
-  font-weight: 600; cursor: pointer; transition: all 0.2s;
-  text-decoration: none; display: inline-block;
+  font-weight: 600; cursor: pointer; transition: all .2s;
 }
-.btn-primary:hover { background: #e0e0e0; transform: translateY(-1px); }
+.btn-primary:hover { background: #ddd; transform: translateY(-1px); }
 
-/* ── HERO ─────────────────────────────────────────── */
+/* ── HERO ────────────────────────────────────── */
 .hero {
   position: relative; min-height: 100vh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 120px 40px 80px;
-  overflow: hidden;
+  padding: 120px 40px 80px; overflow: hidden; z-index: 1;
 }
-
-/* Grid background */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, black 20%, transparent 80%);
-}
-
-/* Glow */
 .hero-glow {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute; top: 40%; left: 50%;
   transform: translate(-50%, -60%);
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-  pointer-events: none;
+  width: 700px; height: 700px; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,255,255,.035) 0%, transparent 65%);
 }
-
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 14px; border-radius: 20px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
-  font-size: 12px; color: var(--muted); margin-bottom: 28px;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.6s ease both;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line2);
+  font-size: 12px; font-family: var(--mono); color: var(--muted);
+  margin-bottom: 28px; z-index: 1;
+  animation: fadeUp .6s ease both;
 }
-.hero-badge .dot {
+.live-dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--green); box-shadow: 0 0 8px var(--green);
-  animation: pulse 2s ease-in-out infinite;
+  animation: blink 2s ease-in-out infinite; flex-shrink: 0;
 }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
 
 .hero-title {
-  font-size: clamp(40px, 7vw, 88px);
+  font-size: clamp(40px,7vw,88px);
   font-weight: 700; line-height: 1.0;
-  letter-spacing: -0.04em; text-align: center;
-  max-width: 900px;
-  color: var(--accent);
-  position: relative; z-index: 1;
-  animation: fadeUp 0.7s 0.1s ease both;
+  letter-spacing: -.04em; text-align: center;
+  max-width: 850px; color: var(--white); z-index: 1;
+  animation: fadeUp .7s .1s ease both;
 }
 .hero-title .dim { color: var(--muted2); }
-
 .hero-sub {
-  font-size: 18px; color: var(--muted);
-  text-align: center; max-width: 480px;
-  margin-top: 20px; line-height: 1.6; font-weight: 400;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.7s 0.2s ease both;
+  font-size: 17px; color: var(--muted);
+  text-align: center; max-width: 460px;
+  margin-top: 20px; font-weight: 400; z-index: 1;
+  animation: fadeUp .7s .2s ease both;
 }
-
 .hero-cta {
   display: flex; gap: 12px; margin-top: 36px;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.7s 0.3s ease both;
+  z-index: 1; animation: fadeUp .7s .3s ease both;
 }
 .btn-deploy {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 10px 22px; border-radius: var(--radius);
-  background: var(--accent); border: none; color: #000;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 10px 22px; border-radius: var(--r);
+  background: var(--white); border: none; color: #000;
   font-family: var(--sans); font-size: 14px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
+  cursor: pointer; transition: all .2s;
 }
-.btn-deploy:hover { background: #e0e0e0; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,255,255,0.15); }
-.btn-deploy svg { width: 16px; height: 16px; }
-
-/* ── TERMINAL / CODE BLOCK (hero центральный элемент) ── */
-.hero-terminal {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 780px;
-  margin-top: 52px;
-  border-radius: 12px; overflow: hidden;
-  border: 1px solid var(--border2);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 40px 80px rgba(0,0,0,0.6);
-  animation: fadeUp 0.8s 0.4s ease both;
-}
-
-.terminal-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 12px 16px;
-  background: var(--surface2); border-bottom: 1px solid var(--border);
-}
-.t-dot { width: 12px; height: 12px; border-radius: 50%; }
-.t-dot.red   { background: #ff5f57; }
-.t-dot.yel   { background: #febc2e; }
-.t-dot.grn   { background: #28c840; }
-.terminal-title {
-  margin-left: 8px; font-family: var(--mono); font-size: 12px;
-  color: var(--muted); flex: 1; text-align: center;
-}
-
-.terminal-body {
-  background: #0a0a0a;
-  padding: 20px 24px;
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.8;
-  min-height: 200px;
-}
-
-.t-line { display: flex; gap: 10px; }
-.t-prompt { color: var(--muted2); user-select: none; }
-.t-cmd    { color: var(--text); }
-.t-kw     { color: #c792ea; }
-.t-str    { color: #c3e88d; }
-.t-num    { color: #f78c6c; }
-.t-fn     { color: #82aaff; }
-.t-dim    { color: var(--muted2); }
-.t-out    { color: var(--muted); padding-left: 24px; }
-.t-success{ color: var(--green); padding-left: 0; }
-.t-url    { color: var(--blue); }
-.t-blank  { height: 8px; }
-
-/* Deploy progress inside terminal */
-.deploy-progress {
-  margin-top: 12px;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.dp-row {
-  display: flex; align-items: center; gap: 12px;
-  font-family: var(--mono); font-size: 12px; color: var(--muted);
-  padding: 3px 0;
-}
-.dp-icon { width: 16px; text-align: center; flex-shrink: 0; }
-.dp-row.done .dp-icon  { color: var(--green); }
-.dp-row.run  .dp-icon  { color: var(--amber); animation: pulse 0.8s infinite; }
-.dp-row.wait .dp-icon  { color: var(--muted2); }
-.dp-row.done .dp-label { color: var(--text); }
-.dp-row.run  .dp-label { color: var(--text); }
-.dp-ms { margin-left: auto; color: var(--muted2); font-size: 11px; }
-
-/* Typing cursor */
-.cursor {
-  display: inline-block; width: 8px; height: 14px;
-  background: var(--text); margin-left: 2px; vertical-align: middle;
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.btn-deploy:hover { background: #ddd; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,255,255,.15); }
+.btn-deploy svg { width: 14px; height: 14px; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── LOGOS STRIP ──────────────────────────────────── */
-.logos-section {
-  padding: 48px 40px;
-  border-top: 1px solid var(--border);
-  text-align: center;
+/* ── TERMINAL ────────────────────────────────── */
+.hero-terminal {
+  width: 100%; max-width: 720px; z-index: 1;
+  margin-top: 52px; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line2);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 40px 80px rgba(0,0,0,.7);
+  animation: fadeUp .8s .4s ease both;
 }
-.logos-label { font-size: 12px; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px; }
-.logos-row {
-  display: flex; justify-content: center; align-items: center;
-  gap: 40px; flex-wrap: wrap; opacity: 0.45;
+.t-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 16px; background: var(--bg3); border-bottom: 1px solid var(--line);
 }
-.logo-pill {
-  font-family: var(--mono); font-size: 13px; color: var(--muted);
-  font-weight: 500; letter-spacing: 0.02em;
+.t-dot { width: 11px; height: 11px; border-radius: 50%; }
+.t-dot.r { background: #ff5f57; }
+.t-dot.y { background: #febc2e; }
+.t-dot.g { background: #28c840; }
+.t-title {
+  margin-left: 8px; font-family: var(--mono); font-size: 12px;
+  color: var(--muted); flex: 1; text-align: center;
+}
+.t-body {
+  background: var(--bg2); padding: 20px 24px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.9;
+}
+.t-line { display: flex; gap: 10px; }
+.t-prompt { color: var(--muted2); user-select: none; }
+.t-kw  { color: #c792ea; }
+.t-fn  { color: #82aaff; }
+.t-str { color: #c3e88d; }
+.t-num { color: #f78c6c; }
+.t-out { color: var(--muted); padding-left: 24px; }
+.t-ok  { color: var(--green); }
+.t-url { color: var(--blue); padding-left: 26px; font-size: 12px; }
+.t-blank { height: 6px; }
+.dp-rows { display: flex; flex-direction: column; gap: 2px; padding-left: 24px; }
+.dp-row {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+}
+.dp-row.done { color: var(--text); }
+.dp-row.done .dp-icon { color: var(--green); }
+.dp-row.run  .dp-icon { color: var(--amber); animation: blink .8s infinite; }
+.dp-row.wait .dp-icon { color: var(--muted2); }
+.dp-ms { margin-left: auto; color: var(--muted2); font-size: 11px; }
+
+.live-counter {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  padding: 6px 14px; border: 1px solid var(--line);
+  border-radius: 20px; background: var(--bg2);
+  margin-top: 24px; z-index: 1;
+  animation: fadeUp .8s .5s ease both;
 }
 
-/* ── METRICS BAR ──────────────────────────────────── */
+/* ── METRICS ─────────────────────────────────── */
 .metrics-bar {
   display: grid; grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  position: relative; z-index: 1;
 }
 .metric-item {
-  padding: 44px 40px;
-  border-right: 1px solid var(--border);
-  position: relative; overflow: hidden;
-  transition: background 0.3s;
+  padding: 44px 40px; border-right: 1px solid var(--line);
+  position: relative; overflow: hidden; transition: background .3s;
 }
 .metric-item:last-child { border-right: none; }
-.metric-item:hover { background: rgba(255,255,255,0.02); }
-
+.metric-item:hover { background: rgba(255,255,255,.02); }
+.metric-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.metric-item:hover .metric-top { opacity: 1; }
 .metric-num {
   font-size: 48px; font-weight: 700;
-  letter-spacing: -0.04em; line-height: 1;
-  color: var(--accent); margin-bottom: 6px;
+  letter-spacing: -.04em; line-height: 1;
+  color: var(--white); margin-bottom: 6px;
 }
-.metric-num sup { font-size: 22px; vertical-align: super; }
-.metric-label { font-size: 13px; color: var(--muted); line-height: 1.5; }
-.metric-sub   { font-size: 12px; color: var(--muted2); margin-top: 4px; }
-.metric-glow {
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.metric-item:hover .metric-glow { opacity: 1; }
+.metric-label { font-size: 13px; color: var(--muted); }
+.metric-sub   { font-size: 11px; color: var(--muted2); margin-top: 3px; }
 
-/* ── DEPLOY FLOW ──────────────────────────────────── */
-.deploy-section {
+/* ── DEPLOY SPLIT ────────────────────────────── */
+.deploy-split {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0; border-bottom: 1px solid var(--border);
-  max-width: 100%;
+  border-bottom: 1px solid var(--line); position: relative; z-index: 1;
 }
-
 .deploy-left {
-  padding: 80px 64px;
-  border-right: 1px solid var(--border);
+  padding: 80px 64px; border-right: 1px solid var(--line);
   display: flex; flex-direction: column; justify-content: center;
 }
-.section-eyebrow {
-  font-family: var(--mono); font-size: 11px; color: var(--muted2);
-  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px;
+.eyebrow {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted2); letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 16px;
 }
 .section-title {
-  font-size: clamp(28px, 3vw, 42px); font-weight: 700;
-  letter-spacing: -0.03em; line-height: 1.1; color: var(--accent);
-  margin-bottom: 16px;
+  font-size: clamp(26px,3vw,42px); font-weight: 700;
+  letter-spacing: -.03em; line-height: 1.1; color: var(--white); margin-bottom: 14px;
 }
-.section-body {
-  font-size: 15px; color: var(--muted); line-height: 1.7;
-  max-width: 400px; margin-bottom: 32px;
-}
-
-.pipeline-steps {
-  display: flex; flex-direction: column; gap: 0;
-}
-.pipeline-step {
+.section-body { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 380px; margin-bottom: 32px; }
+.pipe-steps { display: flex; flex-direction: column; }
+.pipe-step {
   display: flex; align-items: flex-start; gap: 16px;
-  padding: 16px 0; border-bottom: 1px solid var(--border);
-  position: relative;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
 }
-.pipeline-step:last-child { border-bottom: none; }
-.step-num {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--surface2); border: 1px solid var(--border2);
+.pipe-step:last-child { border-bottom: none; }
+.step-n {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--line2);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--mono); font-size: 11px; color: var(--muted);
   flex-shrink: 0; margin-top: 2px;
 }
-.pipeline-step.active .step-num {
-  background: var(--accent); color: #000; border-color: var(--accent);
-  font-weight: 700;
-}
-.step-text strong { display: block; font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-.step-text span   { font-size: 13px; color: var(--muted); }
-
+.pipe-step.active .step-n { background: var(--white); color: #000; border-color: var(--white); font-weight: 700; }
+.step-info strong { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.step-info span { font-size: 12px; color: var(--muted); }
 .deploy-right {
-  padding: 64px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--surface);
-  position: relative; overflow: hidden;
+  padding: 64px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg2); position: relative; overflow: hidden;
 }
-
-/* Animated deploy card */
-.deploy-card {
-  width: 100%; max-width: 400px;
-  background: var(--bg); border: 1px solid var(--border2);
+.deploy-right::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.dc-card {
+  width: 100%; max-width: 380px; position: relative; z-index: 1;
+  background: var(--bg); border: 1px solid var(--line2);
   border-radius: 12px; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
 }
-.dc-header {
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
+.dc-head {
+  padding: 14px 20px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
 }
-.dc-status-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 10px var(--green);
-  animation: pulse 2s infinite;
+.dc-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: blink 2s infinite; flex-shrink: 0;
 }
-.dc-title { font-size: 13px; font-weight: 500; }
+.dc-head-title { font-size: 13px; font-weight: 500; }
 .dc-branch {
   margin-left: auto; font-family: var(--mono); font-size: 11px;
-  color: var(--muted); background: var(--surface2);
-  padding: 2px 8px; border-radius: 4px;
+  color: var(--muted); background: var(--bg3); padding: 2px 8px; border-radius: 4px;
 }
-
 .dc-body { padding: 20px; font-family: var(--mono); font-size: 12px; }
-.dc-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 6px 0; color: var(--muted);
-}
+.dc-row { display: flex; justify-content: space-between; padding: 5px 0; color: var(--muted); }
 .dc-row .val { color: var(--text); font-weight: 500; }
-.dc-row .val.green { color: var(--green); }
-.dc-row .val.blue  { color: var(--blue); }
-
+.dc-row .val.g { color: var(--green); }
+.dc-row .val.b { color: var(--blue); }
 .dc-url {
-  margin-top: 16px; padding: 12px 16px;
-  background: var(--surface2); border-radius: var(--radius);
-  border: 1px solid var(--border);
+  margin-top: 14px; padding: 10px 14px;
+  background: var(--bg3); border-radius: var(--r);
+  border: 1px solid var(--line);
   font-family: var(--mono); font-size: 12px;
-  color: var(--blue); cursor: pointer;
-  transition: all 0.2s;
+  color: var(--blue); cursor: pointer; transition: border-color .2s;
+  word-break: break-all;
 }
 .dc-url:hover { border-color: var(--blue); }
 
-/* ── PRICING ──────────────────────────────────────── */
+/* ── INTEGRATIONS ────────────────────────────── */
+.integrations-section {
+  border-top: 1px solid var(--line);
+  padding: 80px 40px; text-align: center; position: relative; z-index: 1;
+}
+.int-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 10px; max-width: 860px; margin: 44px auto 0;
+}
+.int-card {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 10px; background: var(--bg2);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  transition: all .25s;
+}
+.int-card:hover { border-color: var(--line2); background: var(--bg3); transform: translateY(-3px); }
+.int-icon { font-size: 20px; }
+.int-name { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ── PRICING ─────────────────────────────────── */
 .pricing-section {
-  padding: 100px 40px;
-  max-width: 1100px; margin: 0 auto;
-  position: relative;
+  border-top: 1px solid var(--line);
+  padding: 100px 40px; position: relative; z-index: 1;
 }
 .pricing-header { text-align: center; margin-bottom: 56px; }
 .pricing-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 16px; align-items: start;
+  gap: 14px; max-width: 1050px; margin: 0 auto; align-items: start;
 }
-
-.pricing-card {
-  border: 1px solid var(--border);
-  border-radius: 12px; padding: 32px;
-  background: var(--surface);
-  position: relative; transition: all 0.3s;
+.p-card {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 30px; background: var(--bg2);
+  position: relative; transition: all .3s;
 }
-.pricing-card:hover { border-color: var(--border2); transform: translateY(-4px); }
-.pricing-card.featured {
-  border-color: rgba(255,255,255,0.2);
-  background: var(--surface2);
-}
-.pricing-card.featured::before {
+.p-card:hover { border-color: var(--line2); transform: translateY(-4px); }
+.p-card.featured { border-color: rgba(255,255,255,.25); background: var(--bg3); }
+.p-card.featured::before {
   content: 'POPULAR';
   position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
-  background: var(--accent); color: #000;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-  padding: 3px 12px; border-radius: 0 0 6px 6px;
+  background: var(--white); color: #000;
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; padding: 3px 12px; border-radius: 0 0 6px 6px;
 }
+.p-plan { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+.p-price { font-size: 42px; font-weight: 700; letter-spacing: -.03em; color: var(--white); margin-bottom: 4px; line-height: 1; }
+.p-price sub { font-size: 15px; vertical-align: baseline; color: var(--muted); font-weight: 400; }
+.p-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+.p-div { height: 1px; background: var(--line); margin: 20px 0; }
+.p-feats { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.p-feats li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text); }
+.p-feats li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+.p-feats li.off { color: var(--muted2); }
+.p-feats li.off::before { content: '–'; color: var(--muted2); }
+.p-btn {
+  width: 100%; padding: 10px; border-radius: var(--r);
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .2s; border: none;
+}
+.p-btn.ghost { background: transparent; border: 1px solid var(--line2); color: var(--text); }
+.p-btn.ghost:hover { background: rgba(255,255,255,.05); }
+.p-btn.solid { background: var(--white); color: #000; }
+.p-btn.solid:hover { background: #ddd; }
 
-.plan-name { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
-.plan-price {
-  font-size: 42px; font-weight: 700; letter-spacing: -0.03em;
-  color: var(--accent); margin-bottom: 4px; line-height: 1;
-}
-.plan-price sub { font-size: 16px; vertical-align: baseline; color: var(--muted); font-weight: 400; }
-.plan-desc { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
-
-.plan-divider { height: 1px; background: var(--border); margin: 24px 0; }
-
-.plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-.plan-features li {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px; color: var(--text);
-}
-.plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; font-size: 13px; }
-.plan-features li.dim { color: var(--muted); }
-.plan-features li.dim::before { content: '–'; color: var(--muted2); }
-
-.plan-cta {
-  width: 100%; padding: 10px 20px;
-  border-radius: var(--radius); font-family: var(--sans);
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  transition: all 0.2s; border: none;
-}
-.plan-cta.outlined {
-  background: transparent; border: 1px solid var(--border2); color: var(--text);
-}
-.plan-cta.outlined:hover { background: rgba(255,255,255,0.05); }
-.plan-cta.filled {
-  background: var(--accent); color: #000;
-}
-.plan-cta.filled:hover { background: #e0e0e0; }
-
-/* ── INTEGRATIONS GRID ────────────────────────────── */
-.integrations-section {
-  border-top: 1px solid var(--border);
-  padding: 80px 40px;
-  text-align: center;
-}
-.int-grid {
-  display: grid; grid-template-columns: repeat(6, 1fr);
-  gap: 12px; max-width: 900px; margin: 48px auto 0;
-}
-.int-card {
-  border: 1px solid var(--border); border-radius: 10px;
-  padding: 20px 12px; background: var(--surface);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  transition: all 0.25s; cursor: default;
-}
-.int-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-3px); }
-.int-icon {
-  width: 36px; height: 36px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-}
-.int-name { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-
-/* ── CTA SECTION ──────────────────────────────────── */
+/* ── CTA ─────────────────────────────────────── */
 .cta-section {
-  border-top: 1px solid var(--border);
-  padding: 120px 40px;
-  text-align: center; position: relative; overflow: hidden;
+  border-top: 1px solid var(--line);
+  padding: 120px 40px; text-align: center;
+  position: relative; z-index: 1; overflow: hidden;
 }
 .cta-section::before {
-  content: '';
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 300px;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%);
-  pointer-events: none;
+  content: ''; position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 300px; pointer-events: none;
+  background: radial-gradient(ellipse, rgba(255,255,255,.04) 0%, transparent 70%);
 }
 .cta-title {
-  font-size: clamp(36px, 5vw, 64px); font-weight: 700;
-  letter-spacing: -0.04em; color: var(--accent);
-  max-width: 700px; margin: 0 auto 16px; line-height: 1.0;
+  font-size: clamp(34px,5vw,64px); font-weight: 700;
+  letter-spacing: -.04em; color: var(--white);
+  max-width: 650px; margin: 0 auto 14px; line-height: 1.0;
 }
-.cta-sub { font-size: 17px; color: var(--muted); margin-bottom: 40px; }
+.cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 36px; }
 .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-cli { margin-top: 18px; font-family: var(--mono); font-size: 13px; color: var(--muted2); }
+.cta-cli span { color: var(--muted); }
 
-/* CLI hint */
-.cli-hint {
-  margin-top: 20px; font-family: var(--mono); font-size: 13px;
-  color: var(--muted2);
-}
-.cli-hint span { color: var(--muted); }
-
-/* ── FOOTER ───────────────────────────────────────── */
+/* ── FOOTER ──────────────────────────────────── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 32px 40px;
+  border-top: 1px solid var(--line);
+  padding: 28px 40px;
   display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 1;
 }
-.footer-logo { font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
-.footer-copy  { font-size: 13px; color: var(--muted2); }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: 13px; color: var(--muted2); text-decoration: none; transition: color 0.2s; }
+.footer-logo { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--muted); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 13px; color: var(--muted2); text-decoration: none; transition: color .2s; }
 .footer-links a:hover { color: var(--text); }
+.footer-copy { font-size: 13px; color: var(--muted2); }
 
-/* ── LIVE COUNTER ──────────────────────────────────── */
-.live-counter {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 12px; color: var(--muted);
-  padding: 6px 14px; border: 1px solid var(--border);
-  border-radius: 20px; background: var(--surface);
-  margin-top: 24px;
+/* ── MODAL ───────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.8); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: all .3s;
 }
-.live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); animation: pulse 1.5s infinite;
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--line2);
+  border-radius: 16px; padding: 36px;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.8);
 }
+.modal-logo { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.modal-logo-text { font-family: var(--mono); font-size: 15px; font-weight: 700; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+.modal-close:hover { color: var(--white); }
+.modal-product { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.modal-amount { font-family: var(--mono); font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--white); }
+.modal-input {
+  width: 100%; padding: 12px 14px;
+  background: var(--bg3); border: 1px solid var(--line2);
+  border-radius: var(--r); color: var(--white);
+  font-family: var(--mono); font-size: 13px;
+  margin-bottom: 10px; outline: none; transition: border-color .2s;
+}
+.modal-input:focus { border-color: rgba(255,255,255,.3); }
+.modal-row { display: flex; gap: 10px; }
+.modal-submit {
+  width: 100%; padding: 14px;
+  background: var(--white); border: none;
+  border-radius: var(--r); color: #000;
+  font-family: var(--sans); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .2s; margin-top: 14px;
+}
+.modal-submit:hover { background: #ddd; }
+.modal-secure { text-align: center; font-size: 11px; color: var(--muted2); margin-top: 10px; }
+.modal-success { display: none; text-align: center; padding: 20px 0; }
+.modal-success.show { display: block; }
+.success-icon { font-size: 48px; margin-bottom: 12px; }
+.success-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.success-text { color: var(--muted); font-size: 14px; line-height: 1.6; }
 
-/* ── SCROLLBAR ─────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--line2); border-radius: 3px; }
 
-/* ── ANIMATIONS ────────────────────────────────────── */
 .reveal {
   opacity: 0; transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity .7s ease, transform .7s ease;
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- ── NAVBAR ─────────────────────────────────────── -->
-<nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-mark">
+<div id="loading-screen">
+  <div class="loading-logo" id="loading-logo">init<span>.</span></div>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+</div>
+
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-tri">
       <svg viewBox="0 0 16 16"><path d="M8 1L15 14H1L8 1Z"/></svg>
     </div>
-    {{COMPANY}}
-  </a>
+    <span id="nav-brand">SaaS</span>
+  </div>
   <ul class="nav-links">
     <li><a href="#">Продукты</a></li>
     <li><a href="#">Документация</a></li>
-    <li><a href="#">Цены</a></li>
+    <li><a href="#pricing">Цены</a></li>
     <li><a href="#">Enterprise</a></li>
   </ul>
-  <div class="nav-actions">
+  <div class="nav-right">
     <a class="btn-ghost" href="#">Войти</a>
-    <a class="btn-primary" href="#">Попробовать →</a>
+    <button class="btn-primary" onclick="openModal()">Попробовать →</button>
   </div>
 </nav>
 
-<!-- ── HERO ───────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-glow"></div>
-
   <div class="hero-badge">
-    <span class="dot"></span>
-    Новое: {{TAGLINE_SHORT}} · <span style="color:var(--text)">Читать →</span>
+    <span class="live-dot"></span>
+    <span id="hero-badge-text">v2.0 — Новый деплой</span>
   </div>
-
-  <h1 class="hero-title">
-    Deploy. Scale.<br><span class="dim">Ship everything.</span>
-  </h1>
-
-  <p class="hero-sub">{{HERO_DESC}}</p>
-
+  <h1 class="hero-title" id="hero-title">Deploy. Scale.<br><span class="dim">Ship everything.</span></h1>
+  <p class="hero-sub" id="hero-desc">Инфраструктура для команд разработчиков.</p>
   <div class="hero-cta">
-    <button class="btn-deploy">
+    <button class="btn-deploy" onclick="openModal()">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L15 14H1L8 1Z"/></svg>
       Начать деплой
     </button>
-    <a class="btn-ghost" href="#">Получить демо</a>
+    <a class="btn-ghost" href="#">Документация</a>
   </div>
-
-  <!-- TERMINAL -->
-  <div class="hero-terminal">
-    <div class="terminal-bar">
-      <span class="t-dot red"></span>
-      <span class="t-dot yel"></span>
-      <span class="t-dot grn"></span>
-      <span class="terminal-title">{{COMPANY}} CLI — zsh</span>
+  <div class="hero-terminal reveal">
+    <div class="t-bar">
+      <span class="t-dot r"></span><span class="t-dot y"></span><span class="t-dot g"></span>
+      <span class="t-title" id="t-title">Terminal — zsh</span>
     </div>
-    <div class="terminal-body" id="terminal-body">
-      <!-- filled by JS -->
-    </div>
+    <div class="t-body" id="t-body"></div>
   </div>
-
   <div class="live-counter">
     <span class="live-dot"></span>
-    <span id="live-count">2 847</span> деплоев прямо сейчас
+    <span id="live-count">2 847</span>&nbsp;деплоев прямо сейчас
   </div>
 </section>
 
-<!-- ── LOGOS ──────────────────────────────────────── -->
-<section class="logos-section reveal">
-  <div class="logos-label">Нам доверяют команды разработчиков</div>
-  <div class="logos-row">
-    <span class="logo-pill">Stripe</span>
-    <span class="logo-pill">Linear</span>
-    <span class="logo-pill">Notion</span>
-    <span class="logo-pill">OpenAI</span>
-    <span class="logo-pill">Figma</span>
-    <span class="logo-pill">Shopify</span>
-    <span class="logo-pill">Supabase</span>
-  </div>
-</section>
-
-<!-- ── METRICS ────────────────────────────────────── -->
 <div class="metrics-bar">
-  <div class="metric-item reveal">
-    <div class="metric-glow"></div>
-    <div class="metric-num" data-target="99.99">0</div>
-    <div class="metric-label">Uptime SLA</div>
-    <div class="metric-sub">Гарантируем по контракту</div>
-  </div>
-  <div class="metric-item reveal">
-    <div class="metric-glow"></div>
-    <div class="metric-num" data-target="6" data-suffix="×" data-prefix="">0</div>
-    <div class="metric-label">Быстрее деплой</div>
-    <div class="metric-sub">vs. традиционный CI/CD</div>
-  </div>
-  <div class="metric-item reveal">
-    <div class="metric-glow"></div>
-    <div class="metric-num" data-target="40" data-suffix="мс">0</div>
-    <div class="metric-label">Время отклика Edge</div>
-    <div class="metric-sub">P99 глобально</div>
-  </div>
-  <div class="metric-item reveal">
-    <div class="metric-glow"></div>
-    <div class="metric-num" data-target="130" data-suffix="+">0</div>
-    <div class="metric-label">Edge-регионов</div>
-    <div class="metric-sub">По всему миру</div>
-  </div>
+  <div class="metric-item reveal"><div class="metric-top"></div><div class="metric-num" data-target="99.99" data-suffix="">0</div><div class="metric-label">Uptime SLA</div><div class="metric-sub">Гарантируем по контракту</div></div>
+  <div class="metric-item reveal"><div class="metric-top"></div><div class="metric-num" data-target="6" data-suffix="×">0</div><div class="metric-label">Быстрее деплой</div><div class="metric-sub">vs. традиционный CI/CD</div></div>
+  <div class="metric-item reveal"><div class="metric-top"></div><div class="metric-num" data-target="40" data-suffix="мс">0</div><div class="metric-label">Время отклика Edge</div><div class="metric-sub">P99 глобально</div></div>
+  <div class="metric-item reveal"><div class="metric-top"></div><div class="metric-num" data-target="130" data-suffix="+">0</div><div class="metric-label">Edge-регионов</div><div class="metric-sub">По всему миру</div></div>
 </div>
 
-<!-- ── DEPLOY FLOW ────────────────────────────────── -->
-<section class="deploy-section">
+<section class="deploy-split">
   <div class="deploy-left reveal">
-    <div class="section-eyebrow">// CI/CD Pipeline</div>
+    <div class="eyebrow">// CI/CD Pipeline</div>
     <h2 class="section-title">Один push —<br>всё в продакшн</h2>
-    <p class="section-body">{{DEPLOY_DESC}}</p>
-
-    <div class="pipeline-steps">
-      <div class="pipeline-step active">
-        <div class="step-num">1</div>
-        <div class="step-text">
-          <strong>git push origin main</strong>
-          <span>Триггер автоматической сборки</span>
-        </div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">2</div>
-        <div class="step-text">
-          <strong>Build &amp; Test</strong>
-          <span>Параллельные тесты, линтинг, TypeScript check</span>
-        </div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">3</div>
-        <div class="step-text">
-          <strong>Preview URL</strong>
-          <span>Каждый PR получает уникальный preview</span>
-        </div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">4</div>
-        <div class="step-text">
-          <strong>Production Deploy</strong>
-          <span>Zero-downtime rollout на 130+ Edge-регионов</span>
-        </div>
-      </div>
+    <p class="section-body" id="deploy-desc">Каждый push запускает автоматическую сборку, тесты и деплой на Edge за секунды.</p>
+    <div class="pipe-steps">
+      <div class="pipe-step active"><div class="step-n">1</div><div class="step-info"><strong>git push origin main</strong><span>Триггер автоматической сборки</span></div></div>
+      <div class="pipe-step"><div class="step-n">2</div><div class="step-info"><strong>Build &amp; Test</strong><span>Параллельные тесты, lint, TypeScript check</span></div></div>
+      <div class="pipe-step"><div class="step-n">3</div><div class="step-info"><strong>Preview URL</strong><span>Каждый PR получает уникальный preview</span></div></div>
+      <div class="pipe-step"><div class="step-n">4</div><div class="step-info"><strong>Production Deploy</strong><span>Zero-downtime rollout на 130+ Edge-регионов</span></div></div>
     </div>
   </div>
-
   <div class="deploy-right">
-    <div class="deploy-card reveal">
-      <div class="dc-header">
-        <span class="dc-status-dot"></span>
-        <span class="dc-title">Production Deploy</span>
+    <div class="dc-card reveal">
+      <div class="dc-head">
+        <span class="dc-live"></span>
+        <span class="dc-head-title">Production Deploy</span>
         <span class="dc-branch">main</span>
       </div>
       <div class="dc-body">
-        <div class="dc-row"><span>Статус</span><span class="val green">● Ready</span></div>
+        <div class="dc-row"><span>Статус</span><span class="val g">● Ready</span></div>
         <div class="dc-row"><span>Время сборки</span><span class="val">38s</span></div>
-        <div class="dc-row"><span>Размер бандла</span><span class="val">142 kB</span></div>
-        <div class="dc-row"><span>Edge-регионов</span><span class="val blue">130+</span></div>
-        <div class="dc-row"><span>Commit</span><span class="val" style="font-family:var(--mono);font-size:11px;">a3f9c12</span></div>
-        <div class="dc-url" id="deploy-url">https://{{SLUG}}.{{DOMAIN}}/</div>
+        <div class="dc-row"><span>Бандл</span><span class="val">142 kB</span></div>
+        <div class="dc-row"><span>Edge-регионов</span><span class="val b">130+</span></div>
+        <div class="dc-row"><span>Commit</span><span class="val" style="font-family:var(--mono);font-size:11px" id="dc-commit">a3f9c12</span></div>
+        <div class="dc-url" id="dc-url" onclick="copyUrl(this)">https://myproject.deploy.app</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── INTEGRATIONS ───────────────────────────────── -->
 <section class="integrations-section reveal">
-  <div class="section-eyebrow" style="margin-bottom:12px;">// Интеграции</div>
-  <h2 class="section-title" style="font-size:clamp(24px,3vw,38px);">Работает с вашим стеком</h2>
-  <p style="color:var(--muted);font-size:15px;margin-top:8px;">Подключайте за один клик — никаких YAML-конфигов</p>
-
+  <div class="eyebrow" style="margin-bottom:10px">// Интеграции</div>
+  <h2 class="section-title" style="font-size:clamp(22px,3vw,36px)">Работает с вашим стеком</h2>
+  <p style="color:var(--muted);font-size:15px;margin-top:8px">Один клик — никаких YAML-конфигов</p>
   <div class="int-grid">
     <div class="int-card"><div class="int-icon">⚛️</div><div class="int-name">React</div></div>
     <div class="int-card"><div class="int-icon">▲</div><div class="int-name" style="color:var(--text)">Next.js</div></div>
@@ -737,233 +604,336 @@ footer {
     <div class="int-card"><div class="int-icon">🔷</div><div class="int-name">TypeScript</div></div>
     <div class="int-card"><div class="int-icon">🐙</div><div class="int-name">GitHub</div></div>
     <div class="int-card"><div class="int-icon">🦊</div><div class="int-name">GitLab</div></div>
-    <div class="int-card"><div class="int-icon">☁️</div><div class="int-name">AWS S3</div></div>
+    <div class="int-card"><div class="int-icon">☁️</div><div class="int-name">S3</div></div>
     <div class="int-card"><div class="int-icon">📊</div><div class="int-name">Grafana</div></div>
     <div class="int-card"><div class="int-icon">🔔</div><div class="int-name">Slack</div></div>
     <div class="int-card"><div class="int-icon">🔑</div><div class="int-name">OAuth 2.0</div></div>
   </div>
 </section>
 
-<!-- ── PRICING ────────────────────────────────────── -->
-<section style="border-top:1px solid var(--border)">
-  <div class="pricing-section reveal">
-    <div class="pricing-header">
-      <div class="section-eyebrow" style="margin-bottom:12px;">// Тарифы</div>
-      <h2 class="section-title">Начни бесплатно,<br>масштабируй уверенно</h2>
-    </div>
-
-    <div class="pricing-grid">
-      <!-- Hobby -->
-      <div class="pricing-card">
-        <div class="plan-name">Hobby</div>
-        <div class="plan-price">₽0<sub>/мес</sub></div>
-        <div class="plan-desc">Для личных проектов и экспериментов.</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li>3 проекта</li>
-          <li>100 GB трафика</li>
-          <li>Авто-деплой из Git</li>
-          <li>Edge Functions (100k)</li>
-          <li class="dim">Командный доступ</li>
-          <li class="dim">SLA 99.99%</li>
-        </ul>
-        <button class="plan-cta outlined">Начать бесплатно</button>
-      </div>
-
-      <!-- Pro -->
-      <div class="pricing-card featured">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">₽{{PRICE}}<sub>/мес</sub></div>
-        <div class="plan-desc">Для команд, которые деплоят всерьёз.</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li>Безлимит проектов</li>
-          <li>1 TB трафика</li>
-          <li>Preview Deployments</li>
-          <li>Edge Functions (10M)</li>
-          <li>Командный доступ (5 чел)</li>
-          <li>Аналитика реалтайм</li>
-        </ul>
-        <button class="plan-cta filled">Попробовать 14 дней бесплатно</button>
-      </div>
-
-      <!-- Enterprise -->
-      <div class="pricing-card">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-price" style="font-size:28px;line-height:1.3;margin-top:8px;">По запросу</div>
-        <div class="plan-desc">SLA, SSO, выделенная поддержка.</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li>Всё из Pro</li>
-          <li>Выделенные ресурсы</li>
-          <li>SLA 99.99% по контракту</li>
-          <li>SSO / SAML</li>
-          <li>Аудит-лог</li>
-          <li>24/7 поддержка инженеров</li>
-        </ul>
-        <button class="plan-cta outlined">Связаться с отделом продаж</button>
-      </div>
-    </div>
+<section class="pricing-section" id="pricing">
+  <div class="pricing-header reveal">
+    <div class="eyebrow" style="margin-bottom:10px">// Тарифы</div>
+    <h2 class="section-title" style="font-size:clamp(26px,4vw,48px)">Начни бесплатно,<br>масштабируй уверенно</h2>
   </div>
+  <div class="pricing-grid reveal" id="pricing-grid"></div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────── -->
 <section class="cta-section reveal">
-  <h2 class="cta-title">Готов деплоить<br>быстрее?</h2>
+  <h2 class="cta-title">Готов деплоить быстрее?</h2>
   <p class="cta-sub">Подключись за 2 минуты. Кредитная карта не нужна.</p>
   <div class="cta-row">
-    <button class="btn-deploy" style="padding:12px 28px;font-size:15px;">
-      <svg viewBox="0 0 16 16" fill="currentColor" style="width:16px;height:16px;"><path d="M8 1L15 14H1L8 1Z"/></svg>
+    <button class="btn-deploy" style="padding:12px 28px;font-size:15px" onclick="openModal()">
+      <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px"><path d="M8 1L15 14H1L8 1Z"/></svg>
       Попробовать бесплатно
     </button>
-    <a class="btn-ghost" href="#" style="padding:12px 22px;font-size:15px;">Документация →</a>
+    <a class="btn-ghost" href="#" style="padding:12px 22px;font-size:15px">Документация →</a>
   </div>
-  <div class="cli-hint">или: <span>npm i -g {{CLI_NAME}} &amp;&amp; {{CLI_NAME}} deploy</span></div>
+  <div class="cta-cli" id="cta-cli">или: <span>npm i -g deploy-cli &amp;&amp; deploy-cli init</span></div>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────── -->
 <footer>
-  <div class="footer-logo">{{COMPANY}}</div>
+  <div class="footer-logo" id="footer-brand">SaaS</div>
   <div class="footer-links">
-    <a href="#">Документы</a>
-    <a href="#">API</a>
-    <a href="#">Статус</a>
-    <a href="#">GitHub</a>
+    <a href="#">Docs</a><a href="#">API</a><a href="#">Status</a><a href="#">GitHub</a>
   </div>
-  <div class="footer-copy">© 2025 {{COMPANY}}</div>
+  <div class="footer-copy" id="footer-copy">© 2025</div>
 </footer>
 
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div id="modal-form-view">
+      <div class="modal-logo">
+        <div class="modal-logo-text">ЮKassa</div>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-product" id="modal-product-name">Pro Plan</div>
+      <div class="modal-amount" id="modal-amount">3 990 ₽/мес</div>
+      <input class="modal-input" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
+      <div class="modal-row">
+        <input class="modal-input" style="margin-bottom:0" type="text" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)">
+        <input class="modal-input" style="margin-bottom:0" type="password" placeholder="CVC" maxlength="3">
+      </div>
+      <button class="modal-submit" onclick="simulatePay()">Оплатить безопасно</button>
+      <div class="modal-secure">256-bit шифрование · ЮKassa · PCI DSS</div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Подписка активирована!</div>
+      <div class="success-text">Добро пожаловать. Ваш аккаунт создан,<br>данные для входа — на почте.</div>
+      <button class="modal-submit" style="margin-top:20px" onclick="closeModal()">Открыть дашборд</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── ШАБЛОННЫЕ ДАННЫЕ (заменяется GigaChat) ────────────
-const SITE = {
-  company:       '{{COMPANY}}',
-  taglineShort:  '{{TAGLINE_SHORT}}',
-  heroDesc:      '{{HERO_DESC}}',
-  deployDesc:    '{{DEPLOY_DESC}}',
-  slug:          '{{SLUG}}',
-  domain:        '{{DOMAIN}}',
-  price:         '{{PRICE}}',
-  cliName:       '{{CLI_NAME}}',
-};
+// ═══════════════════════════════════════════════════
+// DEMO DATA
+// ═══════════════════════════════════════════════════
+function getDemoData() {
+  return {
+    bizName: 'DeployFlow',
+    bizCity: 'Москва',
+    bizType: 'IT / SaaS',
+    hero_title: 'Deploy. Scale.\nShip everything.',
+    hero_desc: 'Облачная платформа для команд разработчиков. Автоматический CI/CD, Edge-деплой, аналитика в реальном времени.',
+    features_title: 'Почему выбирают нас',
+    features: [
+      { title: 'Zero-config деплой', desc: 'Push в main — сайт в продакшне за 40 секунд. Без настройки серверов и YAML.' },
+      { title: 'Edge по всему миру', desc: 'Контент раздаётся из ближайшего узла. P99 < 40ms.' },
+      { title: 'Preview per PR',     desc: 'Каждый pull request получает уникальный URL для тестирования.' }
+    ],
+    target_audience: 'Стартапы и продуктовые команды от 2 до 50 разработчиков',
+    main_pain: 'Слишком много времени уходит на DevOps вместо разработки фич',
+    marketing_channel: 'соцсети',
+    avg_check: '3990',
+    kpi_forecast: '200 регистраций и 40 платящих клиентов в первый месяц',
+    product_name: 'Pro Plan — безлимитные деплои',
+    product_desc: 'Полный доступ к платформе: неограниченные проекты, командный доступ, аналитика и SLA 99.99%.',
+    product_features: ['Безлимит проектов', 'SLA 99.99%', 'Команда 5 чел', 'Аналитика реалтайм'],
+    product_image_query: 'developer laptop code dark',
+    hero_image_query: 'server infrastructure tech',
+    products: [
+      { name: 'Hobby',      desc: 'Для личных проектов.',        price: '0',    badge: '',    features: ['3 проекта', '100 GB трафика', 'Авто-деплой из Git', 'Edge Functions 100k'] },
+      { name: 'Pro',        desc: 'Для серьёзных команд.',       price: '3990', badge: 'hit', features: ['Безлимит проектов', '1 TB трафика', 'Preview Deployments', 'Аналитика реалтайм', 'Команда 5 чел'] },
+      { name: 'Enterprise', desc: 'SLA, SSO, выделенная инфра.', price: '0',    badge: '',    features: ['Всё из Pro', 'Выделенные ресурсы', 'SSO / SAML', 'Аудит-лог', '24/7 инженеры'] }
+    ],
+    looks: [],
+    reviews: []
+  };
+}
 
-// ── TERMINAL ANIMATION ────────────────────────────────
-const termLines = [
-  { type: 'cmd',  prompt: '$', text: '<span class="t-kw">npx</span> <span class="t-fn">deploy-cli</span> init' },
-  { type: 'out',  text: '<span style="color:var(--green)">✓</span> Проект инициализирован' },
-  { type: 'blank' },
-  { type: 'cmd',  prompt: '$', text: '<span class="t-kw">git</span> push <span class="t-str">origin</span> main' },
-  { type: 'out',  text: 'Enumerating objects: 14, done.' },
-  { type: 'out',  text: 'Compressing objects: <span class="t-num">100%</span> (11/11), done.' },
-  { type: 'blank' },
-  { type: 'out',  text: '<span style="color:var(--blue)">ℹ</span> Triggering deployment...' },
-  { type: 'progress' },
-  { type: 'blank' },
-  { type: 'success', text: '<span style="color:var(--green)">✓</span> <strong>Production ready</strong> in <span class="t-num">38s</span>' },
-  { type: 'url',   text: '  https://myproject.deploy.app' },
-];
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function render(data) {
+  const name = data.bizName || 'SaaS';
+  const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').substring(0, 20) || 'app';
 
-const progressRows = [
-  { icon: '✓', label: 'Installing dependencies', ms: '12.3s', status: 'done' },
-  { icon: '✓', label: 'Building project',        ms: '18.7s', status: 'done' },
-  { icon: '◉', label: 'Deploying to Edge',       ms: '...',   status: 'run'  },
-  { icon: '○', label: 'Running health checks',   ms: '',      status: 'wait' },
-];
+  document.title = name;
+  document.getElementById('loading-logo').innerHTML = `${name.substring(0,6).toLowerCase()}<span>.</span>`;
+  document.getElementById('nav-brand').textContent = name;
+  document.getElementById('hero-badge-text').textContent = `${data.bizCity || 'Москва'} · ${data.bizType || 'IT / SaaS'}`;
 
-function renderTerminal() {
-  const body = document.getElementById('terminal-body');
-  if (!body) return;
+  // Hero title — split on \n, second line gets .dim class
+  const titleParts = (data.hero_title || 'Deploy. Scale.\nShip everything.').split('\n');
+  document.getElementById('hero-title').innerHTML =
+    titleParts.map((p, i) => i === 0 ? p : `<span class="dim">${p}</span>`).join('<br>');
+
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
+
+  // Terminal
+  document.getElementById('t-title').textContent = `${slug} — Terminal`;
+  buildTerminal(name, slug, data);
+
+  // Deploy card
+  document.getElementById('dc-url').textContent = `https://${slug}.vercel.app`;
+  document.getElementById('dc-commit').textContent = Math.random().toString(16).slice(2, 9);
+
+  // Deploy section body text — use first feature desc if available
+  if (data.features && data.features[0]) {
+    document.getElementById('deploy-desc').textContent = data.features[0].desc;
+  }
+
+  // CLI hint
+  document.getElementById('cta-cli').innerHTML =
+    `или: <span>npm i -g ${slug}-cli &amp;&amp; ${slug}-cli deploy</span>`;
+
+  // Footer
+  document.getElementById('footer-brand').textContent = name;
+  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}`;
+
+  // Modal default
+  const price = parseInt(data.avg_check) || 3990;
+  document.getElementById('modal-product-name').textContent = data.product_name || `${name} Pro`;
+  document.getElementById('modal-amount').textContent = `${price.toLocaleString('ru-RU')} ₽/мес`;
+
+  // Pricing
+  buildPricing(data);
+}
+
+// ── TERMINAL ───────────────────────────────────────
+function buildTerminal(name, slug, data) {
+  const shortName = (data.product_name || name).split(' ').slice(0,3).join(' ');
+  const rows = [
+    { t:'cmd', h:`<span class="t-kw">npx</span> <span class="t-fn">${slug}-cli</span> <span class="t-str">init</span> <span class="t-str">"${name}"</span>` },
+    { t:'out', h:`<span class="t-ok">✓</span> Проект инициализирован · Node.js 20 · TypeScript` },
+    { t:'blank' },
+    { t:'cmd', h:`<span class="t-kw">git</span> add . && git commit <span class="t-str">-m</span> <span class="t-str">"feat: ${shortName}"</span>` },
+    { t:'out', h:`[main a3f9c12] feat: ${shortName}` },
+    { t:'blank' },
+    { t:'cmd', h:`<span class="t-kw">git</span> push <span class="t-str">origin</span> main` },
+    { t:'dp' },
+    { t:'blank' },
+    { t:'ok',  h:`<span class="t-ok">✓</span> <strong>Production ready</strong> · <span class="t-num">38s</span>` },
+    { t:'url', h:`https://${slug}.vercel.app` },
+  ];
+  const dpRows = [
+    { icon:'✓', label:'Installing dependencies', ms:'12.3s', s:'done' },
+    { icon:'✓', label:'Building project',        ms:'18.7s', s:'done' },
+    { icon:'◉', label:'Deploying to Edge',       ms:'...',   s:'run'  },
+    { icon:'○', label:'Running health checks',   ms:'',      s:'wait' },
+  ];
   let html = '';
-  for (const l of termLines) {
-    if (l.type === 'blank') { html += `<div style="height:6px"></div>`; continue; }
-    if (l.type === 'cmd') {
-      html += `<div class="t-line"><span class="t-prompt">${l.prompt}</span><span class="t-cmd">${l.text}</span></div>`;
-    } else if (l.type === 'out') {
-      html += `<div class="t-out">${l.text}</div>`;
-    } else if (l.type === 'success') {
-      html += `<div class="t-success">${l.text}</div>`;
-    } else if (l.type === 'url') {
-      html += `<div class="t-url" style="padding-left:24px;font-size:12px;">${l.text}</div>`;
-    } else if (l.type === 'progress') {
-      html += `<div class="deploy-progress">` + progressRows.map(r =>
-        `<div class="dp-row ${r.status}">
-          <span class="dp-icon">${r.icon}</span>
-          <span class="dp-label">${r.label}</span>
-          ${r.ms ? `<span class="dp-ms">${r.ms}</span>` : ''}
-        </div>`
-      ).join('') + `</div>`;
+  for (const r of rows) {
+    if (r.t==='blank') { html += '<div class="t-blank"></div>'; continue; }
+    if (r.t==='cmd')   { html += `<div class="t-line"><span class="t-prompt">$</span><span>&nbsp;${r.h}</span></div>`; continue; }
+    if (r.t==='out')   { html += `<div class="t-out">${r.h}</div>`; continue; }
+    if (r.t==='ok')    { html += `<div style="padding-left:0">${r.h}</div>`; continue; }
+    if (r.t==='url')   { html += `<div class="t-url">${r.h}</div>`; continue; }
+    if (r.t==='dp') {
+      html += '<div class="dp-rows">' + dpRows.map(d =>
+        `<div class="dp-row ${d.s}"><span class="dp-icon">${d.icon}</span><span>${d.label}</span>${d.ms ? `<span class="dp-ms">${d.ms}</span>` : ''}</div>`
+      ).join('') + '</div>';
     }
   }
-  body.innerHTML = html;
+  document.getElementById('t-body').innerHTML = html;
 }
-renderTerminal();
 
-// ── LIVE COUNTER ──────────────────────────────────────
+// ── PRICING ────────────────────────────────────────
+function buildPricing(data) {
+  const grid = document.getElementById('pricing-grid');
+  let plans = data.products || [];
+  if (!plans.length) {
+    const p = parseInt(data.avg_check) || 3990;
+    plans = [
+      { name:'Hobby',      desc:'Для личных проектов.',        price:'0',       badge:'',    features:['3 проекта','100 GB трафика','Авто-деплой'] },
+      { name:'Pro',        desc:'Для серьёзных команд.',       price:String(p), badge:'hit', features:['Безлимит проектов','1 TB трафика','Preview URL','Аналитика'] },
+      { name:'Enterprise', desc:'SLA, SSO, выделенная инфра.', price:'0',       badge:'',    features:['Всё из Pro','Выделенные ресурсы','SSO / SAML','24/7 поддержка'] },
+    ];
+  }
+  grid.innerHTML = '';
+  plans.slice(0,3).forEach((plan, i) => {
+    const isFeatured = plan.badge === 'hit' || i === 1;
+    const priceNum = parseInt(plan.price) || 0;
+    const priceHtml = priceNum > 0
+      ? `₽${priceNum.toLocaleString('ru-RU')}<sub>/мес</sub>`
+      : `<span style="font-size:28px;line-height:1.3">Бесплатно</span>`;
+    const btnLabel = i === 2 ? 'Связаться с отделом продаж' : priceNum > 0 ? 'Попробовать 14 дней' : 'Начать бесплатно';
+    const feats = Array.isArray(plan.features) ? plan.features : (plan.desc ? [plan.desc] : []);
+    grid.innerHTML += `
+      <div class="p-card${isFeatured ? ' featured' : ''}">
+        <div class="p-plan">${plan.name}</div>
+        <div class="p-price">${priceHtml}</div>
+        <div class="p-desc">${plan.desc || ''}</div>
+        <div class="p-div"></div>
+        <ul class="p-feats">${feats.map(f => `<li>${f}</li>`).join('')}</ul>
+        <button class="p-btn ${isFeatured ? 'solid' : 'ghost'}"
+          onclick="openModalFor('${plan.name.replace(/'/g,"\\'")}', ${priceNum})">
+          ${btnLabel}
+        </button>
+      </div>`;
+  });
+}
+
+// ── LIVE COUNTER ───────────────────────────────────
 let liveCount = 2847;
-function tickCounter() {
+setInterval(() => {
   liveCount += Math.floor(Math.random() * 3);
   const el = document.getElementById('live-count');
   if (el) el.textContent = liveCount.toLocaleString('ru-RU');
-}
-setInterval(tickCounter, 2000);
+}, 2000);
 
-// ── METRICS COUNTER ANIMATION ─────────────────────────
+// ── METRICS ANIMATION ──────────────────────────────
 function animateMetric(el) {
   const target = parseFloat(el.dataset.target);
   const suffix = el.dataset.suffix || '';
   const isDecimal = String(target).includes('.');
-  const start = performance.now();
-  const dur = 1600;
-  function step(now) {
+  const dur = 1600; const start = performance.now();
+  const step = (now) => {
     const t = Math.min((now - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const val = target * ease;
+    const val = target * (1 - Math.pow(1 - t, 3));
     el.textContent = (isDecimal ? val.toFixed(2) : Math.round(val)) + suffix;
     if (t < 1) requestAnimationFrame(step);
     else el.textContent = (isDecimal ? target.toFixed(2) : Math.round(target)) + suffix;
-  }
+  };
   requestAnimationFrame(step);
 }
 
-// ── SCROLL REVEAL ─────────────────────────────────────
+// ── SCROLL REVEAL ──────────────────────────────────
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       e.target.classList.add('visible');
-      // Trigger metrics
-      if (e.target.dataset.target !== undefined) {
-        animateMetric(e.target);
-      }
+      if (e.target.dataset.target !== undefined) animateMetric(e.target);
       revealObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.15 });
-
+}, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 document.querySelectorAll('.metric-num[data-target]').forEach(el => revealObs.observe(el));
 
-// ── DEPLOY URL HOVER ──────────────────────────────────
-const urlEl = document.getElementById('deploy-url');
-if (urlEl) {
-  urlEl.addEventListener('click', () => {
-    urlEl.textContent = 'URL скопирован ✓';
-    urlEl.style.color = 'var(--green)';
-    setTimeout(() => {
-      urlEl.textContent = 'https://{{SLUG}}.{{DOMAIN}}/';
-      urlEl.style.color = '';
-    }, 1500);
-  });
-}
-
-// ── NAVBAR HIDE ON SCROLL ─────────────────────────────
+// ── NAVBAR HIDE ────────────────────────────────────
 let lastY = 0;
-const nav = document.querySelector('nav');
+const nav = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   const y = window.scrollY;
-  if (y > lastY && y > 80) nav.style.transform = 'translateY(-100%)';
-  else nav.style.transform = '';
+  nav.style.transform = (y > lastY && y > 80) ? 'translateY(-100%)' : '';
   lastY = y;
 }, { passive: true });
-nav.style.transition = 'transform 0.3s ease';
+
+// ── COPY URL ───────────────────────────────────────
+function copyUrl(el) {
+  const orig = el.textContent;
+  el.textContent = 'Скопировано ✓';
+  el.style.color = 'var(--green)';
+  setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1500);
+}
+
+// ── MODAL ──────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function openModalFor(planName, price) {
+  document.getElementById('modal-product-name').textContent = planName;
+  document.getElementById('modal-amount').textContent = price > 0
+    ? `${price.toLocaleString('ru-RU')} ₽/мес` : 'Бесплатно';
+  openModal();
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
+}
+function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
+function simulatePay() {
+  const btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Обработка...'; btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+    btn.disabled = false; btn.textContent = 'Оплатить безопасно';
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT — читает ?data= из URL или показывает демо
+// ═══════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const payload = new URLSearchParams(window.location.search).get('data');
+  if (payload) {
+    try {
+      render(JSON.parse(decodeURIComponent(atob(payload))));
+    } catch(e) {
+      console.error('Ошибка данных:', e);
+      render(getDemoData());
+    }
+  } else {
+    render(getDemoData());
+  }
+
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    setTimeout(() => document.getElementById('loading-screen').remove(), 500);
+  }, 900);
+});
 </script>
 </body>
 </html>
