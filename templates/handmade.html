@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Творческая мастерская</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   HANDMADE / ТВОРЧЕСКАЯ МАСТЕРСКАЯ
+   Warmth, craft, texture, human hands, linen & clay
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --linen:    #f5f0e8;
+  --parchment:#ede6d6;
+  --clay:     #c07a52;
+  --terracotta:#9b5e3a;
+  --bark:     #3d2c1e;
+  --sage:     #7a8c6e;
+  --ink:      #2a1f14;
+  --dust:     #9a8878;
+  --warm-white: #faf7f2;
+  --cream:    #f9f4ec;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--linen);
+  color: var(--ink);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* Paper texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 1;
+}
+
+/* ─── LOADING ──────────────────────────────── */
+.loading-screen {
+  position: fixed; inset: 0; background: var(--linen);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 24px; z-index: 999;
+  transition: opacity 0.6s;
+}
+.loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-stamp {
+  width: 80px; height: 80px;
+  border: 3px solid var(--clay);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  animation: stampPulse 1.4s ease-in-out infinite;
+}
+.loading-stamp svg { color: var(--clay); }
+@keyframes stampPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.92); opacity: 0.6; }
+}
+.loading-name {
+  font-family: 'Caveat', cursive;
+  font-size: 28px; color: var(--bark);
+  letter-spacing: 0.04em;
+}
+
+/* ─── NAVBAR ───────────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 0 52px;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(245,240,232,0.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(192,122,82,0.18);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; color: var(--ink);
+}
+.nav-logo-mark {
+  width: 38px; height: 38px;
+  border: 1.5px solid var(--clay);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-logo-mark svg { width: 18px; height: 18px; stroke: var(--clay); fill: none; }
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px; font-weight: 500; letter-spacing: 0.01em;
+}
+.nav-logo-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 12px; color: var(--dust);
+  display: block; line-height: 1; margin-top: 1px;
+}
+
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  font-size: 12px; letter-spacing: 0.09em;
+  color: var(--dust); text-decoration: none; transition: color 0.2s;
+  font-weight: 400;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  padding: 10px 26px;
+  background: var(--clay); color: var(--warm-white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; letter-spacing: 0.1em;
+  cursor: pointer; transition: background 0.25s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--terracotta); }
+
+/* ─── HERO ─────────────────────────────────── */
+.hero {
+  margin-top: 68px;
+  min-height: calc(100vh - 68px);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 55% 45%;
+}
+
+.hero-visual {
+  position: relative; overflow: hidden;
+  background: var(--parchment);
+  min-height: 600px;
+}
+#hero-img-wrap {
+  position: absolute; inset: 0;
+}
+#hero-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 10s ease;
+}
+.hero-visual:hover #hero-img-wrap img { transform: scale(1.04); }
+
+.hero-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, #e8dece 0%, #d4c5ae 60%, #c9b898 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Wax seal decorative element */
+.hero-seal {
+  position: absolute; bottom: 40px; left: 40px;
+  width: 90px; height: 90px;
+  background: var(--clay);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(155,94,58,0.35);
+  z-index: 2;
+}
+.hero-seal-text {
+  font-family: 'Caveat', cursive;
+  font-size: 11px; color: var(--warm-white);
+  text-align: center; line-height: 1.3; letter-spacing: 0.03em;
+}
+.hero-seal-line {
+  width: 40px; height: 1px;
+  background: rgba(255,255,255,0.4);
+  margin: 4px 0;
+}
+
+/* Horizontal linen texture strip */
+.hero-visual::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255,255,255,0.015) 3px,
+    rgba(255,255,255,0.015) 4px
+  );
+  pointer-events: none; z-index: 1;
+}
+
+.hero-content {
+  padding: 72px 56px 72px 52px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--linen);
+  position: relative;
+}
+
+.hero-craft-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 36px;
+}
+.hero-craft-tag-line {
+  width: 28px; height: 1px; background: var(--clay);
+}
+.hero-craft-tag-text {
+  font-family: 'Caveat', cursive;
+  font-size: 16px; color: var(--clay); letter-spacing: 0.06em;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 4.5vw, 72px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.hero-title em { font-style: italic; color: var(--clay); }
+
+.hero-desc {
+  font-size: 15px; line-height: 1.8; color: var(--dust);
+  max-width: 360px; margin-bottom: 48px; font-weight: 300;
+}
+
+.hero-actions {
+  display: flex; flex-direction: column; gap: 16px;
+  align-items: flex-start;
+}
+
+.btn-order {
+  padding: 16px 40px;
+  background: var(--bark); color: var(--warm-white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; letter-spacing: 0.12em;
+  cursor: pointer; transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.btn-order::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--clay); opacity: 0;
+  transition: opacity 0.25s;
+}
+.btn-order:hover::after { opacity: 1; }
+.btn-order span { position: relative; z-index: 1; }
+
+.btn-catalog {
+  font-size: 13px; color: var(--dust); background: none; border: none;
+  cursor: pointer; letter-spacing: 0.06em;
+  text-decoration: underline; text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+.btn-catalog:hover { color: var(--ink); }
+
+.hero-stats {
+  display: flex; gap: 32px; margin-top: 52px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(192,122,82,0.2);
+}
+.hero-stat {}
+.hero-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; color: var(--bark); line-height: 1;
+}
+.hero-stat-label {
+  font-size: 11px; color: var(--dust); margin-top: 4px; letter-spacing: 0.06em;
+}
+
+/* ─── PROCESS (replaces "features") ─────────── */
+.process {
+  padding: 96px 52px;
+  background: var(--bark);
+  color: var(--warm-white);
+  position: relative; overflow: hidden;
+}
+
+/* Decorative diagonal */
+.process::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 300px; height: 300px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 50%;
+}
+.process::after {
+  content: '';
+  position: absolute; bottom: -80px; left: 10%;
+  width: 500px; height: 500px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 50%;
+}
+
+.process-header {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 80px; align-items: start;
+  margin-bottom: 72px;
+}
+
+.process-label {
+  font-family: 'Caveat', cursive;
+  font-size: 18px; color: var(--clay);
+  margin-bottom: 16px;
+}
+.process-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 3vw, 46px); font-weight: 400;
+  line-height: 1.15; letter-spacing: -0.01em;
+}
+.process-headline em { font-style: italic; color: var(--clay); }
+
+.process-intro {
+  font-size: 15px; color: rgba(255,255,255,0.55);
+  line-height: 1.75; padding-top: 8px;
+}
+
+.process-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative; z-index: 1;
+}
+.process-step {
+  padding: 40px 36px 40px 0;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  padding-right: 36px;
+}
+.process-step:last-child { border-right: none; padding-right: 0; padding-left: 36px; }
+.process-step:nth-child(2) { padding: 40px 36px; }
+
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px; font-weight: 400;
+  color: rgba(192,122,82,0.25);
+  line-height: 1; margin-bottom: 16px;
+  display: block;
+}
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 500;
+  color: var(--warm-white); margin-bottom: 12px;
+  line-height: 1.3;
+}
+.step-desc {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  line-height: 1.7; font-weight: 300;
+}
+
+/* ─── MATERIALS RIBBON ─────────────────────── */
+.materials-ribbon {
+  background: var(--clay);
+  padding: 20px 52px;
+  overflow: hidden;
+  position: relative;
+}
+.materials-track {
+  display: flex; gap: 48px; align-items: center;
+  animation: scrollTrack 22s linear infinite;
+  white-space: nowrap; width: max-content;
+}
+.materials-ribbon:hover .materials-track { animation-play-state: paused; }
+@keyframes scrollTrack {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.material-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 17px; color: var(--warm-white);
+  letter-spacing: 0.04em; flex-shrink: 0;
+  display: flex; align-items: center; gap: 16px;
+}
+.material-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.5); flex-shrink: 0;
+}
+
+/* ─── PRODUCT CARD (main item) ─────────────── */
+.main-product {
+  padding: 96px 52px;
+  background: var(--cream);
+  display: grid; grid-template-columns: 5fr 4fr;
+  gap: 72px; align-items: start;
+}
+
+.product-image-zone {
+  position: relative;
+}
+.product-img-frame {
+  aspect-ratio: 4/5; overflow: hidden;
+  background: var(--parchment);
+  position: relative;
+}
+.product-img-frame img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.product-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #e8dece 0%, #cfbfa8 100%);
+  min-height: 400px;
+}
+
+/* Corner stitching decorative */
+.product-img-frame::before,
+.product-img-frame::after {
+  content: '';
+  position: absolute; z-index: 2;
+  width: 28px; height: 28px;
+  border: 1.5px solid rgba(192,122,82,0.4);
+}
+.product-img-frame::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.product-img-frame::after  { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+.product-badge {
+  position: absolute; top: -16px; right: -16px;
+  width: 80px; height: 80px;
+  background: var(--sage);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(122,140,110,0.3);
+}
+.product-badge-text {
+  font-family: 'Caveat', cursive;
+  font-size: 11px; color: var(--warm-white);
+  text-align: center; line-height: 1.3;
+}
+
+.product-small-note {
+  margin-top: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.product-small-note-line {
+  width: 20px; height: 1px; background: var(--clay);
+}
+.product-small-note-text {
+  font-family: 'Caveat', cursive;
+  font-size: 14px; color: var(--clay);
+}
+
+/* Product info */
+.product-info {}
+.product-eyebrow {
+  font-family: 'Caveat', cursive;
+  font-size: 16px; color: var(--clay);
+  margin-bottom: 16px; letter-spacing: 0.04em;
+}
+.product-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3vw, 44px); font-weight: 400;
+  line-height: 1.15; color: var(--ink);
+  margin-bottom: 20px; letter-spacing: -0.01em;
+}
+.product-title em { font-style: italic; color: var(--terracotta); }
+
+.product-desc-text {
+  font-size: 14px; line-height: 1.8; color: var(--dust);
+  margin-bottom: 32px; font-weight: 300;
+}
+
+.product-attrs {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 36px;
+  padding: 24px;
+  background: var(--linen);
+  border-left: 3px solid var(--clay);
+}
+.product-attr {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 13px; color: var(--dust);
+}
+.product-attr::before {
+  content: '✦';
+  color: var(--clay); font-size: 9px; flex-shrink: 0;
+}
+
+.product-price-block {
+  display: flex; align-items: flex-end; gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px dashed rgba(192,122,82,0.3);
+}
+.product-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px; font-weight: 400; color: var(--bark); line-height: 1;
+}
+.product-price-old {
+  font-size: 18px; color: var(--dust); text-decoration: line-through;
+  margin-bottom: 4px;
+}
+.product-price-note {
+  font-size: 11px; color: var(--dust); letter-spacing: 0.06em; margin-bottom: 8px;
+}
+
+.btn-craft-order {
+  width: 100%; padding: 18px;
+  background: var(--clay); color: var(--warm-white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; letter-spacing: 0.14em;
+  cursor: pointer; transition: background 0.25s;
+  margin-bottom: 12px;
+}
+.btn-craft-order:hover { background: var(--terracotta); }
+
+.btn-consult {
+  width: 100%; padding: 16px;
+  background: transparent; color: var(--bark);
+  border: 1.5px solid rgba(61,44,30,0.25);
+  border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; letter-spacing: 0.1em;
+  cursor: pointer; transition: all 0.25s;
+}
+.btn-consult:hover { border-color: var(--clay); color: var(--clay); }
+
+.product-guarantee {
+  margin-top: 20px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--dust); letter-spacing: 0.04em;
+}
+.product-guarantee-icon { font-size: 14px; }
+
+/* ─── CUSTOM ORDER FORM ──────────────────── */
+.custom-order {
+  padding: 96px 52px;
+  background: var(--parchment);
+  position: relative; overflow: hidden;
+}
+.custom-order::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--clay) 0, var(--clay) 8px, transparent 8px, transparent 16px);
+}
+
+.custom-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; margin-bottom: 64px; align-items: end;
+}
+.custom-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 18px; color: var(--clay); margin-bottom: 14px;
+}
+.custom-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 3.5vw, 50px); font-weight: 400;
+  line-height: 1.1; color: var(--ink);
+}
+.custom-title em { font-style: italic; }
+.custom-sub {
+  font-size: 14px; color: var(--dust); line-height: 1.7;
+  font-weight: 300;
+}
+
+.custom-form-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 28px 40px;
+}
+.form-group {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-family: 'Caveat', cursive;
+  font-size: 14px; color: var(--bark); letter-spacing: 0.04em;
+}
+.form-input, .form-textarea, .form-select {
+  background: rgba(245,240,232,0.6);
+  border: 1px solid rgba(192,122,82,0.25);
+  border-bottom: 2px solid rgba(192,122,82,0.4);
+  padding: 12px 16px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px; color: var(--ink); font-weight: 300;
+  outline: none; transition: border-color 0.2s; border-radius: 1px;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--clay);
+  border-bottom-color: var(--clay);
+  background: var(--warm-white);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: rgba(0,0,0,0.28); }
+.form-textarea { resize: vertical; min-height: 100px; }
+.form-select { appearance: none; cursor: pointer; }
+
+.form-submit {
+  grid-column: 1 / -1;
+  padding: 18px;
+  background: var(--bark); color: var(--warm-white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; letter-spacing: 0.14em;
+  cursor: pointer; transition: background 0.25s;
+  margin-top: 8px;
+}
+.form-submit:hover { background: var(--clay); }
+
+/* ─── FOOTER ─────────────────────────────── */
+.footer {
+  background: var(--ink);
+  padding: 72px 52px 44px;
+  color: var(--warm-white);
+}
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 64px; padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 32px;
+}
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 400; color: var(--warm-white);
+  margin-bottom: 12px; letter-spacing: -0.01em;
+}
+.footer-brand-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 16px; color: var(--clay); margin-bottom: 20px;
+}
+.footer-brand-text {
+  font-size: 13px; color: rgba(255,255,255,0.35);
+  line-height: 1.7; max-width: 280px;
+}
+.footer-col-title {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 20px; font-weight: 500;
+}
+.footer-col-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-col-links a {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  text-decoration: none; transition: color 0.2s; font-weight: 300;
+}
+.footer-col-links a:hover { color: var(--clay); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
+.footer-izzzi { font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+.footer-izzzi span { color: rgba(255,255,255,0.4); }
+
+/* ─── PAYMENT MODAL ──────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(42,31,20,0.6); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--warm-white); width: 460px; max-width: 95vw;
+  padding: 52px; position: relative;
+  animation: craftSlideUp 0.38s ease;
+  border-top: 4px solid var(--clay);
+}
+@keyframes craftSlideUp {
+  from { transform: translateY(28px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.modal-close {
+  position: absolute; top: 18px; right: 20px;
+  background: none; border: none;
+  font-size: 20px; cursor: pointer; color: var(--dust);
+  line-height: 1;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-eyebrow {
+  font-family: 'Caveat', cursive;
+  font-size: 16px; color: var(--clay); margin-bottom: 6px;
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 400; color: var(--ink); margin-bottom: 28px;
+}
+.modal-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px; font-weight: 400; color: var(--bark); margin-bottom: 28px; line-height: 1;
+}
+.modal-amount sup { font-size: 18px; vertical-align: super; }
+.modal-input {
+  width: 100%; border: 1px solid rgba(192,122,82,0.2);
+  border-bottom: 2px solid rgba(192,122,82,0.35);
+  padding: 13px 16px;
+  font-family: 'Jost', sans-serif; font-size: 14px; color: var(--ink);
+  background: var(--cream); outline: none; margin-bottom: 12px;
+  transition: border-color 0.2s; border-radius: 1px;
+}
+.modal-input:focus { border-color: var(--clay); }
+.modal-input::placeholder { color: rgba(0,0,0,0.22); }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.modal-submit {
+  width: 100%; padding: 16px;
+  background: var(--bark); color: var(--warm-white); border: none;
+  font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: 0.12em;
+  cursor: pointer; transition: background 0.2s; margin-top: 8px; border-radius: 2px;
+}
+.modal-submit:hover { background: var(--clay); }
+.modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.modal-secure { font-size: 11px; color: var(--dust); text-align: center; margin-top: 10px; letter-spacing: 0.05em; }
+.modal-success { text-align: center; display: none; }
+.modal-success.show { display: block; }
+.modal-success-stamp {
+  width: 70px; height: 70px; border-radius: 50%;
+  background: var(--clay); color: var(--warm-white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 20px;
+  box-shadow: 0 4px 20px rgba(192,122,82,0.3);
+}
+.modal-success-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: var(--ink); margin-bottom: 10px; }
+.modal-success-text { font-size: 13px; color: var(--dust); line-height: 1.7; }
+
+/* ─── RESPONSIVE ──────────────────────────── */
+@media (max-width: 960px) {
+  .navbar { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual { min-height: 340px; }
+  .hero-content { padding: 48px 24px; }
+  .process { padding: 64px 24px; }
+  .process-header { grid-template-columns: 1fr; gap: 20px; }
+  .process-steps { grid-template-columns: 1fr; }
+  .process-step, .process-step:nth-child(2), .process-step:last-child { padding: 28px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .main-product { grid-template-columns: 1fr; padding: 64px 24px; gap: 40px; }
+  .custom-order { padding: 64px 24px; }
+  .custom-header { grid-template-columns: 1fr; gap: 20px; }
+  .custom-form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .form-submit { grid-column: 1; }
+  .footer { padding: 52px 24px 32px; }
+  .footer-top { grid-template-columns: 1fr; gap: 36px; }
+  .materials-ribbon { padding: 16px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-stamp">
+    <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" fill="none"/>
+      <path d="M8 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4z" stroke="currentColor" fill="none"/>
+    </svg>
+  </div>
+  <div class="loading-name" id="loading-name-text">Мастерская</div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24" stroke-width="1.5">
+        <path d="M12 3c-1.2 5.4-5 7.8-5 12a5 5 0 0 0 10 0c0-4.2-3.8-6.6-5-12z" stroke="currentColor"/>
+        <path d="M12 10v9" stroke="currentColor" stroke-dasharray="2 2"/>
+      </svg>
+    </div>
+    <div>
+      <span class="nav-logo-text" id="nav-logo">Мастерская</span>
+      <span class="nav-logo-sub">handmade</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Работы</a></li>
+    <li><a href="#">Процесс</a></li>
+    <li><a href="#">Материалы</a></li>
+    <li><a href="#">О мастере</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Заказать изделие</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-visual">
+    <div id="hero-img-wrap">
+      <div class="hero-img-placeholder"></div>
+    </div>
+    <div class="hero-seal">
+      <div class="hero-seal-text">ручная<br>работа</div>
+      <div class="hero-seal-line"></div>
+      <div class="hero-seal-text" style="font-size:9px;">с любовью</div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-craft-tag">
+      <div class="hero-craft-tag-line"></div>
+      <div class="hero-craft-tag-text" id="hero-eyebrow">Творческая мастерская</div>
+    </div>
+
+    <h1 class="hero-title" id="hero-title">
+      Вещи, сделанные<br><em>с душой</em>
+    </h1>
+    <p class="hero-desc" id="hero-desc">
+      Каждое изделие создаётся вручную — от эскиза до последнего стежка.
+      Никаких конвейеров, только живое ремесло.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-order" onclick="openModal()"><span>Заказать изделие</span></button>
+      <button class="btn-catalog">Посмотреть работы →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="hero-stat-works">200+</div>
+        <div class="hero-stat-label">изделий создано</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">ручная работа</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="hero-stat-years">5 лет</div>
+        <div class="hero-stat-label">в ремесле</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS RIBBON -->
+<div class="materials-ribbon">
+  <div class="materials-track" id="materials-track">
+    <span class="material-tag">Натуральная кожа <span class="material-dot"></span></span>
+    <span class="material-tag">Льняные ткани <span class="material-dot"></span></span>
+    <span class="material-tag">Керамика ручной лепки <span class="material-dot"></span></span>
+    <span class="material-tag">Дерево и смола <span class="material-dot"></span></span>
+    <span class="material-tag">Акварельные краски <span class="material-dot"></span></span>
+    <span class="material-tag">Вощёные нити <span class="material-dot"></span></span>
+    <span class="material-tag">Натуральные пигменты <span class="material-dot"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="material-tag">Натуральная кожа <span class="material-dot"></span></span>
+    <span class="material-tag">Льняные ткани <span class="material-dot"></span></span>
+    <span class="material-tag">Керамика ручной лепки <span class="material-dot"></span></span>
+    <span class="material-tag">Дерево и смола <span class="material-dot"></span></span>
+    <span class="material-tag">Акварельные краски <span class="material-dot"></span></span>
+    <span class="material-tag">Вощёные нити <span class="material-dot"></span></span>
+    <span class="material-tag">Натуральные пигменты <span class="material-dot"></span></span>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-header">
+    <div>
+      <div class="process-label">как мы работаем</div>
+      <h2 class="process-headline" id="process-headline">
+        Каждое изделие —<br><em>отдельная история</em>
+      </h2>
+    </div>
+    <p class="process-intro" id="process-intro">
+      Мы не берём готовые заготовки. Каждый заказ начинается с разговора —
+      мы слушаем, эскизируем, подбираем материал и только потом берём инструменты в руки.
+    </p>
+  </div>
+  <div class="process-steps" id="process-steps">
+    <!-- filled by JS -->
+  </div>
+</section>
+
+<!-- MAIN PRODUCT -->
+<section class="main-product">
+  <div class="product-image-zone">
+    <div class="product-img-frame" id="product-img-frame">
+      <div class="product-img-placeholder"></div>
+    </div>
+    <div class="product-badge">
+      <div class="product-badge-text">в наличии</div>
+    </div>
+    <div class="product-small-note">
+      <div class="product-small-note-line"></div>
+      <div class="product-small-note-text">единственный экземпляр</div>
+    </div>
+  </div>
+
+  <div class="product-info">
+    <div class="product-eyebrow">✦ авторская работа</div>
+    <h2 class="product-title" id="product-title">
+      <em>Особенное</em> изделие<br>для особенного человека
+    </h2>
+    <p class="product-desc-text" id="product-desc-text"></p>
+
+    <div class="product-attrs" id="product-attrs">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="product-price-block">
+      <div>
+        <div class="product-price-note">стоимость</div>
+        <div class="product-price" id="product-price"></div>
+      </div>
+      <div class="product-price-old" id="product-price-old"></div>
+    </div>
+
+    <button class="btn-craft-order" onclick="openModal()">Заказать это изделие</button>
+    <button class="btn-consult" onclick="document.querySelector(\'.custom-order\').scrollIntoView({behavior:\'smooth\'})">Обсудить индивидуальный заказ</button>
+
+    <div class="product-guarantee">
+      <span class="product-guarantee-icon">✦</span>
+      Бесплатная доставка по России · Сертификат подлинности в комплекте
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOM ORDER SECTION -->
+<section class="custom-order">
+  <div class="custom-header">
+    <div>
+      <div class="custom-tag">✦ на заказ</div>
+      <h2 class="custom-title">Хотите <em>своё</em>?<br>Давайте создадим</h2>
+    </div>
+    <p class="custom-sub">
+      Опишите, что вы хотите — размер, цвет, назначение, особые пожелания.
+      Я свяжусь с вами в течение суток и предложу варианты и стоимость.
+    </p>
+  </div>
+  <div class="custom-form-grid">
+    <div class="form-group">
+      <label class="form-label">Ваше имя</label>
+      <input class="form-input" type="text" placeholder="Как к вам обращаться">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Телефон или Telegram</label>
+      <input class="form-input" type="text" placeholder="+7 или @username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Что хотите заказать</label>
+      <select class="form-select form-input">
+        <option value="" disabled selected>Выберите категорию</option>
+        <option>Украшения и аксессуары</option>
+        <option>Изделия из кожи</option>
+        <option>Керамика и посуда</option>
+        <option>Текстиль и вязаные вещи</option>
+        <option>Декор для дома</option>
+        <option>Подарочный набор</option>
+        <option>Другое</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Примерный бюджет</label>
+      <select class="form-select form-input">
+        <option value="" disabled selected>Выберите диапазон</option>
+        <option>до 2 000 ₽</option>
+        <option>2 000 – 5 000 ₽</option>
+        <option>5 000 – 10 000 ₽</option>
+        <option>от 10 000 ₽</option>
+      </select>
+    </div>
+    <div class="form-group full">
+      <label class="form-label">Расскажите подробнее</label>
+      <textarea class="form-textarea" placeholder="Опишите пожелания: размер, цвет, материал, для кого, к какому случаю..."></textarea>
+    </div>
+    <button class="form-submit" onclick="handleCustomSubmit(this)">Отправить пожелание →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name" id="footer-brand">Мастерская</div>
+      <div class="footer-brand-sub">handmade с любовью</div>
+      <p class="footer-brand-text">
+        Авторские изделия ручной работы.<br>
+        Каждая вещь создаётся с заботой о материале и о человеке, для которого она делается.
+      </p>
+    </div>
+    <div>
+      <div class="footer-col-title">Навигация</div>
+      <div class="footer-col-links">
+        <a href="#">Все работы</a>
+        <a href="#">Как сделать заказ</a>
+        <a href="#">О мастере</a>
+        <a href="#">Отзывы</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Контакты</div>
+      <div class="footer-col-links">
+        <a href="#">Telegram</a>
+        <a href="#">ВКонтакте</a>
+        <a href="#">Instagram*</a>
+        <a href="#" id="footer-city" style="color:rgba(255,255,255,0.35);cursor:default;">Москва</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy" id="footer-copy">© 2025 Мастерская. Все права защищены.</div>
+    <div class="footer-izzzi">Сделано в <span>ИЗЗЗИ</span></div>
+  </div>
+</footer>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-view">
+      <div class="modal-eyebrow">✦ безопасная оплата</div>
+      <div class="modal-title" id="modal-product-name">Изделие мастера</div>
+      <div class="modal-amount" id="modal-amount">4 990 ₽</div>
+      <input class="modal-input" type="text" placeholder="Номер карты" oninput="fmtCard(this)" maxlength="19">
+      <div class="modal-row">
+        <input class="modal-input" type="text" placeholder="ММ / ГГ" oninput="fmtExpiry(this)" maxlength="7" style="margin:0">
+        <input class="modal-input" type="text" placeholder="CVV" maxlength="3" style="margin:0">
+      </div>
+      <input class="modal-input" type="text" placeholder="Имя владельца карты">
+      <button class="modal-submit" onclick="simulatePay()">Оплатить заказ</button>
+      <div class="modal-secure">🔒 Защищено ЮKassa · Данные карты не сохраняются</div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-stamp">✦</div>
+      <div class="modal-success-title">Заказ принят!</div>
+      <p class="modal-success-text">
+        Мастер свяжется с вами в течение нескольких часов.<br>
+        Мы начнём работу сразу после подтверждения деталей.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DEMO DATA ────────────────────────────────────────────────
+function getDemoData() {
+  return {
+    bizName: 'Мастерская "Нить и Глина"',
+    bizCity: 'Санкт-Петербург',
+    hero_title: 'Вещи, сделанные с душой',
+    hero_desc: 'Украшения, аксессуары и декор ручной работы. Каждое изделие создаётся в единственном экземпляре — для вас и только для вас.',
+    features_title: 'Как мы работаем',
+    features: [
+      { title: 'Замысел и эскиз', desc: 'Начинаем с разговора: узнаём о ваших вкусах, поводе, пожеланиях. Затем делаем эскиз и согласуем с вами.' },
+      { title: 'Выбор материала', desc: 'Используем только натуральные материалы: льняные ткани, кожу растительного дубления, глину и дерево.' },
+      { title: 'Создание и передача', desc: 'Делаем руками, фотографируем процесс и упаковываем в крафтовый бокс с личной открыткой.' }
+    ],
+    product_name: 'Браслет «Тёплый берег»',
+    product_desc: 'Плетёный браслет из вощёной льняной нити с подвеской из терракотовой керамики. Застёжка из бронзы. Подходит на любое запястье.',
+    product_features: ['Натуральная льняная нить', 'Авторская керамическая подвеска', 'Бронзовая застёжка-регулятор', 'Упакован в крафтовую коробку'],
+    avg_check: '3200',
+    hero_image_query: 'handmade craft workshop linen',
+    isDemo: false
+  };
+}
+
+// ─── RENDER ───────────────────────────────────────────────────
+function render(data) {
+  const name = data.bizName || 'Мастерская';
+
+  // Navbar / loading
+  document.getElementById('nav-logo').textContent = name;
+  document.getElementById('loading-name-text').textContent = name;
+
+  // Hero
+  document.getElementById('hero-eyebrow').textContent = name;
+  const heroTitle = data.hero_title || 'Вещи, сделанные с душой';
+  const titleParts = heroTitle.split(' ');
+  const midPoint = Math.floor(titleParts.length / 2);
+  document.getElementById('hero-title').innerHTML =
+    titleParts.slice(0, midPoint).join(' ') + '<br><em>' + titleParts.slice(midPoint).join(' ') + '</em>';
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
+
+  // Stats
+  document.getElementById('hero-stat-works').textContent = (Math.floor(Math.random() * 150) + 80) + '+';
+
+  // Process steps (features)
+  const feats = data.features || [];
+  document.getElementById('process-headline').innerHTML =
+    (data.features_title || 'Как мы работаем') + '<br><em>шаг за шагом</em>';
+  const stepsEl = document.getElementById('process-steps');
+  stepsEl.innerHTML = '';
+  feats.forEach((f, i) => {
+    stepsEl.innerHTML += `
+      <div class="process-step">
+        <span class="step-num">0${i + 1}</span>
+        <div class="step-title">${f.title}</div>
+        <div class="step-desc">${f.desc}</div>
+      </div>`;
+  });
+
+  // Product
+  let basePrice = parseInt(data.avg_check) || 3200;
+  let price = Math.round(basePrice / 100) * 100 - 10;
+  if (price < 290) price = 290;
+  let oldPrice = Math.round(price * 1.3 / 100) * 100 - 10;
+
+  document.getElementById('product-title').innerHTML =
+    '<em>' + (data.product_name || 'Авторское изделие') + '</em>';
+  document.getElementById('product-desc-text').textContent = data.product_desc || '';
+  document.getElementById('product-price').textContent = price.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('product-price-old').textContent = oldPrice.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('modal-amount').textContent = price.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('modal-product-name').textContent = data.product_name || name;
+
+  const attrsEl = document.getElementById('product-attrs');
+  attrsEl.innerHTML = '';
+  (data.product_features || []).forEach(f => {
+    attrsEl.innerHTML += `<div class="product-attr">${f}</div>`;
+  });
+
+  // Footer
+  document.getElementById('footer-brand').textContent = name;
+  const cityEl = document.getElementById('footer-city');
+  if (cityEl && data.bizCity) cityEl.textContent = data.bizCity;
+  document.getElementById('footer-copy').textContent =
+    `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
+
+  // Hero image
+  loadHeroImage(data.hero_image_query || 'handmade craft studio');
+}
+
+// ─── IMAGE LOADING ────────────────────────────────────────────
+async function loadHeroImage(query) {
+  try {
+    const resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error('no image');
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const wrap = document.getElementById('hero-img-wrap');
+    wrap.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;min-height:500px;';
+    wrap.appendChild(img);
+  } catch(e) {
+    // keep placeholder
+  }
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
+  const btn = document.querySelector('.modal-submit');
+  if (btn) { btn.textContent = 'Оплатить заказ'; btn.disabled = false; }
+}
+function simulatePay() {
+  const btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Обработка...'; btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+function handleCustomSubmit(btn) {
+  btn.textContent = 'Отправлено! Скоро свяжемся ✦';
+  btn.style.background = 'var(--sage)';
+  btn.disabled = true;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const payload = params.get('data');
+  if (payload) {
+    try {
+      const data = JSON.parse(decodeURIComponent(atob(payload)));
+      document.getElementById('loading-name-text').textContent = data.bizName || 'Мастерская';
+      render(data);
+    } catch(e) {
+      console.error('Ошибка данных:', e);
+      render(getDemoData());
+    }
+  } else {
+    render(getDemoData());
+  }
+
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    setTimeout(() => document.getElementById('loading-screen').remove(), 600);
+  }, 900);
+});
+</script>
+</body>
+</html>
