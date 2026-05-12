@@ -274,99 +274,80 @@ body {
 }
 .section-big-title .dim { color: rgba(255,255,255,0.22); }
 
-/* ─── TRANSFORMATIONS (ДО / ПОСЛЕ) ───────────── */
-.transformations {
+/* ─── TRAINERS ────────────────────────────────── */
+.trainers {
   padding: 100px 48px;
   border-bottom: 1px solid var(--border);
 }
-.transformations-header {
+.trainers-header {
   display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
   align-items: end; margin-bottom: 72px;
 }
-.transformations-sub {
+.trainers-sub {
   font-size: 15px; color: var(--muted); line-height: 1.7; font-weight: 300;
   align-self: end;
 }
-.transforms-grid {
+.trainers-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
 }
-.transform-card {
+.trainer-card {
   background: var(--card);
   border: 1px solid var(--border);
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s;
+  cursor: default;
 }
-.transform-card:hover { transform: scale(1.01); z-index: 2; }
-.transform-images {
+.trainer-photo {
   position: relative;
   aspect-ratio: 3/4;
-  display: grid; grid-template-columns: 1fr 1fr;
   overflow: hidden;
-}
-.transform-half {
-  position: relative; overflow: hidden;
   background: #1a1a1a;
-  display: flex; align-items: center; justify-content: center;
 }
-.transform-half img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(30%);
+.trainer-photo img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  filter: grayscale(20%) contrast(1.05);
+  transition: transform 6s ease, filter 0.4s;
+  display: block;
 }
-.transform-half-placeholder {
+.trainer-card:hover .trainer-photo img {
+  transform: scale(1.04);
+  filter: grayscale(0%) contrast(1.05);
+}
+.trainer-photo-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(180deg, #1c1c1c 0%, #111 100%);
+  background: linear-gradient(180deg, #222 0%, #111 100%);
 }
-.transform-half-placeholder svg { opacity: 0.12; }
-.transform-label {
-  position: absolute; bottom: 10px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 13px; letter-spacing: 0.15em;
-  padding: 5px 10px;
-  z-index: 2;
-}
-.transform-label.before {
-  left: 8px; background: rgba(0,0,0,0.7); color: var(--muted);
-}
-.transform-label.after {
-  right: 8px; background: var(--red); color: var(--white);
-}
-.transform-divider {
-  position: absolute; left: 50%; top: 0; bottom: 0;
-  width: 2px; background: var(--red); z-index: 3;
-  transform: translateX(-50%);
-}
-.transform-divider::after {
-  content: '//';
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px; color: var(--white);
+.trainer-photo-placeholder svg { opacity: 0.12; }
+.trainer-spec {
+  position: absolute; top: 16px; left: 0;
   background: var(--red);
-  padding: 6px 8px;
-  letter-spacing: 0.05em;
-}
-.transform-info {
-  padding: 22px 24px;
-}
-.transform-name {
-  font-family: 'Barlow', sans-serif;
-  font-size: 15px; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--white); margin-bottom: 6px;
-}
-.transform-stats {
-  display: flex; gap: 20px;
-}
-.transform-stat {
-  display: flex; flex-direction: column;
-}
-.transform-stat-num {
+  padding: 5px 14px 5px 16px;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 26px; line-height: 1; color: var(--red); letter-spacing: 0.03em;
+  font-size: 13px; letter-spacing: 0.12em; color: var(--white);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
 }
-.transform-stat-label {
+.trainer-info {
+  padding: 24px 28px 28px;
+  border-top: 1px solid var(--border);
+}
+.trainer-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 0.05em; color: var(--white);
+  margin-bottom: 6px; line-height: 1;
+}
+.trainer-bio {
+  font-size: 13px; color: var(--muted); line-height: 1.65; font-weight: 300;
+  margin-bottom: 18px;
+}
+.trainer-stats {
+  display: flex; gap: 24px;
+}
+.trainer-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; line-height: 1; color: var(--red); letter-spacing: 0.03em;
+}
+.trainer-stat-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); margin-top: 2px;
 }
@@ -471,7 +452,24 @@ body {
   position: relative;
 }
 .product-card:hover { transform: translateY(-4px); box-shadow: 0 32px 80px rgba(0,0,0,0.7); }
-.product-card-top {
+.product-img-wrap {
+  width: 100%; height: 200px;
+  overflow: hidden; position: relative;
+  background: #1a1a1a;
+}
+.product-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.65) contrast(1.1);
+  transition: transform 6s ease;
+}
+.product-card:hover .product-img-wrap img { transform: scale(1.05); }
+.product-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #1c1c1c 0%, #111 100%);
+}
+
+
   padding: 36px 36px 28px;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -790,6 +788,11 @@ body {
   </div>
   <div class="product-card" onclick="openModal()">
     <div class="product-card-accent"></div>
+    <div class="product-img-wrap" id="product-img-wrap">
+      <div class="product-img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="rgba(255,255,255,0.1)"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
+      </div>
+    </div>
     <div class="product-card-top">
       <div class="product-label" id="product-label">Хит сезона</div>
       <div class="product-name" id="product-name">Безлимит на месяц</div>
@@ -962,7 +965,8 @@ function render(data) {
           </div>
         </div>
       </div>`;
-    loadTransformImages(i, t.query || 'fitness transformation');
+    loadCardImage(t.query + ' before unfit', 'tf-before-' + i);
+    loadCardImage(t.query + ' after fit athletic', 'tf-after-' + i);
   });
 
   // Schedule
@@ -1035,32 +1039,33 @@ function render(data) {
   document.getElementById('footer-tagline').textContent = data.bizCity ? `Фитнес · ${data.bizCity}` : 'Фитнес';
   document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
-  // Hero image
-  loadHeroImage(data.hero_image_query || 'gym training dark');
+  // Images
+  loadCardImage(data.hero_image_query || 'gym training dark', 'hero-img-wrap');
+  loadCardImage((data.hero_image_query || 'gym training') + ' workout', 'product-img-wrap');
 
   // Demo banner
   if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
 }
 
 // ─── IMAGE LOADING ────────────────────────────────────────────
-async function loadHeroImage(query) {
+async function loadCardImage(query, id) {
   try {
     const resp = await fetch('/image?q=' + encodeURIComponent(query));
     if (!resp.ok) throw new Error('no image');
     const blob = await resp.blob();
     const url = URL.createObjectURL(blob);
-    const wrap = document.getElementById('hero-img-wrap');
+    const wrap = document.getElementById(id);
+    if (!wrap) return;
     wrap.innerHTML = '';
     const img = document.createElement('img');
     img.src = url;
     wrap.appendChild(img);
   } catch(e) {
-    // keep dark background
+    // keep placeholder
   }
 }
 
-// ─── SCHEDULE DAY RENDER ──────────────────────────────────────
-function renderScheduleDay(schedule, dayIndex) {
+// ─── SCHEDULE DAY RENDER ──────────────────────────────────────function renderScheduleDay(schedule, dayIndex) {
   const sg = document.getElementById('schedule-grid');
   const dayClasses = schedule.filter(c => c.day === dayIndex);
   if (dayClasses.length === 0) {
@@ -1083,25 +1088,6 @@ function renderScheduleDay(schedule, dayIndex) {
   });
 }
 
-// ─── TRANSFORM IMAGES ─────────────────────────────────────────
-async function loadTransformImages(idx, query) {
-  try {
-    const r1 = await fetch('/image?q=' + encodeURIComponent(query + ' before'));
-    if (r1.ok) {
-      const b1 = await r1.blob();
-      const el = document.getElementById('tf-before-' + idx);
-      if (el) { el.innerHTML = ''; const img = document.createElement('img'); img.src = URL.createObjectURL(b1); el.appendChild(img); }
-    }
-  } catch(e) {}
-  try {
-    const r2 = await fetch('/image?q=' + encodeURIComponent(query + ' after fit'));
-    if (r2.ok) {
-      const b2 = await r2.blob();
-      const el = document.getElementById('tf-after-' + idx);
-      if (el) { el.innerHTML = ''; const img = document.createElement('img'); img.src = URL.createObjectURL(b2); el.appendChild(img); }
-    }
-  } catch(e) {}
-}
 
 // ─── MODAL ────────────────────────────────────────────────────
 function openModal() { document.getElementById('modal').classList.add('active'); }
