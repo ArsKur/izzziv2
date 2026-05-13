@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Клиника</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   MEDICAL / CLINIC TEMPLATE
+   Clinical Precision — архитектурный минимализм
+   Белый · угольный · глубокий морской #1a6b8a
+   Функционал: запись, врачи, услуги, прайс
+   ════════════════════════════════════════════════ */
+:root {
+  --w:    #ffffff;
+  --bg:   #f7f8fa;
+  --bg2:  #eef0f3;
+  --coal: #141416;
+  --ink:  #2d2f33;
+  --mist: rgba(20,20,22,.42);
+  --mist2:rgba(20,20,22,.18);
+  --line: rgba(20,20,22,.08);
+  --line2:rgba(20,20,22,.14);
+  --blue: #1a6b8a;
+  --blue2:#22879e;
+  --blue3:#e8f3f7;
+  --blue4:#d0e8f0;
+  --red:  #c94040;
+  --grn:  #2a8a5a;
+  --serif:'Instrument Serif', Georgia, serif;
+  --sans: 'Inter Tight', sans-serif;
+  --r:    10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--coal);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LOADING ─────────────────────────────────── */
+#ld {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--w);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+  transition: opacity .5s, visibility .5s;
+}
+#ld.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.ld-cross {
+  width: 40px; height: 40px; position: relative;
+}
+.ld-cross::before, .ld-cross::after {
+  content: ''; position: absolute;
+  background: var(--blue); border-radius: 3px;
+}
+.ld-cross::before { width: 4px; height: 100%; left: 50%; transform: translateX(-50%); animation: pulse .9s ease-in-out infinite; }
+.ld-cross::after  { width: 100%; height: 4px; top: 50%; transform: translateY(-50%); animation: pulse .9s .15s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.ld-name { font-size: 14px; font-weight: 500; color: var(--mist); letter-spacing: .08em; }
+
+/* ── TOP BAR ─────────────────────────────────── */
+.topbar {
+  background: var(--blue);
+  padding: 8px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-phone {
+  font-size: 13px; font-weight: 600; color: var(--w);
+  letter-spacing: .02em; text-decoration: none;
+}
+.topbar-phone span { opacity: .65; font-weight: 400; margin-right: 8px; }
+.topbar-hours { font-size: 12px; color: rgba(255,255,255,.65); }
+.topbar-hours b { color: rgba(255,255,255,.9); }
+.topbar-emergency {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; color: rgba(255,255,255,.75);
+}
+.topbar-dot { width: 6px; height: 6px; border-radius: 50%; background: #5de698; animation: pulse .9s infinite; }
+
+/* ── NAVBAR ──────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--w);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  padding: 0 48px; height: 60px;
+  box-shadow: 0 1px 0 var(--line), 0 4px 24px rgba(0,0,0,.04);
+  transition: transform .3s;
+}
+.nav-logo {
+  font-family: var(--serif); font-size: 20px; font-style: italic;
+  color: var(--coal); letter-spacing: -.01em; margin-right: 40px;
+  flex-shrink: 0;
+}
+.nav-logo span { font-style: normal; color: var(--blue); font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .12em; display: block; line-height: 1; margin-top: 2px; }
+.nav-links { display: flex; gap: 4px; list-style: none; flex: 1; }
+.nav-links a {
+  display: block; padding: 6px 14px; border-radius: 6px;
+  font-size: 13px; font-weight: 500; color: var(--ink);
+  text-decoration: none; transition: all .2s;
+}
+.nav-links a:hover { background: var(--bg); color: var(--coal); }
+.nav-right { display: flex; gap: 10px; align-items: center; }
+.nav-phone {
+  font-size: 14px; font-weight: 700; color: var(--blue);
+  text-decoration: none; letter-spacing: -.01em;
+}
+.btn-appt {
+  padding: 9px 22px; border-radius: var(--r);
+  background: var(--blue); border: none; color: var(--w);
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn-appt:hover { background: var(--blue2); }
+
+/* ── HERO ────────────────────────────────────── */
+.hero {
+  background: var(--w);
+  display: grid; grid-template-columns: 1fr 480px;
+  gap: 0; min-height: 560px;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.hero-l {
+  padding: 60px 64px 60px 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+/* subtle vertical rule accent */
+.hero-l::before {
+  content: '';
+  position: absolute; left: 52px; top: 15%; bottom: 15%;
+  width: 2px; background: var(--blue);
+  border-radius: 2px; opacity: .18;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 22px;
+}
+.hero-tag::before { content: ''; width: 22px; height: 1.5px; background: var(--blue); border-radius: 2px; }
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 400; line-height: 1.1;
+  color: var(--coal); margin-bottom: 18px;
+  letter-spacing: -.01em;
+}
+.hero-title em { font-style: italic; color: var(--blue); }
+.hero-desc {
+  font-size: 16px; color: var(--mist); line-height: 1.7;
+  max-width: 440px; margin-bottom: 36px; font-weight: 400;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  background: var(--blue3); border: 1px solid var(--blue4);
+  font-size: 12px; font-weight: 500; color: var(--blue);
+}
+.chip::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); opacity: .5; }
+
+.hero-stats { display: flex; gap: 40px; padding-top: 28px; border-top: 1px solid var(--line); }
+.hs-num { font-size: 28px; font-weight: 700; color: var(--coal); letter-spacing: -.03em; line-height: 1; }
+.hs-num span { font-size: 14px; font-weight: 400; color: var(--blue); }
+.hs-label { font-size: 12px; color: var(--mist); margin-top: 4px; }
+
+/* BOOKING WIDGET — hero right */
+.hero-r {
+  background: var(--bg);
+  padding: 36px 36px 32px;
+  display: flex; flex-direction: column;
+}
+.bw-title {
+  font-size: 14px; font-weight: 700; color: var(--coal);
+  margin-bottom: 6px; letter-spacing: -.01em;
+}
+.bw-sub { font-size: 12px; color: var(--mist); margin-bottom: 24px; }
+
+.bw-step { margin-bottom: 18px; }
+.bw-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--mist); margin-bottom: 8px;
+}
+.bw-select {
+  width: 100%; padding: 11px 14px;
+  background: var(--w); border: 1px solid var(--line2);
+  border-radius: var(--r); color: var(--coal);
+  font-family: var(--sans); font-size: 14px; font-weight: 500;
+  outline: none; cursor: pointer; transition: border-color .2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%231a6b8a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.bw-select:focus { border-color: var(--blue); }
+
+/* mini calendar */
+.bw-cal-grid {
+  display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
+}
+.cal-day-head { font-size: 10px; font-weight: 600; color: var(--mist); text-align: center; padding: 2px 0; }
+.cal-day {
+  aspect-ratio: 1; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; color: var(--ink);
+  cursor: pointer; transition: all .15s;
+}
+.cal-day:hover { background: var(--blue3); color: var(--blue); }
+.cal-day.today { border: 1.5px solid var(--blue); color: var(--blue); font-weight: 700; }
+.cal-day.selected { background: var(--blue); color: var(--w); }
+.cal-day.empty { pointer-events: none; }
+.cal-day.past { opacity: .3; pointer-events: none; }
+
+/* time slots */
+.bw-slots { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.slot-btn {
+  padding: 7px 14px; border-radius: 7px;
+  background: var(--w); border: 1px solid var(--line2);
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  color: var(--ink); cursor: pointer; transition: all .15s;
+}
+.slot-btn:hover { border-color: var(--blue); color: var(--blue); }
+.slot-btn.active { background: var(--blue); color: var(--w); border-color: var(--blue); }
+.slot-btn.busy { opacity: .35; cursor: not-allowed; text-decoration: line-through; }
+
+.bw-confirm {
+  width: 100%; padding: 13px; border-radius: var(--r);
+  background: var(--blue); border: none; color: var(--w);
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background .2s; margin-top: 18px;
+}
+.bw-confirm:hover { background: var(--blue2); }
+.bw-note { font-size: 11px; color: var(--mist); text-align: center; margin-top: 10px; }
+
+/* ── SPECIALTIES STRIP ───────────────────────── */
+.spec-strip {
+  background: var(--w);
+  border-bottom: 1px solid var(--line);
+  padding: 0 48px;
+  display: flex; overflow-x: auto; gap: 0;
+}
+.spec-strip::-webkit-scrollbar { display: none; }
+.spec-item {
+  flex-shrink: 0; padding: 20px 24px;
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; cursor: pointer; transition: background .2s;
+  min-width: 110px;
+}
+.spec-item:hover { background: var(--bg); }
+.spec-item:first-child { border-left: 1px solid var(--line); }
+.spec-abbr {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: var(--blue3); border: 1px solid var(--blue4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--blue);
+  letter-spacing: .05em;
+}
+.spec-item:hover .spec-abbr { background: var(--blue); color: var(--w); border-color: var(--blue); }
+.spec-name { font-size: 11px; font-weight: 600; color: var(--ink); text-align: center; letter-spacing: .02em; }
+
+/* ── DOCTORS ─────────────────────────────────── */
+.doctors-section {
+  padding: 80px 48px;
+  background: var(--w);
+  border-bottom: 1px solid var(--line);
+}
+.section-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 40px;
+}
+.section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.section-title {
+  font-family: var(--serif); font-size: clamp(28px,3vw,44px);
+  font-weight: 400; color: var(--coal); line-height: 1.1;
+}
+.section-title em { font-style: italic; }
+.section-link {
+  font-size: 13px; font-weight: 600; color: var(--blue);
+  text-decoration: none; letter-spacing: .02em;
+  display: flex; align-items: center; gap: 6px;
+  transition: gap .2s;
+}
+.section-link:hover { gap: 10px; }
+
+.doctors-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.doc-card {
+  background: var(--bg); border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--line); transition: all .3s; cursor: pointer;
+}
+.doc-card:hover { border-color: var(--blue4); box-shadow: 0 8px 32px rgba(26,107,138,.1); transform: translateY(-2px); }
+.doc-img-wrap {
+  aspect-ratio: 4/3; position: relative; overflow: hidden;
+  background: var(--bg2);
+}
+.doc-img-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: .4;
+  background: linear-gradient(160deg, var(--bg2) 0%, var(--blue3) 100%);
+}
+.doc-img-el { width: 100%; height: 100%; object-fit: cover; display: none; }
+/* next slot badge on image */
+.doc-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(42,138,90,.9); backdrop-filter: blur(4px);
+  color: var(--w); font-size: 10px; font-weight: 600;
+  padding: 4px 9px; border-radius: 6px; letter-spacing: .04em;
+}
+.doc-body { padding: 16px 18px; }
+.doc-spec {
+  font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 6px;
+}
+.doc-name { font-size: 16px; font-weight: 700; color: var(--coal); margin-bottom: 4px; letter-spacing: -.01em; }
+.doc-exp  { font-size: 12px; color: var(--mist); margin-bottom: 14px; }
+.doc-slots { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.doc-slot {
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--blue3); color: var(--blue);
+  font-size: 11px; font-weight: 600; letter-spacing: .02em;
+}
+.doc-book {
+  width: 100%; padding: 9px; border-radius: 8px;
+  background: var(--w); border: 1.5px solid var(--blue4);
+  color: var(--blue); font-family: var(--sans); font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+}
+.doc-book:hover { background: var(--blue); color: var(--w); border-color: var(--blue); }
+
+/* ── SERVICES ────────────────────────────────── */
+.services-section {
+  padding: 80px 48px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.services-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 2px;
+  background: var(--line); border-radius: 14px; overflow: hidden;
+  margin-top: 40px;
+}
+.svc-card {
+  background: var(--w); padding: 36px 30px;
+  display: flex; flex-direction: column;
+  cursor: pointer; transition: background .25s;
+  position: relative;
+}
+.svc-card:hover { background: var(--blue3); }
+.svc-card:hover .svc-arrow { opacity: 1; transform: translate(2px,-2px); }
+.svc-arrow {
+  position: absolute; top: 24px; right: 24px;
+  font-size: 18px; color: var(--blue);
+  opacity: 0; transition: all .25s;
+}
+.svc-num-badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; color: var(--blue);
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 14px; font-family: var(--sans);
+}
+.svc-name { font-size: 17px; font-weight: 700; color: var(--coal); margin-bottom: 8px; letter-spacing: -.01em; }
+.svc-desc { font-size: 13px; color: var(--mist); line-height: 1.65; flex: 1; margin-bottom: 16px; }
+.svc-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--line); }
+.svc-price { font-size: 16px; font-weight: 700; color: var(--coal); letter-spacing: -.02em; }
+.svc-dur { font-size: 11px; color: var(--mist); font-weight: 500; letter-spacing: .04em; }
+
+/* ── CHECKUP PACKAGES ────────────────────────── */
+.checkup-section {
+  padding: 80px 48px;
+  background: var(--coal);
+}
+.checkup-section .section-title { color: var(--w); }
+.checkup-section .section-eyebrow { color: var(--blue2); }
+.checkup-section .section-link { color: var(--blue2); }
+.checkup-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+  margin-top: 40px;
+}
+.ck-card {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 32px 28px;
+  display: flex; flex-direction: column;
+  transition: all .3s; cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.ck-card:hover { border-color: rgba(26,107,138,.6); background: rgba(26,107,138,.08); }
+.ck-card.featured { border-color: var(--blue); background: rgba(26,107,138,.15); }
+.ck-tag {
+  position: absolute; top: 0; right: 24px;
+  background: var(--blue); color: var(--w);
+  font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  padding: 4px 12px; border-radius: 0 0 8px 8px;
+}
+.ck-name { font-size: 19px; font-weight: 700; color: var(--w); margin-bottom: 6px; letter-spacing: -.01em; }
+.ck-target { font-size: 12px; color: rgba(255,255,255,.45); margin-bottom: 20px; font-weight: 400; }
+.ck-includes { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; flex: 1; }
+.ck-includes li {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.4;
+}
+.ck-includes li::before { content: '✓'; color: var(--blue2); font-weight: 700; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+.ck-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 18px; display: flex; align-items: flex-end; justify-content: space-between; }
+.ck-price { font-size: 28px; font-weight: 700; color: var(--w); letter-spacing: -.03em; line-height: 1; }
+.ck-price sub { font-size: 13px; font-weight: 400; color: rgba(255,255,255,.4); vertical-align: baseline; }
+.ck-btn {
+  padding: 9px 20px; border-radius: 8px;
+  background: var(--blue); border: none; color: var(--w);
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: background .2s;
+}
+.ck-btn:hover { background: var(--blue2); }
+
+/* ── CLINIC MAP / INFO BLOCK ─────────────────── */
+.info-section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+.info-img { position: relative; overflow: hidden; background: var(--bg2); min-height: 400px; }
+.info-img-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: .18; }
+#info-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.info-content {
+  background: var(--w); padding: 64px 56px;
+  display: flex; flex-direction: column; justify-content: center;
+  border-left: 1px solid var(--line);
+}
+.info-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; }
+.info-title { font-family: var(--serif); font-size: clamp(26px,2.8vw,40px); font-weight: 400; color: var(--coal); margin-bottom: 28px; line-height: 1.2; }
+.info-rows { display: flex; flex-direction: column; gap: 0; }
+.info-row {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 16px; padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.info-row:last-child { border-bottom: none; }
+.ir-key { font-size: 12px; font-weight: 600; color: var(--mist); letter-spacing: .06em; text-transform: uppercase; padding-top: 1px; }
+.ir-val { font-size: 14px; font-weight: 500; color: var(--coal); line-height: 1.5; }
+.ir-val a { color: var(--blue); text-decoration: none; }
+.ir-val a:hover { text-decoration: underline; }
+.info-map-btn {
+  margin-top: 28px; display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: var(--r);
+  background: var(--blue3); border: 1.5px solid var(--blue4);
+  color: var(--blue); font-family: var(--sans); font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all .2s; width: fit-content;
+}
+.info-map-btn:hover { background: var(--blue); color: var(--w); border-color: var(--blue); }
+
+/* ── CTA ─────────────────────────────────────── */
+.cta-section {
+  background: var(--blue);
+  padding: 80px 48px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.cta-title {
+  font-family: var(--serif); font-size: clamp(30px,4vw,54px);
+  font-weight: 400; color: var(--w); line-height: 1.1;
+}
+.cta-title em { font-style: italic; }
+.cta-sub { font-size: 15px; color: rgba(255,255,255,.65); margin-top: 14px; line-height: 1.6; }
+.cta-form { display: flex; flex-direction: column; gap: 12px; }
+.cta-input {
+  padding: 13px 16px; border-radius: var(--r);
+  background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.25);
+  color: var(--w); font-family: var(--sans); font-size: 14px;
+  outline: none; transition: border-color .2s;
+}
+.cta-input::placeholder { color: rgba(255,255,255,.5); }
+.cta-input:focus { border-color: rgba(255,255,255,.7); }
+.cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cta-submit {
+  padding: 14px; border-radius: var(--r);
+  background: var(--w); border: none; color: var(--blue);
+  font-family: var(--sans); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .2s; letter-spacing: .01em;
+}
+.cta-submit:hover { background: var(--coal); color: var(--w); }
+.cta-agree { font-size: 11px; color: rgba(255,255,255,.45); line-height: 1.5; }
+
+/* ── FOOTER ──────────────────────────────────── */
+footer {
+  background: var(--coal);
+  padding: 40px 48px;
+  display: grid; grid-template-columns: 1fr auto auto auto;
+  gap: 64px; align-items: start;
+}
+.footer-logo { font-family: var(--serif); font-size: 19px; font-style: italic; color: rgba(255,255,255,.7); }
+.footer-logo span { font-style: normal; color: var(--blue2); font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: .12em; display: block; margin-top: 4px; }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.25); margin-top: 8px; }
+.footer-col h4 { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,.55); text-decoration: none; margin-bottom: 10px; transition: color .2s; }
+.footer-col a:hover { color: rgba(255,255,255,.9); }
+
+/* ── MODAL ───────────────────────────────────── */
+.modal-ov {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(20,20,22,.6); backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: all .3s;
+}
+.modal-ov.active { opacity: 1; visibility: visible; }
+.modal-box {
+  background: var(--w); border-radius: 20px;
+  padding: 44px; width: 100%; max-width: 460px;
+  position: relative; box-shadow: 0 32px 80px rgba(0,0,0,.2);
+}
+.modal-x {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--bg); border: none; border-radius: 50%;
+  width: 32px; height: 32px; font-size: 18px; line-height: 1;
+  color: var(--mist); cursor: pointer; transition: all .2s;
+}
+.modal-x:hover { background: var(--bg2); }
+.modal-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+.modal-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--coal); margin-bottom: 4px; }
+.modal-amount { font-size: 36px; font-weight: 700; color: var(--coal); margin-bottom: 28px; letter-spacing: -.03em; }
+.modal-amount sub { font-size: 15px; font-weight: 400; color: var(--mist); vertical-align: baseline; }
+.m-input {
+  width: 100%; padding: 12px 14px; margin-bottom: 10px;
+  background: var(--bg); border: 1px solid var(--line2);
+  border-radius: var(--r); color: var(--coal);
+  font-family: var(--sans); font-size: 14px; outline: none;
+  transition: border-color .2s;
+}
+.m-input:focus { border-color: var(--blue); }
+.m-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.m-submit {
+  width: 100%; padding: 14px; border-radius: var(--r); border: none;
+  background: var(--blue); color: var(--w);
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background .2s; margin-top: 4px;
+}
+.m-submit:hover { background: var(--blue2); }
+.m-secure { text-align: center; font-size: 11px; color: var(--mist); margin-top: 10px; }
+.m-success { display: none; text-align: center; padding: 16px 0; }
+.m-success.show { display: block; }
+.ms-icon { margin-bottom: 16px; display: flex; justify-content: center; }
+.ms-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--coal); margin-bottom: 8px; }
+.ms-text { font-size: 14px; color: var(--mist); line-height: 1.7; }
+
+/* ── REVEAL ──────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div id="ld">
+  <div class="ld-cross"></div>
+  <div class="ld-name" id="ld-name">Клиника</div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="topbar-phone" href="#" id="topbar-phone"><span>Запись:</span>+7 (495) 000-00-00</a>
+  <div class="topbar-hours"><b>Пн–Пт</b> 08:00–21:00 &nbsp;·&nbsp; <b>Сб–Вс</b> 09:00–18:00</div>
+  <div class="topbar-emergency"><span class="topbar-dot"></span>Скорая помощь 24/7</div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo" id="nav-logo">Клиника<span id="nav-sub">МЕДИЦИНСКИЙ ЦЕНТР</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Врачи</a></li>
+    <li><a href="#">Услуги</a></li>
+    <li><a href="#">Чекапы</a></li>
+    <li><a href="#">Анализы</a></li>
+    <li><a href="#">О клинике</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-phone" href="#" id="nav-phone">+7 (495) 000-00-00</a>
+    <button class="btn-appt" onclick="openModal()">Записаться</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="hero-tag" id="hero-tag">Москва · Медицинский центр</div>
+    <h1 class="hero-title" id="hero-title">Забота о здоровье<br>с <em>первого визита</em></h1>
+    <p class="hero-desc" id="hero-desc">Многопрофильная клиника с опытными врачами, современной диагностикой и онлайн-записью без очередей.</p>
+    <div class="hero-chips" id="hero-chips">
+      <div class="chip">Онлайн-запись 24/7</div>
+      <div class="chip">Результаты в приложении</div>
+      <div class="chip">Страховые программы</div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hs-num" id="hs-1">0<span>+</span></div><div class="hs-label">специалистов</div></div>
+      <div><div class="hs-num" id="hs-2">0<span>+</span></div><div class="hs-label">пациентов в год</div></div>
+      <div><div class="hs-num" id="hs-3">0<span>+</span></div><div class="hs-label">лет на рынке</div></div>
+    </div>
+  </div>
+
+  <!-- BOOKING WIDGET -->
+  <div class="hero-r">
+    <div class="bw-title">Онлайн-запись к врачу</div>
+    <div class="bw-sub">Ближайшие слоты — уже сегодня</div>
+
+    <div class="bw-step">
+      <div class="bw-label">Специальность</div>
+      <select class="bw-select" id="bw-spec" onchange="updateDoctors()">
+        <option value="">Выберите специальность</option>
+      </select>
+    </div>
+
+    <div class="bw-step">
+      <div class="bw-label">Врач</div>
+      <select class="bw-select" id="bw-doc">
+        <option value="">Сначала выберите специальность</option>
+      </select>
+    </div>
+
+    <div class="bw-step">
+      <div class="bw-label" id="bw-cal-label">Дата — <span id="bw-month">Июнь 2025</span></div>
+      <div class="bw-cal-grid" id="bw-cal"></div>
+    </div>
+
+    <div class="bw-step" id="bw-time-step">
+      <div class="bw-label">Время</div>
+      <div class="bw-slots" id="bw-slots"></div>
+    </div>
+
+    <button class="bw-confirm" onclick="confirmBooking()">Подтвердить запись</button>
+    <div class="bw-note">Бесплатная отмена за 2 часа · Напомним за сутки</div>
+  </div>
+</section>
+
+<!-- SPECIALTY STRIP -->
+<div class="spec-strip reveal" id="spec-strip">
+  <!-- filled by render -->
+</div>
+
+<!-- DOCTORS -->
+<section class="doctors-section reveal">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Специалисты</div>
+      <h2 class="section-title">Наши <em>врачи</em></h2>
+    </div>
+    <a class="section-link" href="#">Все врачи →</a>
+  </div>
+  <div class="doctors-grid" id="doctors-grid">
+    <!-- filled by render -->
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section reveal">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Направления</div>
+      <h2 class="section-title" id="services-title">Услуги <em>клиники</em></h2>
+    </div>
+    <a class="section-link" href="#">Весь прайс →</a>
+  </div>
+  <div class="services-grid" id="services-grid">
+    <!-- filled by render -->
+  </div>
+</section>
+
+<!-- CHECKUPS -->
+<section class="checkup-section reveal">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Программы</div>
+      <h2 class="section-title">Чекап-программы</h2>
+    </div>
+    <a class="section-link" style="color:var(--blue2)" href="#">Все программы →</a>
+  </div>
+  <div class="checkup-grid" id="checkup-grid">
+    <!-- filled by render -->
+  </div>
+</section>
+
+<!-- INFO / CONTACTS -->
+<section class="info-section">
+  <div class="info-img">
+    <div class="info-img-ph">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="20" width="48" height="38" rx="2" stroke="#1a6b8a" stroke-width="1.5" fill="none"/>
+      <path d="M20 20V12a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v8" stroke="#1a6b8a" stroke-width="1.5" fill="none"/>
+      <line x1="32" y1="30" x2="32" y2="46" stroke="#1a6b8a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="24" y1="38" x2="40" y2="38" stroke="#1a6b8a" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+    <img id="info-img" alt="">
+  </div>
+  <div class="info-content reveal">
+    <div class="info-eyebrow">Контакты</div>
+    <div class="info-title" id="info-title">Как нас найти</div>
+    <div class="info-rows">
+      <div class="info-row">
+        <div class="ir-key">Адрес</div>
+        <div class="ir-val" id="info-address">ул. Медицинская, 1, Москва</div>
+      </div>
+      <div class="info-row">
+        <div class="ir-key">Режим</div>
+        <div class="ir-val"><b>Пн–Пт</b> 08:00–21:00 · <b>Сб–Вс</b> 09:00–18:00</div>
+      </div>
+      <div class="info-row">
+        <div class="ir-key">Телефон</div>
+        <div class="ir-val"><a href="#" id="info-phone">+7 (495) 000-00-00</a></div>
+      </div>
+      <div class="info-row">
+        <div class="ir-key">Email</div>
+        <div class="ir-val"><a href="#" id="info-email">info@clinic.ru</a></div>
+      </div>
+      <div class="info-row">
+        <div class="ir-key">Парковка</div>
+        <div class="ir-val">Бесплатная, 50 мест рядом со зданием</div>
+      </div>
+    </div>
+    <button class="info-map-btn"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6" r="3"/><path d="M8 1C4.686 1 2 3.686 2 7c0 4 6 8 6 8s6-4 6-8c0-3.314-2.686-6-6-6z"/></svg> Открыть на карте</button>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div>
+    <h2 class="cta-title reveal" id="cta-title">Запишитесь<br>к нам <em>сегодня</em></h2>
+    <p class="cta-sub" id="cta-sub">Онлайн-запись за 2 минуты. Подтверждение — сразу на телефон.</p>
+  </div>
+  <div class="cta-form">
+    <input class="cta-input" type="text" placeholder="Ваше имя">
+    <div class="cta-row">
+      <input class="cta-input" type="tel" placeholder="+7 (___) ___-__-__">
+      <select class="cta-input bw-select" style="background-color:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:var(--w)">
+        <option value="" style="color:#333">Специальность</option>
+      </select>
+    </div>
+    <button class="cta-submit" onclick="simulatePay()">Записаться к врачу</button>
+    <div class="cta-agree">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo" id="footer-logo">Клиника<span>МЕДИЦИНСКИЙ ЦЕНТР</span></div>
+    <div class="footer-copy" id="footer-copy">© 2025 · Лицензия № ЛО-77</div>
+  </div>
+  <div class="footer-col">
+    <h4>Пациентам</h4>
+    <a href="#">Запись онлайн</a>
+    <a href="#">Результаты анализов</a>
+    <a href="#">Личный кабинет</a>
+    <a href="#">Страховым компаниям</a>
+  </div>
+  <div class="footer-col">
+    <h4>Клиника</h4>
+    <a href="#">О нас</a>
+    <a href="#">Лицензии</a>
+    <a href="#">Вакансии</a>
+    <a href="#">Контакты</a>
+  </div>
+  <div class="footer-col">
+    <h4>Социальные сети</h4>
+    <a href="#">ВКонтакте</a>
+    <a href="#">Telegram</a>
+    <a href="#">WhatsApp</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal" onclick="handleOvClick(event)">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal()">×</button>
+    <div id="m-form">
+      <div class="modal-eyebrow" id="m-eyebrow">Онлайн-запись</div>
+      <div class="modal-title" id="m-title">Запись к врачу</div>
+      <div class="modal-amount" id="m-amount">от 1 500 <sub>₽</sub></div>
+      <input class="m-input" type="text" placeholder="Ваше имя">
+      <input class="m-input" type="tel" placeholder="+7 (___) ___-__-__">
+      <input class="m-input" type="email" placeholder="Email для подтверждения">
+      <div class="m-row">
+        <input class="m-input" style="margin-bottom:0" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
+        <input class="m-input" style="margin-bottom:0" type="text" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)">
+      </div>
+      <button class="m-submit" onclick="simulatePay()">Подтвердить запись</button>
+      <div class="m-secure">Безопасная оплата · ЮKassa · PCI DSS</div>
+    </div>
+    <div class="m-success" id="m-success">
+      <div class="ms-icon"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="24" stroke="#2a8a5a" stroke-width="1.5"/><path d="M14 26l8 8 16-16" stroke="#2a8a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ms-title">Вы записаны!</div>
+      <div class="ms-text">Подтверждение отправлено на ваш телефон и email.<br>Ждём вас в клинике.</div>
+      <button class="m-submit" style="margin-top:24px" onclick="closeModal()">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DEMO DATA
+// ═══════════════════════════════════════════════════
+function getDemoData() {
+  return {
+    bizName: 'МедиПлюс',
+    bizCity: 'Москва',
+    bizType: 'Медицинский центр',
+    hero_title: 'Забота о здоровье\nс первого визита',
+    hero_desc: 'Многопрофильный медицинский центр с опытными врачами, современной диагностикой и онлайн-записью без очередей.',
+    features_title: 'Наш подход',
+    features: [
+      { title: 'Без очередей',        desc: 'Онлайн-запись в любое время. Слоты видны сразу — выбирайте удобное время.' },
+      { title: 'Малые группы',         desc: 'Каждый пациент получает полноценное время с врачом — без спешки.' },
+      { title: 'Все результаты онлайн', desc: 'Анализы и заключения — в личном кабинете сразу после готовности.' }
+    ],
+    target_audience: 'Взрослые и дети. Семейная клиника для всех.',
+    main_pain: 'Долгое ожидание приёма, сложная запись, неудобный доступ к результатам',
+    marketing_channel: 'контекстная реклама',
+    avg_check: '2500',
+    phone: '+7 (495) 123-45-67',
+    email: 'info@mediplus.ru',
+    address: 'Москва, ул. Тверская, 15, стр. 3',
+    kpi_forecast: '120 новых пациентов в первый месяц',
+    product_name: 'Первичный приём терапевта',
+    product_desc: 'Осмотр, сбор анамнеза, направления на анализы при необходимости.',
+    product_features: ['Осмотр', 'Направления', 'Электронный рецепт'],
+    product_image_query: 'modern clinic medical interior',
+    hero_image_query: 'modern clinic doctor reception',
+    products: [
+      { name: 'Базовый чекап',      desc: 'Основные анализы крови и мочи + ЭКГ + осмотр терапевта.',                 price: '4900',  badge: '',    features: ['ОАК, ОАМ, биохимия', 'ЭКГ', 'Осмотр терапевта', 'Интерпретация результатов'] },
+      { name: 'Расширенный чекап',  desc: 'Полный скрининг для взрослых: сердце, сосуды, онкомаркеры.',              price: '12900', badge: 'hit', features: ['Всё из базового', 'Онкомаркеры', 'УЗИ органов', 'Консультация кардиолога', 'ПДФ-отчёт врача'] },
+      { name: 'Чекап Премиум',      desc: 'Полное обследование организма с персональным планом здоровья.',            price: '24900', badge: '',    features: ['Всё из расширенного', 'МРТ головы', 'Денситометрия', 'Консультация 5 врачей', 'Годовое наблюдение'] }
+    ],
+    doctors: [
+      { name: 'Александра Волкова',  spec: 'Терапевт',          exp: '14 лет',  slot: 'Сегодня 15:30', image_query: 'female doctor white coat portrait' },
+      { name: 'Дмитрий Орлов',       spec: 'Кардиолог',         exp: '18 лет',  slot: 'Завтра 10:00',  image_query: 'male doctor portrait professional' },
+      { name: 'Мария Светлова',      spec: 'Дерматолог',        exp: '9 лет',   slot: 'Сегодня 17:00', image_query: 'female doctor portrait friendly' },
+      { name: 'Артём Козлов',        spec: 'Гастроэнтеролог',   exp: '11 лет',  slot: 'Пт 09:30',      image_query: 'doctor male professional portrait' },
+    ],
+    specs: ['Терапевт','Кардиолог','Дерматолог','Гастроэнтеролог','Невролог','Офтальмолог','Ортопед','ЛОР'],
+    services: [
+      { icon:'', name:'Первичный приём',    desc:'Осмотр, анамнез, постановка диагноза и назначение лечения.',    price:'от 1 500 ₽', dur:'30 мин',  image_query:'doctor consultation clinic' },
+      { icon:'', name:'Лабораторные анализы', desc:'ОАК, биохимия, гормоны, инфекции. Результаты — через 1 день.', price:'от 350 ₽',   dur:'15 мин',  image_query:'medical laboratory analysis' },
+      { icon:'', name:'УЗИ-диагностика',     desc:'УЗИ органов, суставов, сосудов — на экспертном оборудовании.', price:'от 2 200 ₽', dur:'20 мин',  image_query:'ultrasound medical diagnostic' },
+      { icon:'', name:'ЭКГ и кардиология',   desc:'ЭКГ, Холтер, велоэргометрия. Расшифровка кардиолога.',        price:'от 900 ₽',   dur:'20 мин',  image_query:'cardiology heart ecg monitor' },
+      { icon:'', name:'Стоматология',          desc:'Лечение, чистка, отбеливание, имплантация.',                   price:'от 3 000 ₽', dur:'60 мин',  image_query:'dental clinic modern' },
+      { icon:'', name:'Рентген и МРТ',         desc:'Цифровой рентген и МРТ на аппарате 1.5 Тл.',                  price:'от 4 500 ₽', dur:'45 мин',  image_query:'mri scanner medical imaging' },
+    ],
+    looks: [],
+    reviews: []
+  };
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function render(data) {
+  const name  = data.bizName  || 'Клиника';
+  const city  = data.bizCity  || 'Москва';
+  const type  = data.bizType  || 'Медицинский центр';
+  const phone = data.phone    || '+7 (495) 000-00-00';
+  const email = data.email    || 'info@clinic.ru';
+  const addr  = data.address  || `${city}, ул. Медицинская, 1`;
+
+  document.title = name;
+  document.getElementById('ld-name').textContent = name;
+
+  // Navbar / logos
+  document.getElementById('nav-logo').childNodes[0].textContent = name;
+  document.getElementById('nav-sub').textContent = type.toUpperCase();
+  document.getElementById('footer-logo').childNodes[0].textContent = name;
+  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}`;
+
+  // Phone
+  [document.getElementById('topbar-phone'), document.getElementById('nav-phone'), document.getElementById('info-phone')]
+    .forEach(el => { if (el) { el.textContent = phone; el.href = `tel:${phone.replace(/\D/g,'')}`; } });
+  document.getElementById('info-email').textContent = email;
+  document.getElementById('info-address').textContent = addr;
+
+  // Hero
+  document.getElementById('hero-tag').textContent = `${city} · ${type}`;
+  const titleParts = (data.hero_title || 'Забота о здоровье\nс первого визита').split('\n');
+  document.getElementById('hero-title').innerHTML =
+    titleParts.map((p,i) => i === 1 ? `<em>${p}</em>` : p).join('<br>');
+  document.getElementById('hero-desc').textContent = data.hero_desc || '';
+
+  // Stats — animate
+  animateStat('hs-1', 45, '+');
+  animateStat('hs-2', 12000, '+');
+  animateStat('hs-3', 8, '+');
+
+  // CTA
+  const price = parseInt(data.avg_check) || 2500;
+  document.getElementById('cta-title').innerHTML = `Запишитесь<br>к нам <em>сегодня</em>`;
+  document.getElementById('m-amount').innerHTML = `от ${price.toLocaleString('ru-RU')} <sub>₽</sub>`;
+  document.getElementById('modal-plan') && (document.getElementById('modal-plan').textContent = data.product_name || 'Приём врача');
+
+  // Specialty strip
+  buildSpecStrip(data.specs || ['Терапевт','Кардиолог','Дерматолог','Невролог','Офтальмолог','ЛОР','Хирург','Гинеколог']);
+
+  // Booking widget specialties
+  const specSel = document.getElementById('bw-spec');
+  (data.specs || ['Терапевт','Кардиолог','Дерматолог','Невролог','Офтальмолог','ЛОР']).forEach(s => {
+    const o = document.createElement('option'); o.value = s; o.textContent = s; specSel.appendChild(o);
+  });
+
+  // Build calendar
+  buildCalendar();
+
+  // Doctors
+  buildDoctors(data.doctors || getDemoData().doctors);
+
+  // Services
+  buildServices(data.services || getDemoData().services);
+
+  // Checkup / pricing
+  buildCheckups(data.products || getDemoData().products);
+
+  // Images
+  loadImg('hero-img', data.hero_image_query || 'modern clinic medical interior bright');
+  loadImg('info-img', data.product_image_query || 'modern clinic reception interior');
+}
+
+// ── IMAGE LOADER ───────────────────────────────────
+async function loadImg(imgId, query) {
+  try {
+    const r = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!r.ok) throw 0;
+    const url = URL.createObjectURL(await r.blob());
+    const img = document.getElementById(imgId);
+    if (!img) return;
+    img.src = url; img.style.display = 'block';
+    img.previousElementSibling && (img.previousElementSibling.style.display = 'none');
+  } catch(e) {}
+}
+
+// ── SPECIALTY STRIP ────────────────────────────────
+const SPEC_ICONS = {}; // no emoji
+
+function buildSpecStrip(specs) {
+  const el = document.getElementById('spec-strip');
+  el.innerHTML = specs.map(s =>
+    `<div class="spec-item" onclick="selectSpec('${s}')">
+      <div class="spec-abbr">${s.substring(0,3).toUpperCase()}</div>
+      <div class="spec-name">${s}</div>
+    </div>`
+  ).join('');
+}
+
+function selectSpec(spec) {
+  document.getElementById('bw-spec').value = spec;
+  updateDoctors();
+  document.querySelector('nav').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── BOOKING WIDGET ─────────────────────────────────
+const DEMO_DOCTORS_BY_SPEC = {};
+let selectedDay = null;
+let selectedSlot = null;
+
+function updateDoctors() {
+  const spec = document.getElementById('bw-spec').value;
+  const sel = document.getElementById('bw-doc');
+  sel.innerHTML = '<option value="">Выберите врача</option>';
+  if (!spec) return;
+  // populate from page doctors list
+  const cards = document.querySelectorAll('.doc-card');
+  let found = false;
+  cards.forEach(c => {
+    if (c.dataset.spec === spec) {
+      const o = document.createElement('option');
+      o.value = c.dataset.name; o.textContent = c.dataset.name;
+      sel.appendChild(o); found = true;
+    }
+  });
+  if (!found) {
+    const o = document.createElement('option');
+    o.value = spec + ' специалист'; o.textContent = spec + ' — ближайший';
+    sel.appendChild(o);
+  }
+}
+
+function buildCalendar() {
+  const now = new Date();
+  const cal = document.getElementById('bw-cal');
+  const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+  let html = days.map(d => `<div class="cal-day-head">${d}</div>`).join('');
+
+  // first day of month offset
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const offset = (firstDay.getDay() + 6) % 7; // Mon=0
+  for (let i = 0; i < offset; i++) html += '<div class="cal-day empty"></div>';
+
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isPast = d < now.getDate();
+    const isToday = d === now.getDate();
+    const cls = isPast ? 'past' : isToday ? 'today' : '';
+    html += `<div class="cal-day ${cls}" onclick="selectDay(${d}, this)">${d}</div>`;
+  }
+
+  cal.innerHTML = html;
+
+  // Update month label
+  const months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  document.getElementById('bw-month').textContent = `${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  buildTimeSlots();
+}
+
+function selectDay(d, el) {
+  document.querySelectorAll('.cal-day').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDay = d;
+  buildTimeSlots();
+}
+
+function buildTimeSlots() {
+  const all = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','17:00','17:30','18:00'];
+  const busy = ['10:00','11:30','15:00','17:00'];
+  document.getElementById('bw-slots').innerHTML = all.map(t =>
+    `<button class="slot-btn${busy.includes(t) ? ' busy' : ''}" onclick="selectSlotTime('${t}', this)">${t}</button>`
+  ).join('');
+}
+
+function selectSlotTime(t, el) {
+  if (el.classList.contains('busy')) return;
+  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSlot = t;
+}
+
+function confirmBooking() {
+  const spec = document.getElementById('bw-spec').value;
+  const doc  = document.getElementById('bw-doc').value;
+  if (!spec) { alert('Выберите специальность'); return; }
+  document.getElementById('m-eyebrow').textContent = spec;
+  document.getElementById('m-title').textContent = doc || `Приём: ${spec}`;
+  const day = selectedDay || new Date().getDate();
+  const slot = selectedSlot || '—';
+  document.getElementById('m-amount').innerHTML = `${day} число · <span style="color:var(--blue)">${slot}</span>`;
+  openModal();
+}
+
+// ── DOCTORS ────────────────────────────────────────
+function buildDoctors(doctors) {
+  const grid = document.getElementById('doctors-grid');
+  const defaults = getDemoData().doctors;
+  const list = doctors && doctors.length ? doctors : defaults;
+
+  grid.innerHTML = '';
+  list.slice(0,4).forEach((doc, i) => {
+    const imgId = `doc-img-${i}`;
+    grid.innerHTML += `
+      <div class="doc-card" data-spec="${doc.spec || ''}" data-name="${doc.name || ''}"
+           onclick="openModalFor('${(doc.name||'').replace(/'/g,"\\'")}', 0)">
+        <div class="doc-img-wrap">
+          <div class="doc-img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="18" r="10" stroke="#1a6b8a" stroke-width="1.5" fill="none"/>
+              <path d="M6 44c0-9.941 8.059-18 18-18s18 8.059 18 18" stroke="#1a6b8a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <img class="doc-img-el" id="${imgId}" alt="">
+          <div class="doc-badge">${doc.slot || 'Завтра'}</div>
+        </div>
+        <div class="doc-body">
+          <div class="doc-spec">${doc.spec || 'Специалист'}</div>
+          <div class="doc-name">${doc.name || 'Врач'}</div>
+          <div class="doc-exp">Стаж: ${doc.exp || '10 лет'}</div>
+          <div class="doc-slots">
+            ${(doc.slot ? [doc.slot] : ['Сегодня','Завтра']).map(s =>
+              `<span class="doc-slot">${s}</span>`
+            ).join('')}
+          </div>
+          <button class="doc-book">Записаться</button>
+        </div>
+      </div>`;
+
+    // Load doctor photo — always load, use gender-varied queries for realism
+    const genders = ['female','male','female','male'];
+    const docQuery = doc.image_query || `${genders[i % 4]} doctor portrait professional medical white coat`;
+    loadImg(imgId, docQuery);
+  });
+}
+
+// ── SERVICES ───────────────────────────────────────
+function buildServices(services) {
+  const grid = document.getElementById('services-grid');
+  const list = services && services.length ? services : getDemoData().services;
+
+  grid.innerHTML = '';
+  list.slice(0,6).forEach((s, i) => {
+    const imgId = `svc-img-${i}`;
+    grid.innerHTML += `
+      <div class="svc-card" onclick="openModalFor('${(s.name||'').replace(/'/g,"\\'")}', 0)">
+        <span class="svc-arrow">↗</span>
+        <div class="svc-num-badge">0${i+1}</div>
+        <div class="svc-name">${s.name || 'Услуга'}</div>
+        <div class="svc-desc">${s.desc || ''}</div>
+        <div class="svc-bottom">
+          <div class="svc-price">${s.price || ''}</div>
+          <div class="svc-dur">${s.dur || ''}</div>
+        </div>
+      </div>`;
+  });
+}
+
+// ── CHECKUPS ───────────────────────────────────────
+function buildCheckups(plans) {
+  const grid = document.getElementById('checkup-grid');
+  const list = plans && plans.length ? plans : getDemoData().products;
+
+  grid.innerHTML = '';
+  list.slice(0,3).forEach((p, i) => {
+    const isFeat = p.badge === 'hit' || i === 1;
+    const priceNum = parseInt(p.price) || 0;
+    const feats = Array.isArray(p.features) ? p.features : [p.desc || ''];
+
+    grid.innerHTML += `
+      <div class="ck-card${isFeat ? ' featured' : ''}">
+        ${isFeat ? '<div class="ck-tag">ПОПУЛЯРНОЕ</div>' : ''}
+        <div class="ck-name">${p.name || 'Чекап'}</div>
+        <div class="ck-target">${p.desc || ''}</div>
+        <ul class="ck-includes">
+          ${feats.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <div class="ck-bottom">
+          <div class="ck-price">${priceNum > 0 ? priceNum.toLocaleString('ru-RU') : 'По запросу'}<sub>${priceNum > 0 ? ' ₽' : ''}</sub></div>
+          <button class="ck-btn" onclick="openModalFor('${(p.name||'').replace(/'/g,"\\'")}', ${priceNum})">Записаться</button>
+        </div>
+      </div>`;
+  });
+}
+
+// ── STAT ANIMATION ─────────────────────────────────
+function animateStat(id, target, suffix) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isLarge = target > 999;
+  const display = isLarge ? Math.round(target/1000) : target;
+  const suf = isLarge ? 'k' : '';
+  const dur = 1600; const t0 = performance.now();
+  const step = now => {
+    const t = Math.min((now - t0) / dur, 1);
+    const v = Math.round(display * (1 - Math.pow(1-t, 3)));
+    el.innerHTML = `${v}${suf}<span>${suffix}</span>`;
+    if (t < 1) requestAnimationFrame(step);
+    else el.innerHTML = `${display}${suf}<span>${suffix}</span>`;
+  };
+  requestAnimationFrame(step);
+}
+
+// ── SCROLL REVEAL ──────────────────────────────────
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── MODAL ──────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function openModalFor(title, price) {
+  document.getElementById('m-eyebrow').textContent = 'Онлайн-запись';
+  document.getElementById('m-title').textContent = title || 'Приём врача';
+  document.getElementById('m-amount').innerHTML = price > 0
+    ? `от ${price.toLocaleString('ru-RU')} <sub>₽</sub>` : 'Уточним при звонке';
+  openModal();
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('m-success').classList.remove('show');
+  document.getElementById('m-form').style.display = 'block';
+}
+function handleOvClick(e) { if (e.target === e.currentTarget) closeModal(); }
+function simulatePay() {
+  const btns = document.querySelectorAll('.m-submit, .cta-submit');
+  btns.forEach(b => { b.textContent = 'Записываем...'; b.disabled = true; });
+  setTimeout(() => {
+    document.getElementById('m-form').style.display = 'none';
+    document.getElementById('m-success').classList.add('show');
+    document.getElementById('modal').classList.add('active');
+    btns.forEach(b => { b.disabled = false; b.textContent = b.classList.contains('cta-submit') ? 'Записаться к врачу' : 'Подтвердить запись'; });
+  }, 1600);
+}
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const payload = new URLSearchParams(window.location.search).get('data');
+  if (payload) {
+    try { render(JSON.parse(decodeURIComponent(atob(payload)))); }
+    catch(e) { console.error(e); render(getDemoData()); }
+  } else {
+    render(getDemoData());
+  }
+  setTimeout(() => {
+    document.getElementById('ld').classList.add('hidden');
+    setTimeout(() => document.getElementById('ld').remove(), 500);
+  }, 900);
+});
+</script>
+</body>
+</html>
