@@ -439,8 +439,8 @@ body { background:var(--bg); color:var(--ink); font-family:'Mulish',sans-serif; 
     <button class="btn-accent" onclick="openModal()">Оставить заявку</button>
   </div>
   <div class="spotlight-card" onclick="openModal()">
-    <div class="spotlight-img">
-      <div class="spotlight-img-ph" id="product-img-wrap"></div>
+    <div class="spotlight-img" id="product-img-wrap">
+      <div class="spotlight-img-ph"></div>
       <div class="spotlight-tag" id="product-tag-el">Новостройка</div>
     </div>
     <div class="spotlight-body">
@@ -606,8 +606,8 @@ function render(data) {
     const pm2 = Math.round(p / parseInt(areas[i]) / 1000) * 1000;
     grid.innerHTML += `
       <div class="obj-card" onclick="openModal()">
-        <div class="obj-img">
-          <div class="obj-img-ph" id="obj-img-ph-${i}"></div>
+        <div class="obj-img" id="obj-img-ph-${i}">
+          <div class="obj-img-ph"></div>
           <div class="obj-badge ${badges[i][0]}">${badges[i][1]}</div>
           <button class="obj-save" onclick="event.stopPropagation()">♡</button>
           <div class="obj-metro"><div class="metro-dot"></div>${metros[i]} · ${walks[i]}</div>
@@ -635,7 +635,7 @@ function render(data) {
     'residential complex new building',
     'apartment building secondary market'
   ];
-  feats.forEach((_, i) => loadImg(cardQueries[i], `obj-img-ph-${i}`, true));
+  feats.forEach((_, i) => loadCardImage(`obj-img-ph-${i}`, cardQueries[i]));
 
   // Spotlight
   let price    = Math.round((parseInt(data.avg_check) || 14500000) / 100000) * 100000;
@@ -653,7 +653,7 @@ function render(data) {
   (data.product_features || []).forEach(f => {
     pf.innerHTML += `<div class="spotlight-feat">${f}</div>`;
   });
-  loadImg((data.hero_image_query || 'luxury apartment interior') + ' interior', 'product-img-wrap', false);
+  loadCardImage('product-img-wrap', (data.hero_image_query || 'luxury apartment interior') + ' interior');
 
   // Районы
   const areaNames  = ['ЦАО', 'ЗАО', 'СЗАО', 'Подмосковье'];
@@ -666,8 +666,8 @@ function render(data) {
   areaNames.forEach((an, i) => {
     areasGrid.innerHTML += `
       <div class="area-card" onclick="openModal()">
-        <div class="area-img">
-          <div class="area-img-ph" id="area-img-${i}"><span>${areaEmoji[i]}</span></div>
+        <div class="area-img" id="area-img-${i}">
+          <div class="area-img-ph"><span>${areaEmoji[i]}</span></div>
           <div class="area-overlay"></div>
           <div class="area-count">${areaCounts[i]}</div>
         </div>
@@ -677,46 +677,47 @@ function render(data) {
         </div>
       </div>`;
   });
-  areaQueries.forEach((q, i) => loadImg(q, `area-img-${i}`, false));
+  areaQueries.forEach((q, i) => loadCardImage(`area-img-${i}`, q));
 
   // Footer
   document.getElementById('footer-brand').textContent   = name;
   document.getElementById('footer-tagline').textContent = (data.bizCity || 'Москва') + ' · ' + (data.bizType || 'Недвижимость');
   document.getElementById('footer-copy').textContent    = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
-  loadImg(data.hero_image_query || 'modern residential complex Moscow', 'hero-img-wrap-inner', false, true);
+  loadHeroImage(data.hero_image_query || 'modern residential complex Moscow');
 }
 
-// ─── Image loader ──────────────────────────────────────
-async function loadImg(q, placeholderId, coverFill, isHero) {
+// ─── Image loader (streetfood-style) ───────────────────
+async function loadHeroImage(query) {
   try {
-    const r = await fetch('/image?q=' + encodeURIComponent(q));
-    if (!r.ok) throw new Error();
-    const url = URL.createObjectURL(await r.blob());
-    if (isHero) {
-      const w = document.getElementById('hero-img-wrap');
-      w.innerHTML = '';
-      const img = document.createElement('img');
-      img.src = url; img.alt = '';
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-      w.appendChild(img);
-      return;
-    }
-    const ph = document.getElementById(placeholderId);
-    if (!ph) return;
-    ph.innerHTML = '';
+    const resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error();
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const wrap = document.getElementById('hero-img-wrap');
+    wrap.innerHTML = '';
     const img = document.createElement('img');
-    img.src = url; img.alt = '';
-    img.style.cssText = coverFill
-      ? 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;'
-      : 'width:100%;height:100%;object-fit:cover;display:block;';
-    if (coverFill) ph.style.position = 'relative';
-    ph.appendChild(img);
+    img.src = url;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    wrap.appendChild(img);
   } catch(e) {}
 }
 
-// вызов hero image
-async function loadHeroImage(q) { loadImg(q, null, false, true); }
+async function loadCardImage(wrapId, query) {
+  try {
+    const resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error();
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    wrap.appendChild(img);
+  } catch(e) {}
+}
 
 // ─── Modal ─────────────────────────────────────────────
 function openModal()  { document.getElementById('modal').classList.add('active'); }
