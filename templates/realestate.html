@@ -6,66 +6,36 @@
 <title>Недвижимость</title>
 <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   REALESTATE v2 — ИЗЗИ Магазин
-   Референс: ПИК, Самолёт, Донстрой
-   Светлый, воздушный, современный застройщик
-   ═══════════════════════════════════════════════════ */
-
 :root {
-  --bg:      #f5f4f1;
-  --bg2:     #eceae5;
+  --bg:      #f2f0ec;
+  --bg2:     #e8e5df;
   --surface: #ffffff;
-  --ink:     #1a1916;
-  --ink2:    #3d3c38;
-  --muted:   #8a8880;
-  --line:    rgba(0,0,0,0.08);
-  --accent:  #e05c2a;
+  --ink:     #181714;
+  --ink2:    #3a3834;
+  --muted:   #8c8a84;
+  --line:    rgba(0,0,0,0.07);
+  --accent:  #d95f2b;
   --accent2: #f07040;
+  --green:   #2a9d6e;
   --r:       6px;
   --r2:      12px;
 }
-
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Mulish', sans-serif;
-  font-weight: 400;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+body { background:var(--bg); color:var(--ink); font-family:'Mulish',sans-serif; font-weight:400; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
 
-/* LOADING */
-#loading-screen {
-  position:fixed; inset:0; z-index:9999;
-  background: var(--surface);
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; gap:16px;
-  transition: opacity 0.4s ease;
-}
+/* ── LOADING ─────────────────────────────────────── */
+#loading-screen { position:fixed; inset:0; z-index:9999; background:var(--surface); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; transition:opacity 0.4s ease; }
 #loading-screen.hidden { opacity:0; pointer-events:none; }
 .loading-logo { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; letter-spacing:-0.03em; color:var(--ink); }
 .loading-bar-wrap { width:140px; height:2px; background:var(--line); border-radius:2px; overflow:hidden; }
-.loading-bar { width:0; height:100%; background:var(--accent); border-radius:2px; animation:loadbar 0.9s ease forwards; }
+.loading-bar { width:0; height:100%; background:var(--accent); border-radius:2px; animation:loadbar 1s ease forwards; }
 @keyframes loadbar { to { width:100%; } }
 
-/* DEMO BANNER */
-.demo-banner { display:none; position:fixed; top:0; left:0; right:0; z-index:300; background:var(--ink); color:#fff; padding:10px 24px; align-items:center; justify-content:center; gap:20px; font-size:12px; font-weight:500; }
-.demo-banner.show { display:flex; }
-.demo-banner-btn { padding:5px 14px; border:1px solid rgba(255,255,255,0.3); background:transparent; color:#fff; font-family:'Mulish',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; text-decoration:none; transition:all 0.2s; border-radius:4px; }
-.demo-banner-btn:hover { background:#fff; color:var(--ink); }
-
-/* NAVBAR */
-.navbar {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  height:64px; background:rgba(255,255,255,0.96);
-  backdrop-filter:blur(20px); border-bottom:1px solid var(--line);
-  padding:0 52px; display:flex; align-items:center; justify-content:space-between;
-}
-.nav-logo { font-family:'Geologica',sans-serif; font-size:19px; font-weight:800; letter-spacing:-0.03em; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:7px; }
-.nav-logo-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); }
+/* ── NAVBAR ──────────────────────────────────────── */
+.navbar { position:fixed; top:0; left:0; right:0; z-index:200; height:62px; background:rgba(255,255,255,0.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--line); padding:0 52px; display:flex; align-items:center; justify-content:space-between; }
+.nav-logo { font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; letter-spacing:-0.03em; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:7px; }
+.nav-logo-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
 .nav-links { display:flex; gap:28px; list-style:none; }
 .nav-links a { font-size:13px; font-weight:600; color:var(--muted); text-decoration:none; transition:color 0.2s; }
 .nav-links a:hover { color:var(--ink); }
@@ -74,128 +44,210 @@ body {
 .nav-cta { padding:10px 22px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:all 0.2s; }
 .nav-cta:hover { background:var(--accent2); transform:translateY(-1px); }
 
-/* HERO */
-.hero { margin-top:64px; min-height:88vh; position:relative; display:flex; align-items:flex-end; overflow:hidden; }
-.hero-bg { position:absolute; inset:0; z-index:0; background:linear-gradient(135deg,#1a2530,#263a48,#1e2d38); }
+/* ── HERO ────────────────────────────────────────── */
+.hero { margin-top:62px; min-height:86vh; position:relative; display:flex; align-items:flex-end; overflow:hidden; }
+.hero-bg { position:absolute; inset:0; z-index:0; background:linear-gradient(160deg,#1a2530,#263a48); }
 #hero-img-wrap { position:absolute; inset:0; z-index:1; }
-#hero-img-wrap img { width:100%; height:100%; object-fit:cover; opacity:0.45; }
-.hero-overlay { position:absolute; inset:0; z-index:2; background:linear-gradient(to top, rgba(10,15,20,0.95) 0%, rgba(10,15,20,0.3) 55%, transparent 100%); }
-.hero-content { position:relative; z-index:3; padding:0 56px 68px; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:flex-end; }
+#hero-img-wrap img { width:100%; height:100%; object-fit:cover; opacity:0.42; }
+.hero-overlay { position:absolute; inset:0; z-index:2; background:linear-gradient(to top, rgba(10,15,20,0.94) 0%, rgba(10,15,20,0.25) 55%, transparent 100%); }
+.hero-content { position:relative; z-index:3; padding:0 56px 0; width:100%; display:grid; grid-template-columns:1fr 400px; gap:48px; align-items:flex-end; }
+.hero-left { padding-bottom:64px; }
 
-.hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(224,92,42,0.15); border:1px solid rgba(224,92,42,0.35); padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#f5a070; margin-bottom:20px; }
-.hero-tag-dot { width:5px; height:5px; border-radius:50%; background:#f5a070; animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(217,95,43,0.15); border:1px solid rgba(217,95,43,0.35); padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#f5a070; margin-bottom:20px; }
+.hero-badge-dot { width:5px; height:5px; border-radius:50%; background:#f5a070; animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-.hero-title { font-family:'Geologica',sans-serif; font-size:clamp(34px,5vw,68px); font-weight:800; line-height:1.05; letter-spacing:-0.03em; color:#fff; margin-bottom:18px; }
-.hero-desc { font-size:15px; line-height:1.7; color:rgba(255,255,255,0.5); max-width:440px; margin-bottom:36px; font-weight:300; }
-.hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
-.btn-accent { padding:15px 32px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:all 0.2s; }
+.hero-title { font-family:'Geologica',sans-serif; font-size:clamp(32px,5vw,66px); font-weight:800; line-height:1.05; letter-spacing:-0.03em; color:#fff; margin-bottom:18px; }
+.hero-desc { font-size:15px; line-height:1.7; color:rgba(255,255,255,0.5); max-width:480px; margin-bottom:36px; font-weight:300; }
+.hero-btns { display:flex; gap:12px; }
+.btn-accent { padding:15px 30px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:all 0.2s; }
 .btn-accent:hover { background:var(--accent2); transform:translateY(-1px); }
-.btn-ghost-light { padding:14px 26px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); font-family:'Mulish',sans-serif; font-size:13px; font-weight:600; color:rgba(255,255,255,0.8); cursor:pointer; border-radius:var(--r); transition:all 0.2s; }
-.btn-ghost-light:hover { background:rgba(255,255,255,0.18); }
+.btn-ghost { padding:14px 26px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); font-family:'Mulish',sans-serif; font-size:13px; font-weight:600; color:rgba(255,255,255,0.8); cursor:pointer; border-radius:var(--r); transition:all 0.2s; }
+.btn-ghost:hover { background:rgba(255,255,255,0.18); }
 
-.hero-stat-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.hero-stat-card { background:rgba(255,255,255,0.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.11); border-radius:var(--r2); padding:20px 22px; }
-.hero-stat-num { font-family:'Geologica',sans-serif; font-size:30px; font-weight:800; color:#fff; letter-spacing:-0.04em; line-height:1; margin-bottom:5px; }
-.hero-stat-num em { font-size:17px; font-style:normal; color:var(--accent2); }
-.hero-stat-label { font-size:11px; color:rgba(255,255,255,0.4); font-weight:500; line-height:1.4; }
+/* HERO — быстрый подбор (квиз-форма) */
+.hero-finder {
+  background:rgba(255,255,255,0.97);
+  border-radius:var(--r2);
+  padding:28px 28px 24px;
+  margin-bottom:0;
+  align-self:stretch;
+  display:flex; flex-direction:column; justify-content:center;
+  gap:14px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.25);
+}
+.finder-title { font-family:'Geologica',sans-serif; font-size:16px; font-weight:800; color:var(--ink); letter-spacing:-0.02em; margin-bottom:2px; }
+.finder-sub { font-size:12px; color:var(--muted); font-weight:500; margin-bottom:4px; }
+.finder-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.finder-select, .finder-input {
+  width:100%; padding:11px 14px;
+  background:var(--bg); border:1px solid var(--line);
+  border-radius:var(--r); color:var(--ink);
+  font-family:'Mulish',sans-serif; font-size:13px; font-weight:500;
+  outline:none; transition:border-color 0.2s; appearance:none; cursor:pointer;
+}
+.finder-select:focus, .finder-input:focus { border-color:var(--accent); }
+.finder-select option { background:#fff; }
+.finder-submit { width:100%; padding:13px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:background 0.2s; }
+.finder-submit:hover { background:var(--accent2); }
+.finder-note { font-size:11px; color:var(--muted); text-align:center; font-weight:500; }
 
-/* FILTER + OBJECTS */
-.filter-bar { background:var(--surface); border-bottom:1px solid var(--line); padding:0 56px; display:flex; align-items:center; gap:4px; overflow-x:auto; white-space:nowrap; scrollbar-width:none; }
+/* hero stats strip */
+.hero-stats { position:relative; z-index:3; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid rgba(255,255,255,0.08); }
+.hero-stat { padding:22px 40px; border-right:1px solid rgba(255,255,255,0.08); }
+.hero-stat:last-child { border-right:none; }
+.hero-stat-num { font-family:'Geologica',sans-serif; font-size:28px; font-weight:800; color:#fff; letter-spacing:-0.04em; line-height:1; }
+.hero-stat-num em { font-size:16px; font-style:normal; color:var(--accent2); }
+.hero-stat-label { font-size:11px; color:rgba(255,255,255,0.35); margin-top:5px; font-weight:500; }
+
+/* ── CATALOG ─────────────────────────────────────── */
+.filter-bar { background:var(--surface); border-bottom:1px solid var(--line); padding:0 56px; display:flex; align-items:center; gap:4px; overflow-x:auto; white-space:nowrap; scrollbar-width:none; position:sticky; top:62px; z-index:100; }
 .filter-bar::-webkit-scrollbar { display:none; }
-.filter-chip { padding:12px 18px; background:transparent; border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; }
+.filter-chip { padding:14px 18px; background:transparent; border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; white-space:nowrap; }
 .filter-chip.active { color:var(--accent); border-bottom-color:var(--accent); }
 .filter-chip:hover { color:var(--ink2); }
 
-.objects-section { background:var(--surface); padding:44px 56px 80px; }
-.section-head { margin-bottom:40px; }
-.section-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
-.section-title { font-family:'Geologica',sans-serif; font-size:clamp(24px,3vw,38px); font-weight:800; letter-spacing:-0.03em; color:var(--ink); line-height:1.1; }
-.section-sub { font-size:14px; color:var(--muted); margin-top:10px; line-height:1.6; max-width:500px; }
+.catalog-section { background:var(--surface); padding:44px 56px 72px; }
+.section-top { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:36px; }
+.section-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.section-title { font-family:'Geologica',sans-serif; font-size:clamp(22px,3vw,36px); font-weight:800; letter-spacing:-0.03em; color:var(--ink); line-height:1.1; }
+.catalog-count { font-size:13px; color:var(--muted); font-weight:500; padding-bottom:2px; }
 
 .objects-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+
 .obj-card { background:var(--bg); border-radius:var(--r2); overflow:hidden; cursor:pointer; transition:box-shadow 0.3s, transform 0.25s; border:1px solid transparent; }
-.obj-card:hover { box-shadow:0 16px 48px rgba(0,0,0,0.11); transform:translateY(-3px); border-color:var(--line); }
-.obj-img { height:210px; overflow:hidden; position:relative; background:#d0cdc6; }
-.obj-img img { width:100%; height:100%; object-fit:cover; transition:transform 6s ease; }
+.obj-card:hover { box-shadow:0 16px 48px rgba(0,0,0,0.1); transform:translateY(-3px); border-color:rgba(0,0,0,0.06); }
+.obj-img { height:200px; overflow:hidden; position:relative; background:#ccc; }
+.obj-img img { width:100%; height:100%; object-fit:cover; transition:transform 6s ease; display:block; }
 .obj-card:hover .obj-img img { transform:scale(1.05); }
-.obj-img-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#d5d1c9,#c5c0b6); }
-.obj-badge { position:absolute; top:12px; left:12px; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.04em; }
-.obj-badge.normal { background:var(--surface); color:var(--ink); }
-.obj-badge.hot { background:var(--accent); color:#fff; }
-.obj-badge.new { background:#2a9d6e; color:#fff; }
-.obj-metro { position:absolute; bottom:12px; left:12px; display:flex; align-items:center; gap:5px; font-size:11px; color:#fff; font-weight:600; background:rgba(0,0,0,0.42); backdrop-filter:blur(4px); padding:4px 10px; border-radius:20px; }
-.metro-dot { width:7px; height:7px; border-radius:50%; background:#ff7043; }
-.obj-body { padding:20px 20px 22px; }
-.obj-name { font-family:'Geologica',sans-serif; font-size:17px; font-weight:800; color:var(--ink); margin-bottom:4px; letter-spacing:-0.02em; }
-.obj-loc { font-size:12px; color:var(--muted); margin-bottom:14px; font-weight:500; }
-.obj-chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-.obj-chip { padding:3px 10px; border-radius:4px; background:var(--bg2); border:1px solid var(--line); font-size:11px; font-weight:600; color:var(--ink2); }
-.obj-price-row { display:flex; align-items:flex-end; justify-content:space-between; }
+.obj-img-ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#d5d1c9,#c5c0b6); }
+.obj-badge { position:absolute; top:12px; left:12px; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.03em; }
+.obj-badge.hot  { background:var(--accent); color:#fff; }
+.obj-badge.new  { background:var(--green); color:#fff; }
+.obj-badge.sec  { background:rgba(255,255,255,0.92); color:var(--ink); }
+.obj-save { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.92); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; transition:background 0.2s; }
+.obj-save:hover { background:#fff; }
+.obj-metro { position:absolute; bottom:10px; left:12px; display:flex; align-items:center; gap:5px; font-size:11px; color:#fff; font-weight:600; background:rgba(0,0,0,0.42); backdrop-filter:blur(4px); padding:4px 10px; border-radius:20px; }
+.metro-dot { width:7px; height:7px; border-radius:50%; background:#ff7043; flex-shrink:0; }
+.obj-body { padding:18px 18px 20px; }
+.obj-name { font-family:'Geologica',sans-serif; font-size:16px; font-weight:800; color:var(--ink); margin-bottom:3px; letter-spacing:-0.02em; }
+.obj-loc { font-size:12px; color:var(--muted); margin-bottom:12px; font-weight:500; }
+.obj-specs { display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap; }
+.obj-spec { font-size:12px; color:var(--ink2); font-weight:600; display:flex; align-items:center; gap:4px; }
+.obj-spec-icon { font-size:13px; }
+.obj-bottom { display:flex; align-items:flex-end; justify-content:space-between; }
 .obj-price { font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; color:var(--ink); letter-spacing:-0.03em; }
-.obj-price span { font-size:11px; font-weight:500; color:var(--muted); display:block; margin-top:1px; }
-.obj-btn { padding:9px 16px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:12px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:background 0.2s; }
-.obj-btn:hover { background:var(--accent2); }
+.obj-price-m2 { font-size:11px; font-weight:500; color:var(--muted); margin-top:1px; }
+.obj-cta { padding:9px 16px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:12px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:background 0.2s; white-space:nowrap; }
+.obj-cta:hover { background:var(--accent2); }
 
-/* FEATURES */
-.features-section { background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.features-inner { padding:80px 56px; }
-.features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
-.feat-card { background:var(--surface); padding:36px 30px; position:relative; overflow:hidden; transition:background 0.2s; }
-.feat-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform 0.35s ease; }
-.feat-card:hover::after { transform:scaleX(1); }
-.feat-num { font-family:'Geologica',sans-serif; font-size:44px; font-weight:800; letter-spacing:-0.05em; color:var(--accent); opacity:0.12; margin-bottom:14px; line-height:1; }
-.feat-title { font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; color:var(--ink); margin-bottom:10px; letter-spacing:-0.02em; }
-.feat-desc { font-size:13px; color:var(--muted); line-height:1.7; }
+/* ── ИПОТЕЧНЫЙ КАЛЬКУЛЯТОР ───────────────────────── */
+.calc-section { background:var(--bg2); border-top:1px solid var(--line); padding:72px 56px; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+.calc-left {}
+.calc-title { font-family:'Geologica',sans-serif; font-size:clamp(22px,3vw,36px); font-weight:800; letter-spacing:-0.03em; color:var(--ink); line-height:1.1; margin-bottom:12px; }
+.calc-sub { font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:32px; max-width:400px; }
+.calc-bank-logos { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:0; }
+.bank-logo { padding:8px 16px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); font-size:12px; font-weight:700; color:var(--ink2); letter-spacing:0.02em; }
 
-/* SPOTLIGHT */
-.spotlight-section { background:var(--surface); padding:80px 56px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-.spotlight-right { background:var(--bg); border:1px solid var(--line); border-radius:var(--r2); overflow:hidden; cursor:pointer; transition:box-shadow 0.3s; }
-.spotlight-right:hover { box-shadow:0 20px 60px rgba(0,0,0,0.1); }
-.spotlight-img { height:280px; overflow:hidden; background:#d5d1c9; position:relative; }
-.spotlight-img img { width:100%; height:100%; object-fit:cover; transition:transform 6s ease; }
-.spotlight-right:hover .spotlight-img img { transform:scale(1.04); }
-.spotlight-img-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#d5d1c9,#c5c0b6); }
+.calc-widget { background:var(--surface); border-radius:var(--r2); padding:32px; border:1px solid var(--line); }
+.calc-row { margin-bottom:20px; }
+.calc-row-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.calc-row-name { font-size:13px; font-weight:600; color:var(--ink2); }
+.calc-row-val { font-family:'Geologica',sans-serif; font-size:15px; font-weight:800; color:var(--ink); letter-spacing:-0.02em; }
+.calc-slider { width:100%; height:4px; border-radius:2px; background:var(--bg2); outline:none; appearance:none; cursor:pointer; accent-color:var(--accent); }
+.calc-divider { height:1px; background:var(--line); margin:24px 0; }
+.calc-result { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.calc-result-item { background:var(--bg); border-radius:var(--r); padding:16px 18px; }
+.calc-result-num { font-family:'Geologica',sans-serif; font-size:20px; font-weight:800; color:var(--ink); letter-spacing:-0.03em; line-height:1; margin-bottom:4px; }
+.calc-result-label { font-size:11px; color:var(--muted); font-weight:500; line-height:1.4; }
+.calc-cta { width:100%; padding:14px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); margin-top:20px; transition:background 0.2s; }
+.calc-cta:hover { background:var(--accent2); }
+
+/* ── SPOTLIGHT / ТОП ОБЪЕКТ ──────────────────────── */
+.spotlight-section { background:var(--surface); padding:72px 56px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.spotlight-left {}
+.spotlight-eyebrow { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+.spotlight-title { font-family:'Geologica',sans-serif; font-size:clamp(22px,3vw,36px); font-weight:800; letter-spacing:-0.03em; color:var(--ink); line-height:1.1; margin-bottom:14px; }
+.spotlight-desc { font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:28px; max-width:400px; }
+.spotlight-params { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+.s-param { background:var(--bg); border-radius:var(--r); padding:14px 16px; }
+.s-param-val { font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; color:var(--ink); letter-spacing:-0.02em; }
+.s-param-label { font-size:11px; color:var(--muted); margin-top:3px; font-weight:500; }
+
+.spotlight-card { background:var(--bg); border-radius:var(--r2); overflow:hidden; cursor:pointer; border:1px solid var(--line); transition:box-shadow 0.3s; }
+.spotlight-card:hover { box-shadow:0 20px 60px rgba(0,0,0,0.1); }
+.spotlight-img { height:260px; overflow:hidden; position:relative; background:#ccc; }
+.spotlight-img img { width:100%; height:100%; object-fit:cover; transition:transform 6s ease; display:block; }
+.spotlight-card:hover .spotlight-img img { transform:scale(1.04); }
+.spotlight-img-ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#d5d1c9,#c5c0b6); }
 .spotlight-tag { position:absolute; top:14px; left:14px; background:var(--accent); color:#fff; font-size:11px; font-weight:700; letter-spacing:0.06em; padding:5px 12px; border-radius:4px; }
-.spotlight-body { padding:28px; }
-.spotlight-name { font-family:'Geologica',sans-serif; font-size:20px; font-weight:800; color:var(--ink); margin-bottom:4px; letter-spacing:-0.02em; }
-.spotlight-addr { font-size:13px; color:var(--muted); margin-bottom:16px; font-weight:500; }
-.spotlight-feats { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
-.spotlight-feat { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--ink2); font-weight:500; }
-.spotlight-feat::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; }
-.spotlight-footer { display:flex; align-items:center; justify-content:space-between; padding-top:18px; border-top:1px solid var(--line); }
-.spotlight-price { font-family:'Geologica',sans-serif; font-size:24px; font-weight:800; color:var(--ink); letter-spacing:-0.03em; }
-.spotlight-price-old { font-size:12px; color:var(--muted); text-decoration:line-through; margin-top:2px; }
-.spotlight-cta { padding:12px 20px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:12px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:background 0.2s; }
-.spotlight-cta:hover { background:var(--accent2); }
+.spotlight-body { padding:24px 24px 26px; }
+.spotlight-name { font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; color:var(--ink); margin-bottom:4px; letter-spacing:-0.02em; }
+.spotlight-addr { font-size:12px; color:var(--muted); margin-bottom:16px; font-weight:500; }
+.spotlight-feats { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
+.spotlight-feat { display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink2); font-weight:500; }
+.spotlight-feat::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+.spotlight-footer { display:flex; align-items:center; justify-content:space-between; padding-top:16px; border-top:1px solid var(--line); }
+.spotlight-price { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-0.03em; }
+.spotlight-old { font-size:12px; color:var(--muted); text-decoration:line-through; margin-top:2px; }
 
-/* KPI STRIP */
-.kpi-strip { background:var(--ink); padding:52px 56px; display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
-.kpi-item { padding:0 36px; border-right:1px solid rgba(255,255,255,0.07); text-align:center; }
-.kpi-item:first-child { padding-left:0; text-align:left; }
-.kpi-item:last-child  { border-right:none; text-align:right; padding-right:0; }
-.kpi-num { font-family:'Geologica',sans-serif; font-size:40px; font-weight:800; color:#fff; letter-spacing:-0.05em; line-height:1; }
-.kpi-num em { font-size:22px; font-style:normal; color:var(--accent2); }
-.kpi-label { font-size:12px; color:rgba(255,255,255,0.3); margin-top:8px; font-weight:500; line-height:1.4; }
+/* ── ПРОЦЕСС СДЕЛКИ (timeline) ───────────────────── */
+.process-section { background:var(--ink); padding:72px 56px; }
+.process-section .section-label { color:var(--accent2); }
+.process-section .section-title { color:#fff; margin-bottom:48px; }
+.process-steps { display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
+.process-steps::before { content:''; position:absolute; top:28px; left:10%; right:10%; height:1px; background:rgba(255,255,255,0.1); z-index:0; }
+.process-step { text-align:center; position:relative; z-index:1; padding:0 12px; }
+.step-num { width:56px; height:56px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.15); background:var(--ink); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-family:'Geologica',sans-serif; font-size:18px; font-weight:800; color:#fff; transition:all 0.2s; cursor:default; }
+.step-num.active { background:var(--accent); border-color:var(--accent); }
+.process-step:hover .step-num { background:var(--accent); border-color:var(--accent); }
+.step-title { font-family:'Geologica',sans-serif; font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; letter-spacing:-0.01em; }
+.step-desc { font-size:12px; color:rgba(255,255,255,0.35); line-height:1.6; font-weight:400; }
 
-/* REVIEWS */
-.reviews-section { background:var(--bg); padding:80px 56px; border-top:1px solid var(--line); }
-.reviews-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:44px; }
-.review-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--r2); padding:28px 24px; transition:box-shadow 0.25s; }
-.review-card:hover { box-shadow:0 8px 28px rgba(0,0,0,0.07); }
-.review-stars { margin-bottom:12px; color:var(--accent); font-size:13px; letter-spacing:2px; }
-.review-text { font-size:14px; color:var(--ink2); line-height:1.7; margin-bottom:18px; font-style:italic; }
-.review-sep { width:28px; height:2px; background:var(--line); border-radius:2px; margin-bottom:14px; }
-.review-author { display:flex; align-items:center; gap:12px; }
-.review-ava { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,#e0d8cf,#cdc5bb); display:flex; align-items:center; justify-content:center; font-family:'Geologica',sans-serif; font-size:14px; font-weight:800; color:var(--ink); flex-shrink:0; }
-.review-name { font-size:13px; font-weight:700; color:var(--ink); }
-.review-status { font-size:11px; color:var(--muted); margin-top:2px; font-weight:500; }
+/* ── РАЙОНЫ / КАРТА ──────────────────────────────── */
+.areas-section { background:var(--bg2); border-top:1px solid var(--line); padding:72px 56px; }
+.areas-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:40px; }
+.area-card { background:var(--surface); border-radius:var(--r2); padding:0; overflow:hidden; cursor:pointer; border:1px solid var(--line); transition:box-shadow 0.25s, transform 0.2s; }
+.area-card:hover { box-shadow:0 8px 28px rgba(0,0,0,0.08); transform:translateY(-2px); }
+.area-img { height:140px; background:linear-gradient(135deg,#d5d1c9,#c0bcb4); position:relative; overflow:hidden; }
+.area-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.area-img-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:32px; }
+.area-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,0.5),transparent); }
+.area-count { position:absolute; bottom:10px; left:12px; font-size:11px; font-weight:700; color:#fff; background:rgba(0,0,0,0.35); backdrop-filter:blur(4px); padding:3px 8px; border-radius:10px; }
+.area-body { padding:14px 16px; }
+.area-name { font-family:'Geologica',sans-serif; font-size:14px; font-weight:800; color:var(--ink); margin-bottom:2px; letter-spacing:-0.01em; }
+.area-price { font-size:12px; color:var(--muted); font-weight:500; }
 
-/* FOOTER */
+/* ── MODAL ───────────────────────────────────────── */
+.modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; }
+.modal-overlay.active { display:flex; }
+.modal { background:var(--surface); border-radius:var(--r2); width:460px; max-width:95vw; padding:44px; position:relative; animation:slideUp 0.3s ease; border-top:3px solid var(--accent); }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+.modal-close { position:absolute; top:14px; right:14px; background:none; border:none; font-size:22px; cursor:pointer; color:var(--muted); width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:background 0.2s; }
+.modal-close:hover { background:var(--line); }
+.modal-brand { font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.modal-title { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-0.02em; margin-bottom:4px; }
+.modal-amount { font-family:'Geologica',sans-serif; font-size:28px; font-weight:800; color:var(--ink); letter-spacing:-0.04em; margin:16px 0 22px; line-height:1; }
+.modal-amount em { font-size:16px; font-style:normal; color:var(--accent); margin-left:2px; }
+.modal-input { width:100%; padding:13px 16px; background:var(--bg); border:1px solid var(--line); border-radius:var(--r); color:var(--ink); font-family:'Mulish',sans-serif; font-size:14px; margin-bottom:10px; outline:none; transition:border-color 0.2s; }
+.modal-input:focus { border-color:var(--accent); }
+.modal-input::placeholder { color:var(--muted); }
+.modal-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.modal-submit { width:100%; padding:15px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:14px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); margin-top:4px; transition:background 0.2s; }
+.modal-submit:hover { background:var(--accent2); }
+.modal-submit:disabled { opacity:0.5; cursor:not-allowed; }
+.modal-secure { font-size:11px; color:var(--muted); text-align:center; margin-top:12px; font-weight:500; }
+.modal-success { display:none; text-align:center; padding:16px 0; }
+.modal-success.show { display:block; }
+.modal-success-icon { width:60px; height:60px; border-radius:50%; background:rgba(217,95,43,0.1); border:1.5px solid var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:26px; color:var(--accent); }
+.modal-success-title { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:var(--ink); margin-bottom:10px; letter-spacing:-0.02em; }
+.modal-success-text { font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* ── FOOTER ──────────────────────────────────────── */
 .footer { background:var(--ink); padding:56px 56px 36px; }
-.footer-top { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:28px; flex-wrap:wrap; gap:32px; }
-.footer-brand { font-family:'Geologica',sans-serif; font-size:24px; font-weight:800; color:#fff; letter-spacing:-0.03em; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
-.footer-brand-dot { width:10px; height:10px; border-radius:50%; background:var(--accent); }
+.footer-top { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:24px; flex-wrap:wrap; gap:28px; }
+.footer-brand { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:#fff; letter-spacing:-0.03em; margin-bottom:5px; display:flex; align-items:center; gap:8px; }
+.footer-brand-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); }
 .footer-tagline { font-size:13px; color:rgba(255,255,255,0.3); }
 .footer-cta { padding:13px 28px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); transition:background 0.2s; }
 .footer-cta:hover { background:var(--accent2); }
@@ -204,42 +256,17 @@ body {
 .footer-izzzi { font-size:12px; color:rgba(255,255,255,0.15); }
 .footer-izzzi span { color:rgba(255,255,255,0.35); }
 
-/* MODAL */
-.modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; }
-.modal-overlay.active { display:flex; }
-.modal { background:var(--surface); border-radius:var(--r2); width:460px; max-width:95vw; padding:44px; position:relative; animation:slideUp 0.3s ease; border-top:3px solid var(--accent); }
-@keyframes slideUp { from{transform:translateY(20px);opacity:0;} to{transform:translateY(0);opacity:1;} }
-.modal-close { position:absolute; top:16px; right:16px; background:none; border:none; font-size:22px; cursor:pointer; color:var(--muted); width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:background 0.2s; }
-.modal-close:hover { background:var(--line); }
-.modal-brand { font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
-.modal-title { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-0.02em; margin-bottom:4px; }
-.modal-amount { font-family:'Geologica',sans-serif; font-size:30px; font-weight:800; color:var(--ink); letter-spacing:-0.04em; margin:18px 0 22px; line-height:1; }
-.modal-amount em { font-size:17px; font-style:normal; color:var(--accent); margin-left:2px; }
-.modal-input { width:100%; padding:13px 16px; background:var(--bg); border:1px solid var(--line); border-radius:var(--r); color:var(--ink); font-family:'Mulish',sans-serif; font-size:14px; margin-bottom:10px; outline:none; transition:border-color 0.2s; }
-.modal-input:focus { border-color:var(--accent); }
-.modal-input::placeholder { color:var(--muted); }
-.modal-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.modal-submit { width:100%; padding:15px; background:var(--accent); border:none; font-family:'Mulish',sans-serif; font-size:14px; font-weight:700; color:#fff; cursor:pointer; border-radius:var(--r); margin-top:4px; transition:background 0.2s; }
-.modal-submit:hover { background:var(--accent2); }
-.modal-submit:disabled { opacity:0.5; cursor:not-allowed; }
-.modal-secure { font-size:11px; color:var(--muted); text-align:center; margin-top:14px; font-weight:500; }
-.modal-success { display:none; text-align:center; padding:16px 0; }
-.modal-success.show { display:block; }
-.modal-success-icon { width:60px; height:60px; border-radius:50%; background:rgba(224,92,42,0.1); border:1.5px solid var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:26px; color:var(--accent); }
-.modal-success-title { font-family:'Geologica',sans-serif; font-size:22px; font-weight:800; color:var(--ink); margin-bottom:10px; letter-spacing:-0.02em; }
-.modal-success-text { font-size:14px; color:var(--muted); line-height:1.6; }
-
-/* BACK BTN */
+/* ── BACK BTN ─────────────────────────────────────── */
 .back-btn { position:fixed; bottom:20px; left:20px; z-index:100; padding:9px 18px; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); border:1px solid var(--line); border-radius:20px; color:var(--ink2); font-family:'Mulish',sans-serif; font-size:12px; cursor:pointer; text-decoration:none; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,0.07); transition:box-shadow 0.2s; }
 .back-btn:hover { box-shadow:0 8px 24px rgba(0,0,0,0.12); }
 
-/* ENTRANCE ANIMATIONS */
-.hero-tag    { animation:fadeUp 0.5s 0.1s both; }
+/* ── ANIMATIONS ──────────────────────────────────── */
+.hero-badge  { animation:fadeUp 0.5s 0.1s both; }
 .hero-title  { animation:fadeUp 0.6s 0.2s both; }
 .hero-desc   { animation:fadeUp 0.5s 0.35s both; }
-.hero-actions { animation:fadeUp 0.5s 0.45s both; }
-.hero-stat-cards { animation:fadeUp 0.6s 0.3s both; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+.hero-btns   { animation:fadeUp 0.5s 0.45s both; }
+.hero-finder { animation:fadeUp 0.6s 0.2s both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
 </style>
 </head>
 <body>
@@ -250,22 +277,16 @@ body {
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
 </div>
 
-<!-- DEMO BANNER -->
-<div class="demo-banner" id="demo-banner">
-  <span>Это демо-версия сайта ИЗЗЗИ Бизнес Бокс</span>
-  <a class="demo-banner-btn" href="https://www.sberbank.ru/ru/s_m_business/reg#start_reg" target="_blank">Открыть ИП бесплатно</a>
-</div>
-
 <!-- NAVBAR -->
 <nav class="navbar">
   <a class="nav-logo" href="#"><div class="nav-logo-dot"></div><span id="nav-logo">Realty</span></a>
   <ul class="nav-links">
-    <li><a href="#objects">Объекты</a></li>
-    <li><a href="#about">О компании</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#catalog">Каталог</a></li>
+    <li><a href="#calc">Ипотека</a></li>
+    <li><a href="#areas">Районы</a></li>
   </ul>
   <div class="nav-right">
-    <a class="nav-phone" href="tel:+74951234567" id="nav-phone">+7 (495) 123-45-67</a>
+    <a class="nav-phone" href="#" id="nav-phone">+7 (495) 123-45-67</a>
     <button class="nav-cta" onclick="openModal()">Оставить заявку</button>
   </div>
 </nav>
@@ -277,101 +298,204 @@ body {
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-left">
-      <div class="hero-tag"><div class="hero-tag-dot"></div><span id="hero-eyebrow">Недвижимость в Москве</span></div>
-      <h1 class="hero-title" id="hero-title">Квартиры в лучших ЖК Москвы</h1>
-      <p class="hero-desc" id="hero-desc">Только проверенные объекты от надёжных застройщиков.</p>
-      <div class="hero-actions">
+      <div class="hero-badge"><div class="hero-badge-dot"></div><span id="hero-eyebrow">Агентство недвижимости</span></div>
+      <h1 class="hero-title" id="hero-title">Найдём квартиру<br>за 3 дня</h1>
+      <p class="hero-desc" id="hero-desc">Подбор, проверка юридической чистоты, сопровождение сделки — под ключ.</p>
+      <div class="hero-btns">
         <button class="btn-accent" onclick="openModal()">Оставить заявку</button>
-        <button class="btn-ghost-light" onclick="document.getElementById('objects').scrollIntoView({behavior:'smooth'})">Смотреть объекты</button>
+        <button class="btn-ghost" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Смотреть каталог</button>
       </div>
     </div>
-    <div>
-      <div class="hero-stat-cards">
-        <div class="hero-stat-card"><div class="hero-stat-num">840<em>+</em></div><div class="hero-stat-label">сделок закрыто</div></div>
-        <div class="hero-stat-card"><div class="hero-stat-num">12<em>лет</em></div><div class="hero-stat-label">на рынке</div></div>
-        <div class="hero-stat-card"><div class="hero-stat-num">98<em>%</em></div><div class="hero-stat-label">довольных клиентов</div></div>
-        <div class="hero-stat-card"><div class="hero-stat-num">₽0</div><div class="hero-stat-label">комиссия с покупателя</div></div>
+    <!-- БЫСТРЫЙ ПОДБОР -->
+    <div class="hero-finder">
+      <div class="finder-title">Быстрый подбор</div>
+      <div class="finder-sub">Найдём варианты за 15 минут</div>
+      <select class="finder-select" id="finder-type">
+        <option value="">Тип недвижимости</option>
+        <option>Квартира</option>
+        <option>Апартаменты</option>
+        <option>Загородный дом</option>
+        <option>Коммерческая</option>
+      </select>
+      <div class="finder-row">
+        <select class="finder-select">
+          <option value="">Комнат</option>
+          <option>Студия</option>
+          <option>1 комната</option>
+          <option>2 комнаты</option>
+          <option>3+ комнаты</option>
+        </select>
+        <select class="finder-select">
+          <option value="">Бюджет</option>
+          <option>до 5 млн</option>
+          <option>5–10 млн</option>
+          <option>10–20 млн</option>
+          <option>от 20 млн</option>
+        </select>
       </div>
+      <select class="finder-select">
+        <option value="">Район / метро</option>
+        <option>ЦАО</option>
+        <option>ЗАО</option>
+        <option>СЗАО</option>
+        <option>Подмосковье</option>
+      </select>
+      <button class="finder-submit" onclick="openModal()">Подобрать варианты</button>
+      <div class="finder-note">Бесплатно · Без обязательств</div>
     </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num" id="stat1">840<em>+</em></div><div class="hero-stat-label">сделок закрыто</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat2">120<em>+</em></div><div class="hero-stat-label">объектов в базе</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat3">12</div><div class="hero-stat-label">лет на рынке</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="stat4">₽0</div><div class="hero-stat-label">комиссия с покупателя</div></div>
   </div>
 </section>
 
-<!-- FILTER BAR -->
-<div class="filter-bar" id="filter-bar">
-  <button class="filter-chip active">Все объекты</button>
+<!-- FILTER + CATALOG -->
+<div class="filter-bar" id="catalog">
+  <button class="filter-chip active">Все</button>
   <button class="filter-chip">Новостройки</button>
-  <button class="filter-chip">Вторичное жильё</button>
-  <button class="filter-chip">Коммерческая</button>
+  <button class="filter-chip">Вторичка</button>
+  <button class="filter-chip">Аренда</button>
   <button class="filter-chip">Загородная</button>
+  <button class="filter-chip">Коммерческая</button>
 </div>
-
-<!-- OBJECTS -->
-<section class="objects-section" id="objects">
-  <div class="section-head">
-    <div class="section-label">Каталог</div>
-    <div class="section-title" id="objects-title">Актуальные предложения</div>
+<section class="catalog-section">
+  <div class="section-top">
+    <div>
+      <div class="section-label">Каталог объектов</div>
+      <div class="section-title" id="catalog-title">Актуальные предложения</div>
+    </div>
+    <div class="catalog-count" id="catalog-count">3 объекта</div>
   </div>
   <div class="objects-grid" id="objects-grid"></div>
 </section>
 
-<!-- FEATURES -->
-<section class="features-section" id="about">
-  <div class="features-inner">
-    <div class="section-head">
-      <div class="section-label">Почему мы</div>
-      <div class="section-title" id="features-title-el">Наши преимущества</div>
-      <div class="section-sub">Работаем с крупнейшими застройщиками и собственниками Москвы и регионов</div>
+<!-- ИПОТЕЧНЫЙ КАЛЬКУЛЯТОР -->
+<section class="calc-section" id="calc">
+  <div class="calc-left">
+    <div class="section-label">Ипотека</div>
+    <div class="calc-title">Рассчитайте<br>ежемесячный платёж</div>
+    <div class="calc-sub">Подбираем ипотеку в 14 банках-партнёрах. Одобрение без лишних документов — за 1 рабочий день.</div>
+    <div class="calc-bank-logos">
+      <div class="bank-logo">Сбер</div>
+      <div class="bank-logo">ВТБ</div>
+      <div class="bank-logo">Альфа</div>
+      <div class="bank-logo">Газпром</div>
+      <div class="bank-logo">Домклик</div>
     </div>
-    <div class="features-grid" id="features-grid"></div>
+  </div>
+  <div class="calc-widget">
+    <div class="calc-row">
+      <div class="calc-row-label">
+        <span class="calc-row-name">Стоимость объекта</span>
+        <span class="calc-row-val" id="calc-price-val">10 000 000 ₽</span>
+      </div>
+      <input type="range" class="calc-slider" id="calc-price" min="2000000" max="50000000" step="500000" value="10000000" oninput="calcUpdate()">
+    </div>
+    <div class="calc-row">
+      <div class="calc-row-label">
+        <span class="calc-row-name">Первоначальный взнос</span>
+        <span class="calc-row-val" id="calc-down-val">20% · 2 000 000 ₽</span>
+      </div>
+      <input type="range" class="calc-slider" id="calc-down" min="10" max="90" step="5" value="20" oninput="calcUpdate()">
+    </div>
+    <div class="calc-row">
+      <div class="calc-row-label">
+        <span class="calc-row-name">Срок ипотеки</span>
+        <span class="calc-row-val" id="calc-term-val">20 лет</span>
+      </div>
+      <input type="range" class="calc-slider" id="calc-term" min="5" max="30" step="1" value="20" oninput="calcUpdate()">
+    </div>
+    <div class="calc-row" style="margin-bottom:0">
+      <div class="calc-row-label">
+        <span class="calc-row-name">Ставка</span>
+        <span class="calc-row-val" id="calc-rate-val">11%</span>
+      </div>
+      <input type="range" class="calc-slider" id="calc-rate" min="4" max="25" step="0.5" value="11" oninput="calcUpdate()">
+    </div>
+    <div class="calc-divider"></div>
+    <div class="calc-result">
+      <div class="calc-result-item"><div class="calc-result-num" id="calc-monthly">65 000 ₽</div><div class="calc-result-label">платёж в месяц</div></div>
+      <div class="calc-result-item"><div class="calc-result-num" id="calc-total">15 600 000 ₽</div><div class="calc-result-label">выплата итого</div></div>
+    </div>
+    <button class="calc-cta" onclick="openModal()">Подобрать ипотеку</button>
   </div>
 </section>
 
-<!-- SPOTLIGHT -->
+<!-- ТОП ОБЪЕКТ -->
 <section class="spotlight-section">
-  <div>
-    <div class="section-label">Топ предложение</div>
-    <h2 class="section-title" id="spotlight-headline" style="margin-bottom:16px;">Выбор этой недели</h2>
-    <p class="section-sub" id="spotlight-desc">Лучшее предложение по соотношению цены и качества.</p>
-    <br>
-    <button class="btn-accent" style="margin-top:8px;" onclick="openModal()">Оставить заявку</button>
+  <div class="spotlight-left">
+    <div class="spotlight-eyebrow">Топ предложение</div>
+    <div class="spotlight-title" id="spotlight-title">Выбор этой<br>недели</div>
+    <div class="spotlight-desc" id="spotlight-desc">Лучшее соотношение цены и качества. Проверено нашим экспертом.</div>
+    <div class="spotlight-params" id="spotlight-params">
+      <div class="s-param"><div class="s-param-val" id="sp-area">74 м²</div><div class="s-param-label">площадь</div></div>
+      <div class="s-param"><div class="s-param-val" id="sp-floor">9/16 эт.</div><div class="s-param-label">этаж</div></div>
+      <div class="s-param"><div class="s-param-val" id="sp-year">2026</div><div class="s-param-label">год сдачи</div></div>
+      <div class="s-param"><div class="s-param-val" id="sp-mortgage">8.2%</div><div class="s-param-label">ипотека от</div></div>
+    </div>
+    <button class="btn-accent" onclick="openModal()">Оставить заявку</button>
   </div>
-  <div class="spotlight-right" onclick="openModal()">
+  <div class="spotlight-card" onclick="openModal()">
     <div class="spotlight-img">
-      <div class="spotlight-img-ph" id="product-img-wrap">
-        <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="6" y="17" width="40" height="29" rx="2" stroke="#a09a90" stroke-width="1.3"/><path d="M2 17L26 4l24 13" stroke="#a09a90" stroke-width="1.3" fill="none"/><rect x="20" y="30" width="12" height="16" rx="1" stroke="#a09a90" stroke-width="1.1"/></svg>
-      </div>
+      <div class="spotlight-img-ph" id="product-img-wrap"></div>
       <div class="spotlight-tag" id="product-tag-el">Новостройка</div>
     </div>
     <div class="spotlight-body">
       <div class="spotlight-name" id="product-name-el">ЖК «Резиденция»</div>
-      <div class="spotlight-addr" id="product-addr-el">Москва</div>
+      <div class="spotlight-addr" id="product-addr-el">Москва · ЦАО</div>
       <div class="spotlight-feats" id="product-features-el"></div>
       <div class="spotlight-footer">
         <div>
           <div class="spotlight-price" id="product-price-el">14 500 000 ₽</div>
-          <div class="spotlight-price-old" id="product-price-old-el">17 500 000 ₽</div>
+          <div class="spotlight-old" id="product-price-old-el">17 200 000 ₽</div>
         </div>
-        <button class="spotlight-cta" onclick="event.stopPropagation();openModal()">Заявка</button>
+        <button class="btn-accent" style="font-size:12px;padding:10px 18px;" onclick="event.stopPropagation();openModal()">Заявка</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- KPI STRIP -->
-<div class="kpi-strip">
-  <div class="kpi-item"><div class="kpi-num">840<em>+</em></div><div class="kpi-label">сделок<br>закрыто</div></div>
-  <div class="kpi-item" style="text-align:center;"><div class="kpi-num">120<em>+</em></div><div class="kpi-label">объектов<br>в базе</div></div>
-  <div class="kpi-item" style="text-align:center;"><div class="kpi-num">12</div><div class="kpi-label">лет на рынке<br>недвижимости</div></div>
-  <div class="kpi-item"><div class="kpi-num">₽0</div><div class="kpi-label">комиссия<br>с покупателя</div></div>
-</div>
-
-<!-- REVIEWS -->
-<section class="reviews-section" id="reviews">
-  <div class="section-head">
-    <div class="section-label">Отзывы клиентов</div>
-    <div class="section-title">Нам доверяют</div>
+<!-- ПРОЦЕСС СДЕЛКИ -->
+<section class="process-section">
+  <div class="section-label">Как мы работаем</div>
+  <div class="section-title" id="process-title" style="max-width:500px;">От заявки<br>до ключей</div>
+  <div class="process-steps" id="process-steps">
+    <div class="process-step">
+      <div class="step-num active">1</div>
+      <div class="step-title">Заявка</div>
+      <div class="step-desc">Звонок или форма — менеджер выходит на связь за 15 мин</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-title">Подбор</div>
+      <div class="step-desc">Показываем 5–10 объектов под ваши параметры и бюджет</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-title">Показ</div>
+      <div class="step-desc">Организуем показы, в том числе онлайн — без лишних поездок</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">4</div>
+      <div class="step-title">Ипотека</div>
+      <div class="step-desc">Одобрение за 1 день в 14 банках-партнёрах</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">5</div>
+      <div class="step-title">Ключи</div>
+      <div class="step-desc">Сделка, регистрация, приёмка квартиры — с нами</div>
+    </div>
   </div>
-  <div class="reviews-grid" id="reviews-grid"></div>
+</section>
+
+<!-- РАЙОНЫ -->
+<section class="areas-section" id="areas">
+  <div class="section-label">География</div>
+  <div class="section-title">Популярные<br>районы</div>
+  <div class="areas-grid" id="areas-grid"></div>
 </section>
 
 <!-- FOOTER -->
@@ -399,7 +523,7 @@ body {
       <div class="modal-brand">ЮKassa · Безопасная оплата</div>
       <div class="modal-title" id="modal-product-name">Оставить заявку</div>
       <div class="modal-amount" id="modal-amount">14 500 000 <em>₽</em></div>
-      <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" id="card-num" maxlength="19" oninput="fmtCard(this)">
+      <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
       <div class="modal-row">
         <input type="text" class="modal-input" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)">
         <input type="password" class="modal-input" placeholder="CVC" maxlength="3">
@@ -411,17 +535,19 @@ body {
     <div class="modal-success" id="modal-success">
       <div class="modal-success-icon">✓</div>
       <div class="modal-success-title">Заявка принята!</div>
-      <div class="modal-success-text">Наш менеджер свяжется с вами в течение 15 минут.</div>
+      <div class="modal-success-text">Менеджер свяжется с вами в течение 15 минут.</div>
     </div>
   </div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════════════════
-// REAL ESTATE v2 — ИЗЗИ Магазин
-// Светлый современный застройщик
+// REAL ESTATE v3 — ИЗЗИ Магазин
+// Уникальные секции: быстрый подбор, ипотечный калькулятор,
+// процесс сделки, районы города
 // ═══════════════════════════════════════════════════════
 
+// ─── Filter chips ──────────────────────────────────────
 document.querySelectorAll('.filter-chip').forEach(c => {
   c.addEventListener('click', () => {
     document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
@@ -429,151 +555,170 @@ document.querySelectorAll('.filter-chip').forEach(c => {
   });
 });
 
+// ─── Ипотечный калькулятор ─────────────────────────────
+function calcUpdate() {
+  const price = parseInt(document.getElementById('calc-price').value);
+  const down  = parseInt(document.getElementById('calc-down').value);
+  const term  = parseInt(document.getElementById('calc-term').value);
+  const rate  = parseFloat(document.getElementById('calc-rate').value);
+
+  const downAmt = Math.round(price * down / 100);
+  const loan    = price - downAmt;
+  const monthly = rate > 0
+    ? Math.round(loan * (rate/100/12) / (1 - Math.pow(1 + rate/100/12, -term*12)))
+    : Math.round(loan / (term * 12));
+  const total   = monthly * term * 12;
+
+  document.getElementById('calc-price-val').textContent = price.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('calc-down-val').textContent  = down + '% · ' + downAmt.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('calc-term-val').textContent  = term + ' лет';
+  document.getElementById('calc-rate-val').textContent  = rate + '%';
+  document.getElementById('calc-monthly').textContent   = monthly.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('calc-total').textContent     = total.toLocaleString('ru-RU') + ' ₽';
+}
+calcUpdate();
+
+// ─── Render ────────────────────────────────────────────
 function render(data) {
   const name = data.bizName || 'Realty';
   document.getElementById('nav-logo').textContent = name;
   document.getElementById('loading-logo-text').textContent = name;
 
-  // Hero
   document.getElementById('hero-eyebrow').textContent = data.bizCity ? name + ' · ' + data.bizCity : name;
-  document.getElementById('hero-title').textContent   = data.hero_title || 'Квартиры в лучших ЖК Москвы';
+  document.getElementById('hero-title').textContent   = data.hero_title || 'Найдём квартиру за 3 дня';
   document.getElementById('hero-desc').textContent    = data.hero_desc  || '';
 
-  // Objects from features
-  document.getElementById('objects-title').textContent = data.features_title || 'Актуальные предложения';
-  const feats    = data.features || [];
-  const metros   = ['Садовая', 'Проспект Мира', 'Бутырская'];
-  const walks    = ['4 мин', '8 мин', '6 мин'];
-  const badgeCls = ['hot', 'new', 'normal'];
-  const badgeT   = ['Топ', 'Новинка', 'Вторичка'];
-  const baseP    = parseInt(data.avg_check) || 8500000;
-  const grid     = document.getElementById('objects-grid');
+  // Catalog
+  document.getElementById('catalog-title').textContent = data.features_title || 'Актуальные предложения';
+  const feats   = data.features || [];
+  document.getElementById('catalog-count').textContent = feats.length + ' объекта';
+  const metros  = ['Садовая', 'Проспект Мира', 'Бутырская'];
+  const walks   = ['4 мин', '7 мин', '6 мин'];
+  const badges  = [['hot','Топ'], ['new','Новинка'], ['sec','Вторичка']];
+  const rooms   = ['2 комн.', '3 комн.', '1 комн.'];
+  const areas   = ['68 м²', '92 м²', '44 м²'];
+  const floors  = ['12/24', '5/18', '3/9'];
+  const baseP   = parseInt(data.avg_check) || 9000000;
+  const grid    = document.getElementById('objects-grid');
   grid.innerHTML = '';
-  const cardQueries = [
-    data.hero_image_query || 'modern apartment building exterior',
-    'luxury residential complex facade',
-    'new residential building architecture'
-  ];
   feats.forEach((f, i) => {
-    const p = Math.round((baseP * (0.75 + i * 0.28)) / 100000) * 100000;
+    const p   = Math.round((baseP * (0.75 + i * 0.28)) / 100000) * 100000;
+    const pm2 = Math.round(p / parseInt(areas[i]) / 1000) * 1000;
     grid.innerHTML += `
       <div class="obj-card" onclick="openModal()">
-        <div class="obj-img" id="obj-img-${i}">
-          <div class="obj-img-ph" id="obj-img-ph-${i}">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="12" width="32" height="23" rx="2" stroke="#b0aa9e" stroke-width="1.2"/><path d="M1 12L20 2l19 10" stroke="#b0aa9e" stroke-width="1.2" fill="none"/><rect x="15" y="22" width="10" height="13" rx="1" stroke="#b0aa9e" stroke-width="1"/></svg>
-          </div>
-          <div class="obj-badge ${badgeCls[i]}">${badgeT[i]}</div>
-          <div class="obj-metro"><div class="metro-dot"></div>${metros[i] || 'Центр'} · ${walks[i] || '5 мин'}</div>
+        <div class="obj-img">
+          <div class="obj-img-ph" id="obj-img-ph-${i}"></div>
+          <div class="obj-badge ${badges[i][0]}">${badges[i][1]}</div>
+          <button class="obj-save" onclick="event.stopPropagation()">♡</button>
+          <div class="obj-metro"><div class="metro-dot"></div>${metros[i]} · ${walks[i]}</div>
         </div>
         <div class="obj-body">
           <div class="obj-name">${f.title}</div>
           <div class="obj-loc">${data.bizCity || 'Москва'}</div>
-          <div class="obj-chips"><div class="obj-chip">Ипотека</div><div class="obj-chip">Сдача 2026</div><div class="obj-chip">Паркинг</div></div>
-          <div class="obj-price-row">
-            <div class="obj-price">от ${p.toLocaleString('ru-RU')} ₽<span>стоимость объекта</span></div>
-            <button class="obj-btn" onclick="event.stopPropagation();openModal()">Заявка</button>
+          <div class="obj-specs">
+            <div class="obj-spec"><span class="obj-spec-icon">🛏</span>${rooms[i]}</div>
+            <div class="obj-spec"><span class="obj-spec-icon">📐</span>${areas[i]}</div>
+            <div class="obj-spec"><span class="obj-spec-icon">🏢</span>${floors[i]} эт.</div>
+          </div>
+          <div class="obj-bottom">
+            <div>
+              <div class="obj-price">${p.toLocaleString('ru-RU')} ₽</div>
+              <div class="obj-price-m2">${pm2.toLocaleString('ru-RU')} ₽/м²</div>
+            </div>
+            <button class="obj-cta" onclick="event.stopPropagation();openModal()">Заявка</button>
           </div>
         </div>
       </div>`;
   });
-  // Загружаем картинки в карточки после рендера
-  feats.forEach((f, i) => {
-    loadCardImage(cardQueries[i] || 'apartment building', `obj-img-ph-${i}`);
-  });
-
-  // Features grid
-  document.getElementById('features-title-el').textContent = data.features_title || 'Наши преимущества';
-  const fgrid = document.getElementById('features-grid');
-  fgrid.innerHTML = '';
-  feats.forEach((f, i) => {
-    fgrid.innerHTML += `
-      <div class="feat-card">
-        <div class="feat-num">0${i+1}</div>
-        <div class="feat-title">${f.title}</div>
-        <div class="feat-desc">${f.desc}</div>
-      </div>`;
-  });
+  const cardQueries = [
+    data.hero_image_query || 'modern apartment building exterior',
+    'residential complex new building',
+    'apartment building secondary market'
+  ];
+  feats.forEach((_, i) => loadImg(cardQueries[i], `obj-img-ph-${i}`, true));
 
   // Spotlight
   let price    = Math.round((parseInt(data.avg_check) || 14500000) / 100000) * 100000;
-  let oldPrice = Math.round(price * 1.2 / 100000) * 100000;
-  document.getElementById('spotlight-headline').textContent   = 'Выбор этой недели';
-  document.getElementById('spotlight-desc').textContent       = data.product_desc || '';
-  document.getElementById('product-tag-el').textContent       = data.bizType || 'Новостройка';
-  document.getElementById('product-name-el').textContent      = data.product_name || name;
-  document.getElementById('product-addr-el').textContent      = data.bizCity || 'Москва';
-  document.getElementById('product-price-el').textContent     = price.toLocaleString('ru-RU') + ' ₽';
-  document.getElementById('product-price-old-el').textContent = oldPrice.toLocaleString('ru-RU') + ' ₽';
-  document.getElementById('modal-product-name').textContent   = data.product_name || name;
+  let oldPrice = Math.round(price * 1.18 / 100000) * 100000;
+  document.getElementById('spotlight-desc').textContent        = data.product_desc || '';
+  document.getElementById('product-tag-el').textContent        = data.bizType || 'Новостройка';
+  document.getElementById('product-name-el').textContent       = data.product_name || name;
+  document.getElementById('product-addr-el').textContent       = (data.bizCity || 'Москва') + ' · ЦАО';
+  document.getElementById('product-price-el').textContent      = price.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('product-price-old-el').textContent  = oldPrice.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('modal-product-name').textContent    = data.product_name || name;
   document.getElementById('modal-amount').innerHTML = price.toLocaleString('ru-RU') + ' <em>₽</em>';
-
   const pf = document.getElementById('product-features-el');
   pf.innerHTML = '';
   (data.product_features || []).forEach(f => {
     pf.innerHTML += `<div class="spotlight-feat">${f}</div>`;
   });
+  loadImg((data.hero_image_query || 'luxury apartment interior') + ' interior', 'product-img-wrap', false);
 
-  // Reviews
-  const rg = document.getElementById('reviews-grid');
-  rg.innerHTML = '';
-  (data.reviews || []).forEach(r => {
-    rg.innerHTML += `
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"${r.text}"</div>
-        <div class="review-sep"></div>
-        <div class="review-author">
-          <div class="review-ava">${r.avatar || r.name[0]}</div>
-          <div>
-            <div class="review-name">${r.name}</div>
-            <div class="review-status">Верифицированный клиент</div>
-          </div>
+  // Районы
+  const areaNames  = ['ЦАО', 'ЗАО', 'СЗАО', 'Подмосковье'];
+  const areaCounts = ['42 объекта', '28 объектов', '19 объектов', '31 объект'];
+  const areaPrices = ['от 18 млн ₽', 'от 9 млн ₽', 'от 7 млн ₽', 'от 4 млн ₽'];
+  const areaEmoji  = ['🏙', '🌿', '🌊', '🏡'];
+  const areaQueries = ['Moscow city center aerial', 'Moscow west district park', 'Moscow northwest river', 'Moscow suburb village'];
+  const areasGrid  = document.getElementById('areas-grid');
+  areasGrid.innerHTML = '';
+  areaNames.forEach((an, i) => {
+    areasGrid.innerHTML += `
+      <div class="area-card" onclick="openModal()">
+        <div class="area-img">
+          <div class="area-img-ph" id="area-img-${i}"><span>${areaEmoji[i]}</span></div>
+          <div class="area-overlay"></div>
+          <div class="area-count">${areaCounts[i]}</div>
+        </div>
+        <div class="area-body">
+          <div class="area-name">${an}</div>
+          <div class="area-price">${areaPrices[i]}</div>
         </div>
       </div>`;
   });
+  areaQueries.forEach((q, i) => loadImg(q, `area-img-${i}`, false));
 
   // Footer
-  document.getElementById('footer-brand').textContent  = name;
+  document.getElementById('footer-brand').textContent   = name;
   document.getElementById('footer-tagline').textContent = (data.bizCity || 'Москва') + ' · ' + (data.bizType || 'Недвижимость');
-  document.getElementById('footer-copy').textContent   = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
+  document.getElementById('footer-copy').textContent    = `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
-  loadHeroImage(data.hero_image_query || 'modern residential complex Moscow');
-  loadCardImage((data.hero_image_query || 'luxury apartment interior') + ' interior', 'product-img-wrap');
-  if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
+  loadImg(data.hero_image_query || 'modern residential complex Moscow', 'hero-img-wrap-inner', false, true);
 }
 
-async function loadHeroImage(q) {
+// ─── Image loader ──────────────────────────────────────
+async function loadImg(q, placeholderId, coverFill, isHero) {
   try {
     const r = await fetch('/image?q=' + encodeURIComponent(q));
     if (!r.ok) throw new Error();
     const url = URL.createObjectURL(await r.blob());
-    const w = document.getElementById('hero-img-wrap');
-    w.innerHTML = '';
-    const img = document.createElement('img');
-    img.src = url; img.alt = '';
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-    w.appendChild(img);
-  } catch(e) {}
-}
-
-// Загружает картинку в любой placeholder по id
-async function loadCardImage(q, placeholderId) {
-  try {
-    const r = await fetch('/image?q=' + encodeURIComponent(q));
-    if (!r.ok) throw new Error();
-    const url = URL.createObjectURL(await r.blob());
+    if (isHero) {
+      const w = document.getElementById('hero-img-wrap');
+      w.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = url; img.alt = '';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      w.appendChild(img);
+      return;
+    }
     const ph = document.getElementById(placeholderId);
     if (!ph) return;
+    ph.innerHTML = '';
     const img = document.createElement('img');
     img.src = url; img.alt = '';
-    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;';
-    // Делаем родителя position:relative если нужно
-    ph.style.position = 'relative';
-    ph.innerHTML = '';
+    img.style.cssText = coverFill
+      ? 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;'
+      : 'width:100%;height:100%;object-fit:cover;display:block;';
+    if (coverFill) ph.style.position = 'relative';
     ph.appendChild(img);
   } catch(e) {}
 }
 
+// вызов hero image
+async function loadHeroImage(q) { loadImg(q, null, false, true); }
+
+// ─── Modal ─────────────────────────────────────────────
 function openModal()  { document.getElementById('modal').classList.add('active'); }
 function closeModal() {
   document.getElementById('modal').classList.remove('active');
@@ -594,6 +739,7 @@ function fmtCard(el) { let v = el.value.replace(/\D/g,'').substring(0,16); el.va
 function fmtExpiry(el) { let v = el.value.replace(/\D/g,'').substring(0,4); if (v.length >= 2) v = v.slice(0,2)+' / '+v.slice(2); el.value = v; }
 document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
 
+// ─── Init ──────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const payload = new URLSearchParams(window.location.search).get('data');
   if (payload) {
@@ -606,26 +752,20 @@ window.addEventListener('DOMContentLoaded', () => {
     render({
       bizName:  'Городские горизонты',
       bizCity:  'Москва',
-      bizType:  'Новостройки',
-      hero_title: 'Квартиры в лучших ЖК Москвы',
-      hero_desc:  'Только проверенные объекты от надёжных застройщиков. Ипотека от 8.2%, юридическая чистота гарантирована.',
-      features_title: 'Почему нам доверяют',
+      bizType:  'Агентство недвижимости',
+      hero_title: 'Найдём квартиру за 3 дня',
+      hero_desc:  'Подбор, юридическая проверка, сопровождение сделки — полностью под ключ.',
+      features_title: 'Актуальные предложения',
       features: [
-        { title: 'Юридическая чистота',  desc: 'Каждый объект проходит многоступенчатую проверку — правоустанавливающие документы, обременения, история.' },
-        { title: 'Личный менеджер',       desc: 'Персональный специалист ведёт вас от первого звонка до получения ключей.' },
-        { title: 'Ипотека за один день',  desc: 'Партнёрство с 14 банками. Одобрение без лишних документов.' }
+        { title: 'ЖК «Онежский вал»',      desc: '' },
+        { title: 'ЖК «Мичуринский парк»',  desc: '' },
+        { title: 'Квартира на Таганке',     desc: '' }
       ],
       product_name:     'ЖК «Онежский вал» — 2-комн.',
-      product_desc:     'Апартаменты с видом на парк. Отделка white box, потолки 3.1 м, закрытый двор, паркинг.',
+      product_desc:     'Апартаменты с видом на парк. Отделка white box, потолки 3.1 м, закрытый двор.',
       product_features: ['74 м² · 2 комнаты', 'Сдача Q3 2026', 'Паркинг включён', 'Ипотека от 8.2%'],
       avg_check:        '14500000',
-      reviews: [
-        { name: 'Дмитрий К.',  text: 'Купили квартиру без единой головной боли. Менеджер держала в курсе на каждом этапе сделки.', avatar: 'Д' },
-        { name: 'Юлия Р.',     text: 'Нашли квартиру мечты за две недели. Реально работают, а не просто показывают варианты.', avatar: 'Ю' },
-        { name: 'Алексей М.',  text: 'Ипотеку одобрили за сутки, сделка прошла за пять дней. Очень доволен.', avatar: 'А' }
-      ],
-      hero_image_query: 'modern apartment complex Moscow',
-      isDemo: false
+      hero_image_query: 'modern apartment complex Moscow aerial'
     });
   }
   setTimeout(() => {
