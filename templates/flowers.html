@@ -461,55 +461,63 @@ body {
   font-size: 28px; font-weight: 400; color: var(--ink);
 }
 
-/* ─── REVIEWS ─────────────────────────────────── */
-.reviews {
+/* ─── HOW WE WORK ─────────────────────────────── */
+.howwework {
   padding: 96px 48px;
   background: var(--petal);
   border-bottom: 1px solid var(--line);
 }
-.reviews-eyebrow {
+.hww-eyebrow {
   font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
   color: var(--rose); margin-bottom: 10px;
   display: flex; align-items: center; gap: 10px;
 }
-.reviews-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--rose); display: block; }
-.reviews-title {
+.hww-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--rose); display: block; }
+.hww-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(32px, 3.5vw, 52px); font-weight: 400;
   letter-spacing: -0.01em; color: var(--ink); margin-bottom: 52px;
 }
-.reviews-title em { font-style: italic; }
-.reviews-grid {
+.hww-title em { font-style: italic; }
+.hww-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
 }
-.review-card {
+.hww-card {
   background: var(--white); border-radius: 16px;
-  padding: 32px 28px; border: 1px solid var(--line);
-  transition: box-shadow 0.25s;
+  overflow: hidden; border: 1px solid var(--line);
+  transition: box-shadow 0.25s, transform 0.25s;
 }
-.review-card:hover { box-shadow: 0 12px 36px rgba(44,36,32,0.07); }
-.review-stars {
-  font-size: 14px; color: var(--rose); letter-spacing: 2px; margin-bottom: 16px;
+.hww-card:hover { box-shadow: 0 12px 36px rgba(44,36,32,0.08); transform: translateY(-2px); }
+.hww-photo {
+  height: 220px; position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #f7ede8 0%, #ecddd6 100%);
 }
-.review-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px; font-style: italic; font-weight: 400;
-  color: var(--ink); line-height: 1.7; margin-bottom: 24px;
+.hww-photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 5s ease;
 }
-.review-author { display: flex; align-items: center; gap: 12px; }
-.review-avatar {
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--petal); border: 1px solid var(--line2);
+.hww-card:hover .hww-photo img { transform: scale(1.05); }
+.hww-photo-ph {
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+}
+.hww-step-num {
+  position: absolute; top: 14px; left: 16px;
   font-family: 'Playfair Display', serif;
-  font-size: 16px; font-weight: 400; color: var(--rose);
+  font-size: 13px; font-weight: 400; font-style: italic;
+  color: var(--white);
+  background: var(--rose); border-radius: 100px;
+  padding: 4px 12px;
 }
-.review-name {
-  font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: 0.04em;
+.hww-body { padding: 22px 22px 26px; }
+.hww-step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 400; color: var(--ink); margin-bottom: 8px;
 }
-.review-verified {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--dust); margin-top: 2px; font-weight: 400;
+.hww-step-desc {
+  font-size: 13px; color: var(--mid); line-height: 1.7; font-weight: 300;
 }
 
 /* ─── FOOTER ──────────────────────────────────── */
@@ -640,8 +648,8 @@ body {
   .occasions { padding: 64px 20px; }
   .occasions-grid { grid-template-columns: 1fr 1fr; }
   .spotlight { padding: 64px 20px; grid-template-columns: 1fr; gap: 48px; }
-  .reviews { padding: 64px 20px; }
-  .reviews-grid { grid-template-columns: 1fr; }
+  .howwework { padding: 64px 20px; }
+  .hww-grid { grid-template-columns: 1fr; }
   .footer { padding: 56px 20px 32px; }
 }
 </style>
@@ -690,7 +698,7 @@ body {
     <li><a href="#catalogue">Каталог</a></li>
     <li><a href="#occasions">Поводы</a></li>
     <li><a href="#spotlight">Хит сезона</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#howwework">Как работаем</a></li>
   </ul>
   <button class="nav-cta" onclick="openModal()">Заказать букет</button>
 </nav>
@@ -785,11 +793,11 @@ body {
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="reviews" id="reviews">
-  <div class="reviews-eyebrow">Отзывы клиентов</div>
-  <div class="reviews-title">Они уже <em>влюблены</em></div>
-  <div class="reviews-grid" id="reviews-grid">
+<!-- HOW WE WORK -->
+<section class="howwework" id="howwework">
+  <div class="hww-eyebrow">Наш процесс</div>
+  <div class="hww-title">Как мы <em>собираем</em><br>ваш букет</div>
+  <div class="hww-grid" id="hww-grid">
     <!-- populated by render() -->
   </div>
 </section>
@@ -905,13 +913,14 @@ function render(data) {
     { name: 'Солнечный день',  tag: '',        price: '2400', query: 'yellow sunflowers bouquet bright' },
     { name: 'Лесная фея',      tag: 'Акция',   price: '2100', query: 'wildflowers bouquet forest' }
   ];
-  var cgrid = document.getElementById('catalogue-grid');
   if (cgrid) {
     cgrid.innerHTML = '';
     bouquets.forEach(function(b, i) {
       var featured = i === 0 ? 'featured' : '';
       var tagHtml = b.tag ? '<div class="bouquet-tag">' + b.tag + '</div>' : '';
-      cgrid.innerHTML += '<div class="bouquet-card ' + featured + '" onclick="openModal()">' +
+      var priceNum = Number(b.price).toLocaleString('ru-RU') + ' \u20BD';
+      var escapedName = b.name.replace(/'/g, "\\'");
+      cgrid.innerHTML += '<div class="bouquet-card ' + featured + '" onclick="openModal(\'' + escapedName + '\', \'' + priceNum + '\')">' +
         '<div class="bouquet-img" id="bq-' + i + '">' +
         '<div class="bouquet-img-ph">🌸</div>' +
         '</div>' +
@@ -920,7 +929,7 @@ function render(data) {
         '<div class="bouquet-name">' + b.name + '</div>' +
         '<div class="bouquet-meta">' +
         '<div class="bouquet-price">' + Number(b.price).toLocaleString('ru-RU') + ' ₽</div>' +
-        '<button class="bouquet-btn" onclick="event.stopPropagation(); openModal()">+</button>' +
+        '<button class="bouquet-btn" onclick="event.stopPropagation(); openModal(\'' + escapedName + '\', \'' + priceNum + '\')">+</button>' +
         '</div></div></div>';
       loadCardImage(b.query || 'flower bouquet', 'bq-' + i);
     });
@@ -954,6 +963,7 @@ function render(data) {
   var priceStr = price.toLocaleString('ru-RU') + ' \u20BD';
   var oldPriceStr = oldPrice.toLocaleString('ru-RU') + ' \u20BD';
 
+  var escapedProductName = (data.product_name || name).replace(/'/g, "\\'");
   setEl('spotlight-title', '<em>' + (data.product_name || 'Букет сезона') + '</em>', true);
   setEl('spotlight-desc', data.product_desc || '');
   setEl('spotlight-price', priceStr);
@@ -963,6 +973,12 @@ function render(data) {
   setEl('spotlight-card-price', priceStr);
   setEl('modal-amount', priceStr);
   setEl('modal-product-name', data.product_name || name);
+
+  // Patch spotlight buttons with correct price
+  var spotlightBtns = document.querySelectorAll('.spotlight .btn-rose, .spotlight-card');
+  spotlightBtns.forEach(function(el) {
+    el.setAttribute('onclick', "openModal('" + escapedProductName + "', '" + priceStr + "')");
+  });
 
   var sfeat = document.getElementById('spotlight-feats');
   if (sfeat) {
@@ -1005,11 +1021,21 @@ function render(data) {
 }
 
 // ─── MODAL ────────────────────────────────────────────────────
-function openModal() { document.getElementById('modal').classList.add('active'); }
+function openModal(productName, productPrice) {
+  // Reset form state on each open
+  var formView = document.getElementById('modal-form-view');
+  var successView = document.getElementById('modal-success');
+  var btn = document.querySelector('.modal-submit');
+  if (formView) formView.style.display = 'block';
+  if (successView) successView.classList.remove('show');
+  if (btn) { btn.textContent = 'Оплатить безопасно'; btn.disabled = false; }
+
+  if (productName) setEl('modal-product-name', productName);
+  if (productPrice) setEl('modal-amount', productPrice);
+  document.getElementById('modal').classList.add('active');
+}
 function closeModal() {
   document.getElementById('modal').classList.remove('active');
-  document.getElementById('modal-success').classList.remove('show');
-  document.getElementById('modal-form-view').style.display = 'block';
 }
 function simulatePay() {
   var btn = document.querySelector('.modal-submit');
