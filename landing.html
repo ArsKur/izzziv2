@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИЗЗЗИ Старт — Создай интернет-магазин за 10 минут</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060c16;
+    --bg2: #0b1422;
+    --green: #21A038;
+    --green-bright: #2ecc57;
+    --cyan: #00D4FF;
+    --white: #ffffff;
+    --muted: #7a8ba0;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Onest', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(6,12,22,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px; font-weight: 900;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--white); -webkit-text-fill-color: var(--white); opacity: 0.5; font-weight: 300; font-size: 13px; margin-left: 8px; vertical-align: middle; }
+  nav ul { display: flex; gap: 36px; list-style: none; }
+  nav ul a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  nav ul a:hover { color: var(--white); }
+  .nav-cta { display: flex; gap: 12px; align-items: center; }
+
+  .btn-ghost {
+    padding: 10px 22px; border: 1px solid var(--card-border);
+    border-radius: 8px; color: var(--white); text-decoration: none;
+    font-size: 14px; font-family: 'Onest', sans-serif;
+    transition: all 0.2s; background: transparent; cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  .btn-primary {
+    padding: 10px 24px;
+    background: var(--green); border-radius: 8px;
+    color: white; text-decoration: none; font-size: 14px;
+    font-family: 'Onest', sans-serif; font-weight: 600;
+    transition: all 0.2s; border: none; cursor: pointer;
+    box-shadow: 0 0 20px rgba(33,160,56,0.3);
+  }
+  .btn-primary:hover { background: var(--green-bright); box-shadow: 0 0 30px rgba(33,160,56,0.5); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; text-align: center;
+    padding: 120px 40px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(33,160,56,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,212,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 20% 60%, rgba(33,160,56,0.05) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(33,160,56,0.12); border: 1px solid rgba(33,160,56,0.3);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 32px;
+    font-size: 13px; color: var(--green-bright);
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green-bright);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(36px, 6vw, 80px);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -2px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .rotating-words {
+    display: inline-block;
+    height: 1.1em; overflow: hidden; vertical-align: bottom;
+  }
+  .rotating-words span {
+    display: block;
+    animation: rotate 8s infinite;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  @keyframes rotate {
+    0%, 20% { transform: translateY(0); }
+    25%, 45% { transform: translateY(-100%); }
+    50%, 70% { transform: translateY(-200%); }
+    75%, 95% { transform: translateY(-300%); }
+    100% { transform: translateY(-400%); }
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--muted); margin-top: 24px;
+    max-width: 540px; line-height: 1.6;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .btn-large { padding: 16px 36px; font-size: 16px; border-radius: 10px; }
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 72px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s 0.4s ease both;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 32px; font-weight: 900;
+    background: linear-gradient(135deg, var(--white), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-stat .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    overflow: hidden; padding: 16px 0;
+    background: rgba(33,160,56,0.04);
+  }
+  .marquee-track {
+    display: flex; gap: 48px; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--muted); flex-shrink: 0;
+  }
+  .marquee-item::before { content: '✦'; color: var(--green); font-size: 10px; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--green); margin-bottom: 16px; font-weight: 600;
+  }
+  h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -1px; margin-bottom: 20px;
+  }
+  .section-sub { color: var(--muted); font-size: 17px; max-width: 500px; line-height: 1.6; }
+
+  /* STEPS */
+  .steps-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 60px; }
+  .steps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; margin-top: 56px; position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute; top: 36px; left: 15%; right: 15%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  .step { text-align: center; padding: 0 24px; }
+  .step-num {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Unbounded', sans-serif; font-size: 24px; font-weight: 900;
+    margin: 0 auto 24px; position: relative;
+    box-shadow: 0 0 30px rgba(33,160,56,0.3);
+  }
+  .step h3 { font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+  .step p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+  /* ECOSYSTEM */
+  .eco-wrap {
+    background: var(--bg2);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .eco-inner { max-width: 1200px; margin: 0 auto; padding: 100px 60px; }
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+  }
+
+  /* Карточка — тёмная, в стиле сайта */
+  .eco-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .eco-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 212, 255, 0.25);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,212,255,0.08);
+  }
+
+  /* Блок картинки */
+  .eco-img-box {
+
+    width: 100%;
+    height: 180px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center 80%;
+    background-color: #0d1a2a;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+
+
+  }
+
+  /* Fade снизу — растворяется в цвет карточки */
+  .eco-img-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to top, #0d1a2a 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* Текстовая часть */
+  .eco-content {
+    padding: 16px 20px 24px;
+    background: #111e30;
+    flex: 1;
+  }
+  .eco-card h4 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  .eco-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* PRICING */
+  pricing-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 56px; max-width: 800px; margin-left: auto; margin-right: auto;
+}
+  .pricing-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px; padding: 40px 32px;
+    position: relative; transition: all 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.featured {
+    background: linear-gradient(135deg, rgba(33,160,56,0.12), rgba(0,212,255,0.06));
+    border-color: rgba(33,160,56,0.4);
+    box-shadow: 0 0 40px rgba(33,160,56,0.1);
+  }
+  .pricing-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    padding: 4px 16px; border-radius: 100px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+  }
+  .plan-name { font-family: 'Unbounded', sans-serif; font-size: 14px; color: var(--muted); font-weight: 400; }
+  .plan-price {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 48px; font-weight: 900;
+    margin: 16px 0 4px; line-height: 1;
+  }
+  .plan-price span { font-size: 18px; color: var(--muted); }
+  .plan-sub { color: var(--muted); font-size: 13px; margin-bottom: 32px; }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .plan-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--muted);
+  }
+  .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+  .plan-features li.inactive { opacity: 0.4; }
+  .plan-features li.inactive::before { content: '✕'; color: var(--muted); }
+  .plan-cta { width: 100%; margin-top: 32px; text-align: center; display: block; padding: 14px; border-radius: 10px; font-size: 15px; }
+
+ /* BROWSER MOCKUP */
+.mockup-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--card-border);
+  display: flex; justify-content: center; padding: 80px 60px;
+}
+.mockup { position: relative; }
+.browser-frame {
+  width: 780px;
+  background: #111820;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  overflow: hidden;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.browser-bar {
+  background: #1a2332;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dots span {
+  width: 12px; height: 12px; border-radius: 50%;
+}
+.browser-dots span:nth-child(1) { background: #ff5f57; }
+.browser-dots span:nth-child(2) { background: #febc2e; }
+.browser-dots span:nth-child(3) { background: #28c840; }
+.browser-url {
+  flex: 1; background: rgba(255,255,255,0.06);
+  border-radius: 6px; padding: 5px 12px;
+  font-size: 12px; color: var(--muted);
+  text-align: center;
+}
+.browser-screen {
+  padding: 0;
+  background: #0d1520;
+}
+.site-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.site-nav .site-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px; font-weight: 900;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.site-nav .site-links {
+  display: flex; gap: 20px;
+}
+.site-nav .site-links span {
+  font-size: 11px; color: var(--muted); cursor: pointer;
+}
+.site-nav .site-cart {
+  font-size: 11px; color: var(--white);
+  background: var(--green); padding: 5px 12px;
+  border-radius: 6px; font-weight: 600;
+}
+.site-hero-strip {
+  background: linear-gradient(135deg, rgba(33,160,56,0.08), rgba(0,212,255,0.05));
+  padding: 28px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.site-hero-strip h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px; font-weight: 900;
+  line-height: 1.2; letter-spacing: -0.5px;
+  margin: 0 0 8px;
+}
+.site-hero-strip p { font-size: 12px; color: var(--muted); margin: 0 0 16px; }
+.site-hero-strip .shop-now {
+  display: inline-block;
+  background: var(--green); color: white;
+  padding: 8px 18px; border-radius: 7px;
+  font-size: 12px; font-weight: 600;
+}
+.site-hero-img {
+  width: 140px; height: 100px;
+  border-radius: 10px; overflow: hidden;
+  flex-shrink: 0;
+}
+.site-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.site-products {
+  padding: 20px 24px;
+}
+.site-products-title {
+  font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+.site-products-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.site-product-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.site-product-card img {
+  width: 100%; height: 90px; object-fit: cover;
+}
+.site-product-info { padding: 8px 10px 10px; }
+.site-product-info .sp-name {
+  font-size: 10px; color: var(--white);
+  font-weight: 600; margin-bottom: 4px;
+}
+.site-product-info .sp-price {
+  font-size: 11px; color: var(--green);
+  font-weight: 700; font-family: 'Unbounded', sans-serif;
+}
+.glow-orb {
+  position: absolute;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(33,160,56,0.15), transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 100px 60px;
+    max-width: 1200px; margin: 0 auto;
+    position: relative;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(33,160,56,0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 { position: relative; z-index: 1; }
+  .cta-section p { position: relative; z-index: 1; color: var(--muted); margin: 20px auto 40px; max-width: 480px; font-size: 17px; line-height: 1.6; }
+  .cta-section .cta-btns { display: flex; gap: 16px; justify-content: center; position: relative; z-index: 1; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--card-border);
+    padding: 48px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-logo { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 900;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-sber { font-size: 12px; color: var(--muted); }
+  .footer-sber strong { color: var(--green); }
+
+  /* RESPONSIVE */
+  .calc-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 56px;
+  align-items: start;
+}
+.calc-inputs { display: flex; flex-direction: column; gap: 36px; }
+.calc-row { display: flex; flex-direction: column; gap: 10px; }
+.calc-label {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.calc-label span { font-size: 14px; color: var(--muted); }
+.calc-label strong { font-size: 18px; font-family: 'Unbounded', sans-serif; color: var(--white); }
+.calc-slider {
+  width: 100%; height: 4px;
+  -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px; outline: none; cursor: pointer;
+}
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(33,160,56,0.5);
+}
+.calc-hints {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted);
+}
+.calc-plans { display: flex; gap: 10px; }
+.calc-plan {
+  flex: 1; padding: 10px; border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  text-align: center; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.calc-plan small { font-size: 11px; color: var(--muted); font-weight: 400; }
+.calc-plan.active {
+  border-color: var(--green);
+  background: rgba(33,160,56,0.1);
+  color: var(--green);
+}
+.calc-plan.active small { color: var(--green); }
+.calc-result {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 36px;
+  position: sticky; top: 100px;
+}
+.calc-result-top { text-align: center; margin-bottom: 28px; }
+.calc-result-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.calc-result-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 42px; font-weight: 900;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.calc-breakdown { display: flex; flex-direction: column; gap: 12px; }
+.calc-line {
+  display: flex; justify-content: space-between;
+  font-size: 14px; color: var(--muted);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.calc-line.total {
+  font-weight: 700; color: var(--white); font-size: 16px;
+  border-bottom: none; padding-bottom: 0;
+}
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    section, .solution-inner, .steps-wrap, .eco-inner { padding: 60px 24px; }
+    .eco-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .steps::before { display: none; }
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .cta-section { padding: 60px 24px; }
+    .mockup-section { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">ИЗЗЗИ Старт <span>by Сбер</span></div>
+  <ul>
+    <li><a href="#problem">Зачем</a></li>
+    <li><a href="#solution">Как работает</a></li>
+    <li><a href="#pricing">Тарифы</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Войти</a>
+    <button onclick="openConstructor()" class="btn-primary">Начать бесплатно</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">🚀 Новый продукт ИЗЗЗИ Старт — уже доступен</div>
+  <h1>
+    Стань следующим<br>
+    <div class="rotating-words">
+      <span>интернет-магазином</span>
+      <span>брендом мечты</span>
+      <span>успешным стартапом</span>
+      <span>лидером рынка</span>
+      <span>интернет-магазином</span>
+    </div>
+  </h1>
+  <p class="hero-sub">Без программиста. Прямо внутри Сбера — с оплатой, доставкой и рекламой в одном окне.</p>
+  <div class="hero-actions">
+    <button onclick="openConstructor()" class="btn-primary btn-large">Начать бесплатно →</button>
+    <a href="#solution" class="btn-ghost btn-large">Как это работает →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">20 мин</div>
+      <div class="label">до первой продажи</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">200К+</div>
+      <div class="label">молодых предпринимателей</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">3%</div>
+      <div class="label">комиссия ЮКassa</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">0 ₽</div>
+      <div class="label">за регистрацию бизнеса</div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Конструктор магазина</div>
+    <div class="marquee-item">Оплата через ЮКassa</div>
+    <div class="marquee-item">Доставка СберЛогистикой</div>
+    <div class="marquee-item">Реклама в СберТаргет</div>
+    <div class="marquee-item">Бесплатная регистрация ИП</div>
+    <div class="marquee-item">AI-генерация описаний</div>
+    <div class="marquee-item">Аналитика продаж</div>
+    <div class="marquee-item">Чат поддержки 24/7</div>
+    <div class="marquee-item">Конструктор магазина</div>
+    <div class="marquee-item">Оплата через ЮКassa</div>
+    <div class="marquee-item">Доставка СберЛогистикой</div>
+    <div class="marquee-item">Реклама в СберТаргет</div>
+    <div class="marquee-item">Бесплатная регистрация ИП</div>
+    <div class="marquee-item">AI-генерация описаний</div>
+    <div class="marquee-item">Аналитика продаж</div>
+    <div class="marquee-item">Чат поддержки 24/7</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="steps-wrap">
+  <div class="section-tag">Как это работает</div>
+  <h2>Три шага<br>до первой продажи</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Зарегистрируй бизнес</h3>
+      <p>Бесплатное открытие ИП или ООО прямо через Сбер. Всё онлайн, без похода в налоговую.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Создай магазин</h3>
+      <p>Добавь товары, загрузи фото, выбери дизайн. AI поможет написать описания за секунды.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Получай оплату</h3>
+      <p>ЮКassa автоматически принимает платежи и отправляет чеки. Деньги — на счёт в тот же день.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ECOSYSTEM -->
+<div class="eco-wrap">
+  <div class="eco-inner">
+    <div class="section-tag">Экосистема</div>
+    <h2>Сбер уже сделал всё за тебя</h2>
+    <p class="section-sub">Лучшие сервисы Сбера уже интегрированы в вашу панель управления.</p>
+
+    <div class="eco-grid">
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/sber_target_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Сбер Таргет</h4>
+          <p>Умная реклама на 100 млн клиентов. Алгоритмы сами найдут покупателей.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/sber_logistika_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Сбер Логистика</h4>
+          <p>Доставка через 14 000+ пунктов выдачи и постаматов Сбера по всей РФ.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/sber_b2b_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Сбер B2B</h4>
+          <p>Мгновенные расчёты с поставщиками 24/7 и безопасные сделки.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/gigachat_ai_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>GigaChat AI</h4>
+          <p>Нейросеть напишет описания товаров и ответит на отзывы за вас.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/sber_kredity_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Сбер Кредиты</h4>
+          <p>Деньги на развитие бизнеса. Одобрение онлайн за пару минут.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/sber_biznes_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Сбер Бизнес</h4>
+          <p>Онлайн-банк с бесплатной бухгалтерией и налоговой отчетностью.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/biznes_zvuk_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>Бизнес Звук</h4>
+          <p>Легальная музыка для вашего пространства, включенная в подписку.</p>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-img-box" style="background-image: url('images/yukassa_nobg.png');"></div>
+        <div class="eco-content">
+          <h4>ЮKassa</h4>
+          <p>Приём платежей любым способом. Деньги на счету уже на следующий день.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- BROWSER MOCKUP -->
+<div class="mockup-section">
+  <div style="text-align:center; max-width:700px; margin:0 auto 60px;">
+    <div class="section-tag">Твой магазин</div>
+    <h2>Создай магазин такой же уникальный, как твой бренд</h2>
+    <p class="section-sub" style="margin:0 auto;">Никакого кода. Никаких дизайнеров. Выбери стиль — и продавай. Оплата, доставка и реклама уже внутри.</p>
+  </div>
+  <div class="mockup">
+    <div class="glow-orb"></div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="browser-url">изззи-магазин.рф/store</div>
+      </div>
+      <div class="browser-screen">
+        <div class="site-nav">
+          <div class="site-logo">ИЗЗЗИ STORE</div>
+          <div class="site-links">
+            <span>Каталог</span>
+            <span>Доставка</span>
+            <span>О нас</span>
+          </div>
+          <div class="site-cart">🛒 Корзина</div>
+        </div>
+        <div class="site-hero-strip">
+          <div>
+            <h2>Новая<br>коллекция</h2>
+            <p>Стиль, который говорит за тебя</p>
+            <span class="shop-now">Смотреть →</span>
+          </div>
+          <div class="site-hero-img">
+            <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=300&q=80" alt="hero"/>
+          </div>
+        </div>
+        <div class="site-products">
+          <div class="site-products-title">Популярное</div>
+          <div class="site-products-grid">
+            <div class="site-product-card">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80" alt=""/>
+              <div class="site-product-info">
+                <div class="sp-name">Nike Air Max</div>
+                <div class="sp-price">4 990 ₽</div>
+              </div>
+            </div>
+            <div class="site-product-card">
+              <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&q=80" alt=""/>
+              <div class="site-product-info">
+                <div class="sp-name">Сумка кожа</div>
+                <div class="sp-price">2 490 ₽</div>
+              </div>
+            </div>
+            <div class="site-product-card">
+              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&q=80" alt=""/>
+              <div class="site-product-info">
+                <div class="sp-name">Часы Smart</div>
+                <div class="sp-price">7 990 ₽</div>
+              </div>
+            </div>
+            <div class="site-product-card">
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&q=80" alt=""/>
+              <div class="site-product-info">
+                <div class="sp-name">Рюкзак</div>
+                <div class="sp-price">3 290 ₽</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- CALCULATOR -->
+<div style="background: var(--bg2); border-top: 1px solid var(--card-border);">
+  <div style="max-width:1200px; margin:0 auto; padding:100px 60px;">
+    <div class="section-tag">Калькулятор</div>
+    <h2>Сколько ты заработаешь?</h2>
+    <p class="section-sub">Подвигай слайдеры — и увидишь реальные цифры.</p>
+
+    <div class="calc-wrap">
+      <div class="calc-inputs">
+
+        <div class="calc-row">
+          <div class="calc-label">
+            <span>Продаж в месяц</span>
+            <strong id="val-orders">50</strong>
+          </div>
+          <input type="range" min="1" max="500" value="50" class="calc-slider" id="slider-orders" oninput="calcUpdate()">
+          <div class="calc-hints"><span>1</span><span>500</span></div>
+        </div>
+
+        <div class="calc-row">
+          <div class="calc-label">
+            <span>Средний чек</span>
+            <strong id="val-price">2 000 ₽</strong>
+          </div>
+          <input type="range" min="500" max="50000" value="2000" step="500" class="calc-slider" id="slider-price" oninput="calcUpdate()">
+          <div class="calc-hints"><span>500 ₽</span><span>50 000 ₽</span></div>
+        </div>
+
+        <div class="calc-row">
+          <div class="calc-label">
+            <span>Тариф</span>
+            <strong id="val-plan">Про — 3%</strong>
+          </div>
+          <div class="calc-plans">
+            <div class="calc-plan active" onclick="setPlan(this, 0, 'Старт — 0%')">Старт<br><small>0%</small></div>
+            <div class="calc-plan" onclick="setPlan(this, 3, 'Про — 3%')">Про<br><small>3%</small></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="calc-result">
+        <div class="calc-result-top">
+          <div class="calc-result-label">Твой доход в месяц</div>
+          <div class="calc-result-num" id="result-net">98 000 ₽</div>
+        </div>
+        <div class="calc-breakdown">
+          <div class="calc-line">
+            <span>Выручка</span>
+            <span id="result-gross">100 000 ₽</span>
+          </div>
+          <div class="calc-line">
+            <span>Комиссия платформы</span>
+            <span id="result-fee" style="color:#ff6b6b;">−3 000 ₽</span>
+          </div>
+          <div class="calc-line">
+            <span>Подписка</span>
+            <span id="result-sub" style="color:#ff6b6b;">−990 ₽</span>
+          </div>
+          <div class="calc-line total">
+            <span>Чистыми</span>
+            <span id="result-clean">96 010 ₽</span>
+          </div>
+        </div>
+        <button onclick="openConstructor()" class="btn-primary" style="display:block; text-align:center; margin-top:24px; padding:14px; width:100%;">Начать зарабатывать →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-tag">Тарифы</div>
+  <h2>Начни бесплатно,<br>расти без ограничений</h2>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="plan-name">Старт</div>
+      <div class="plan-price">0 <span>₽/мес</span></div>
+      <div class="plan-sub">Для тех, кто только начинает</div>
+      <ul class="plan-features">
+        <li>До 10 товаров</li>
+        <li>Оплата через ЮКassa</li>
+        <li>Базовый дизайн магазина</li>
+        <li>Бесплатная регистрация ИП</li>
+        <li class="inactive">Аналитика продаж</li>
+        <li class="inactive">Рекламный кабинет</li>
+        <li class="inactive">AI-помощник</li>
+      </ul>
+      <button onclick="openConstructor()" class="btn-ghost plan-cta">Начать бесплатно</button>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge">✦ Популярный</div>
+      <div class="plan-name">Про</div>
+      <div class="plan-price">990 <span>₽/мес</span></div>
+      <div class="plan-sub">Для активно растущего бизнеса</div>
+      <ul class="plan-features">
+        <li>Неограниченные товары</li>
+        <li>Оплата + рассрочка ЮКassa</li>
+        <li>Премиум дизайн + свой домен</li>
+        <li>Бесплатная регистрация ИП</li>
+        <li>Полная аналитика продаж</li>
+        <li>Рекламный кабинет СберТаргет</li>
+        <li>AI-помощник GigaChat</li>
+      </ul>
+      <button onclick="openConstructor()" class="btn-primary plan-cta">Попробовать 30 дней</button>
+    </div>
+</section>
+
+
+
+<!-- FINAL CTA -->
+<div style="background: var(--bg2); border-top: 1px solid var(--card-border);">
+  <div class="cta-section">
+    <div class="section-tag">Начни сегодня</div>
+    <p>200 000 молодых предпринимателей Москвы уже ждут инструмент, который работает здесь и сейчас. Будь первым.</p>
+    <div class="cta-btns">
+      <button onclick="openConstructor()" class="btn-primary btn-large">Создать магазин бесплатно</button>
+      <button onclick="openConstructor()" class="btn-ghost btn-large">Попробовать демо</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ИЗЗИ Магазин</div>
+  <div class="footer-links">
+    <a href="#">О проекте</a>
+    <a href="#">Тарифы</a>
+    <a href="#">Поддержка</a>
+    <a href="#">Блог</a>
+    <a href="#">Политика</a>
+  </div>
+  <div class="footer-sber">Продукт <strong>Сбер</strong> · ИЗЗИ Бизнес Бокс · 2026</div>
+</footer>
+<script>
+  let currentCommission = 3;
+  let currentSub = 990;
+
+  function setPlan(el, commission, label) {
+    document.querySelectorAll('.calc-plan').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    currentCommission = commission;
+   currentSub = commission === 0 ? 0 : 990;
+    document.getElementById('val-plan').textContent = label;
+    calcUpdate();
+  }
+
+  function calcUpdate() {
+    const orders = +document.getElementById('slider-orders').value;
+    const price  = +document.getElementById('slider-price').value;
+
+    const gross = orders * price;
+    const fee   = Math.round(gross * currentCommission / 100);
+    const net   = gross - fee - currentSub;
+
+    document.getElementById('val-orders').textContent = orders;
+    document.getElementById('val-price').textContent  = price.toLocaleString('ru') + ' ₽';
+    document.getElementById('result-gross').textContent = gross.toLocaleString('ru') + ' ₽';
+    document.getElementById('result-fee').textContent   = '−' + fee.toLocaleString('ru') + ' ₽';
+    document.getElementById('result-sub').textContent   = '−' + currentSub.toLocaleString('ru') + ' ₽';
+    document.getElementById('result-net').textContent   = net.toLocaleString('ru') + ' ₽';
+    document.getElementById('result-clean').textContent = net.toLocaleString('ru') + ' ₽';
+  }
+
+
+  function openConstructor() {
+    // Показываем оверлей с конструктором
+    const overlay = document.getElementById('constructor-overlay');
+    if (overlay) {
+         overlay.style.display = 'flex';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeConstructor() {
+    const overlay = document.getElementById('constructor-overlay');
+    if (overlay) {
+         overlay.style.display = 'none';
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  calcUpdate();
+</script>
+
+<!-- ОВЕРЛЕЙ КОНСТРУКТОРА -->
+<div id="constructor-overlay" style="
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+">
+  <div style="
+    width: 100%; height: 100%;
+    position: relative;
+  ">
+<button onclick="closeConstructor()" style="
+  position: fixed; bottom: 24px; right: 24px; z-index: 10001;
+  background: rgba(33,160,56,0.9); border: none;
+  border-radius: 50%; width: 44px; height: 44px;
+  color: white; font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+" onmouseover="this.style.transform='scale(1.1)'"
+   onmouseout="this.style.transform='scale(1)'">←</button>
+    <iframe
+      src="/app"
+      style="width:100%; height:100%; border:none;"
+      id="constructor-iframe"
+    ></iframe>
+  </div>
+</div>
+
+<style>
+  #constructor-overlay { display: none; }
+  #constructor-overlay.active { display: flex; }
+</style>
+
+</body>
+</html>
