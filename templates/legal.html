@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Legal</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════════════
    LEGAL SERVICES TEMPLATE
@@ -34,7 +34,7 @@ html { scroll-behavior:smooth; }
 body {
   background: var(--night);
   color: var(--cream);
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   overflow-x: hidden;
 }
 
@@ -57,7 +57,7 @@ body::after {
 }
 #ls.gone { opacity:0; visibility:hidden; pointer-events:none; }
 .ls-monogram {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:64px; font-weight:600; font-style:italic;
   color:var(--cream); letter-spacing:-0.02em; line-height:1;
 }
@@ -80,7 +80,7 @@ nav {
 }
 .nav-brand { display:flex; align-items:baseline; gap:10px; text-decoration:none; }
 .nav-brand-name {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:22px; font-weight:600; font-style:italic;
   color:var(--cream); letter-spacing:-0.01em;
 }
@@ -99,7 +99,7 @@ nav {
   padding:10px 26px;
   background:var(--blue2); color:#fff;
   border:none; border-radius:50px;
-  font-family:'Inter',sans-serif;
+  font-family:'IBM Plex Sans',sans-serif;
   font-size:12px; font-weight:600; letter-spacing:0.04em;
   cursor:pointer; transition:all .2s; white-space:nowrap;
 }
@@ -127,7 +127,7 @@ nav {
 }
 
 .hero-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:clamp(52px,6.5vw,90px);
   font-weight:600; line-height:0.95;
   letter-spacing:-0.03em; color:var(--cream);
@@ -175,7 +175,7 @@ nav {
 .hero-num-item:last-child { border-right:none; padding-right:0; padding-left:32px; }
 .hero-num-item:not(:first-child) { padding-left:32px; }
 .hero-num-val {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:42px; font-weight:600; color:var(--white);
   line-height:1; letter-spacing:-0.02em;
 }
@@ -196,7 +196,6 @@ nav {
 .hero-img-placeholder {
   width:100%; height:100%;
   display:flex; align-items:center; justify-content:center;
-  font-size:80px; opacity:.12;
   background:linear-gradient(160deg, #1a3060 0%, #0a1628 100%);
 }
 
@@ -213,7 +212,7 @@ nav {
   color:var(--blue2); font-weight:600; margin-bottom:8px;
 }
 .hfb-name {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:18px; font-weight:600; color:var(--night);
   line-height:1.2; margin-bottom:4px;
 }
@@ -237,7 +236,7 @@ nav {
 }
 .section-kicker::before { content:''; width:24px; height:1px; background:var(--sand); }
 .section-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:clamp(34px,4vw,54px); font-weight:600;
   letter-spacing:-0.03em; color:var(--cream); line-height:1.05;
 }
@@ -277,15 +276,19 @@ nav {
 .practice-card:hover::before { transform:scaleX(1); }
 
 .pc-icon {
-  font-size:28px; margin-bottom:20px; display:block;
-  filter:grayscale(20%);
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; font-weight: 400; font-style: italic;
+  letter-spacing: 0.04em;
+  color: var(--blue3);
+  margin-bottom: 20px; display: block;
+  opacity: 0.85;
 }
 .pc-area {
   font-size:10px; letter-spacing:0.16em; text-transform:uppercase;
   color:var(--sand); font-weight:600; margin-bottom:10px;
 }
 .pc-name {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:22px; font-weight:600; color:var(--cream);
   line-height:1.2; margin-bottom:12px; letter-spacing:-0.01em;
 }
@@ -298,7 +301,7 @@ nav {
   padding-top:20px; border-top:1px solid var(--line);
 }
 .pc-price {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:20px; font-weight:600; color:var(--white);
 }
 .pc-price-label { font-size:10px; color:var(--muted); margin-top:2px; }
@@ -342,7 +345,7 @@ nav {
   border:1px solid rgba(37,99,235,.5);
   display:flex; align-items:center; justify-content:center;
   margin:0 auto 24px;
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:22px; font-weight:600; color:var(--blue3);
   transition:all .2s;
 }
@@ -352,7 +355,7 @@ nav {
   box-shadow:0 0 30px rgba(37,99,235,.4);
 }
 .step-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:20px; font-weight:600; color:var(--cream);
   margin-bottom:10px; letter-spacing:-0.01em;
 }
@@ -399,7 +402,7 @@ nav {
   color:var(--muted); font-weight:600; margin-bottom:10px;
 }
 .case-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:21px; font-weight:600; color:var(--cream);
   line-height:1.25; letter-spacing:-0.01em; margin-bottom:14px;
 }
@@ -414,13 +417,18 @@ nav {
   border:1px solid rgba(37,99,235,.2);
   border-radius:12px; padding:14px 16px;
 }
-.case-result-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+.case-result-icon {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; color: var(--blue3);
+  flex-shrink: 0; margin-top: 2px; line-height: 1;
+  font-weight: 400;
+}
 .case-result-label {
   font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
   color:var(--blue3); font-weight:600; margin-bottom:4px;
 }
 .case-result-val {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:20px; font-weight:600; color:var(--white); line-height:1.1;
 }
 .case-result-sub { font-size:11px; color:var(--muted); margin-top:2px; }
@@ -455,7 +463,12 @@ nav {
 }
 .calc-cat:hover { border-color:rgba(59,130,246,.4); color:var(--cream); }
 .calc-cat.active { border-color:var(--blue2); color:var(--cream); background:rgba(37,99,235,.12); }
-.calc-cat-icon { font-size:22px; display:block; margin-bottom:8px; }
+.calc-cat-icon {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; font-weight: 400; font-style: italic;
+  color: var(--blue3); display: block; margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
 
 .calc-urgency {
   display:flex; gap:10px; margin-bottom:36px; justify-content:center;
@@ -482,7 +495,7 @@ nav {
 .calc-result-item { text-align:center; }
 .calc-result-label { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
 .calc-result-val {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:36px; font-weight:600; color:var(--white); line-height:1;
 }
 .calc-result-val em { font-style:normal; color:var(--blue3); font-size:22px; vertical-align:top; margin-top:4px; display:inline-block; }
@@ -501,7 +514,7 @@ footer {
   gap:48px; flex-wrap:wrap;
 }
 .footer-brand {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:26px; font-weight:600; font-style:italic;
   color:var(--cream); letter-spacing:-0.01em;
 }
@@ -545,12 +558,12 @@ footer {
   color:var(--sand); margin-bottom:12px;
 }
 .modal-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:30px; font-weight:600; letter-spacing:-0.02em;
   color:var(--cream); margin-bottom:8px; line-height:1.15;
 }
 .modal-amount {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:42px; font-weight:600; color:var(--white);
   margin-bottom:32px; letter-spacing:-0.02em;
 }
@@ -564,7 +577,7 @@ footer {
   width:100%; padding:13px 16px;
   background:rgba(240,235,224,.04);
   border:1px solid var(--line); border-radius:12px;
-  color:var(--cream); font-family:'Inter',sans-serif;
+  color:var(--cream); font-family:'IBM Plex Sans',sans-serif;
   font-size:15px; outline:none; transition:border-color .2s;
 }
 .modal-field input:focus { border-color:var(--blue2); }
@@ -582,12 +595,12 @@ footer {
 .modal-success { display:none; text-align:center; padding:20px 0; }
 .modal-success.show { display:block; }
 .success-monogram {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:72px; font-weight:600; font-style:italic;
   color:var(--blue3); line-height:1; margin-bottom:20px;
 }
 .success-title {
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Playfair Display',serif;
   font-size:28px; font-weight:600; color:var(--cream); margin-bottom:10px;
 }
 .success-sub { font-size:14px; color:var(--muted); line-height:1.7; }
@@ -657,7 +670,17 @@ footer {
   </div>
   <div class="hero-right">
     <div class="hero-img-card">
-      <div class="hero-img-placeholder">⚖️</div>
+      <div class="hero-img-placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.15">
+          <line x1="32" y1="8" x2="32" y2="56" stroke="#f0ebe0" stroke-width="1.5"/>
+          <line x1="12" y1="20" x2="52" y2="20" stroke="#f0ebe0" stroke-width="1.5"/>
+          <circle cx="12" cy="32" r="10" stroke="#f0ebe0" stroke-width="1.5"/>
+          <circle cx="52" cy="32" r="10" stroke="#f0ebe0" stroke-width="1.5"/>
+          <line x1="12" y1="20" x2="12" y2="22" stroke="#f0ebe0" stroke-width="1.5"/>
+          <line x1="52" y1="20" x2="52" y2="22" stroke="#f0ebe0" stroke-width="1.5"/>
+          <rect x="28" y="54" width="8" height="2" fill="#f0ebe0"/>
+        </svg>
+      </div>
       <img id="hero-img" alt="">
     </div>
     <div class="hero-float-badge">
@@ -754,7 +777,7 @@ footer {
       </div>
       <div class="modal-field"><label>Имя владельца</label><input type="text" placeholder="IVAN IVANOV"></div>
       <button class="modal-submit" onclick="pay()">Оплатить — <span id="modal-btn-amt">5 000 ₽</span></button>
-      <div class="modal-secure">🔒 SSL · ЮKassa · Конфиденциальность гарантирована</div>
+      <div class="modal-secure">SSL · ЮKassa · Конфиденциальность гарантирована</div>
     </div>
     <div class="modal-success" id="modal-ok">
       <div class="success-monogram">✓</div>
@@ -781,10 +804,10 @@ function demo() {
       { title: 'Результат',             desc: 'Сопровождаем до финального решения и исполнения.' }
     ],
     products: [
-      { name: 'Гражданское право',   icon: '🏛️', area: 'Споры и договоры',     desc: 'Взыскание долгов, защита прав потребителей, договорные споры любой сложности.',       price: '5000',  badge: '' },
-      { name: 'Недвижимость',        icon: '🏠', area: 'Имущество',             desc: 'Сделки, ДДУ, споры с застройщиками, раздел имущества, регистрация прав.',            price: '8000',  badge: '' },
-      { name: 'Семейное право',      icon: '👨‍👩‍👧', area: 'Семья и наследство',   desc: 'Развод, алименты, раздел имущества, наследственные споры, опека.',                    price: '6000',  badge: '' },
-      { name: 'Корпоративное право', icon: '💼', area: 'Бизнес',                desc: 'Регистрация и ликвидация, корпоративные конфликты, защита бизнеса, трудовые споры.',  price: '12000', badge: '' }
+      { name: 'Гражданское право',   icon: 'I',   area: 'Споры и договоры',     desc: 'Взыскание долгов, защита прав потребителей, договорные споры любой сложности.',       price: '5000',  badge: '' },
+      { name: 'Недвижимость',        icon: 'II',  area: 'Имущество',             desc: 'Сделки, ДДУ, споры с застройщиками, раздел имущества, регистрация прав.',            price: '8000',  badge: '' },
+      { name: 'Семейное право',      icon: 'III', area: 'Семья и наследство',    desc: 'Развод, алименты, раздел имущества, наследственные споры, опека.',                    price: '6000',  badge: '' },
+      { name: 'Корпоративное право', icon: 'IV',  area: 'Бизнес',                desc: 'Регистрация и ликвидация, корпоративные конфликты, защита бизнеса, трудовые споры.',  price: '12000', badge: '' }
     ],
     looks: [
       { area: 'Недвижимость', title: 'Застройщик затягивал сдачу на 14 месяцев', situation: 'Клиент вложил 4,2 млн в квартиру по ДДУ. Застройщик переносил срок трижды, игнорировал претензии.', result: 'Взыскано 890 000 ₽', result_sub: 'неустойка + моральный ущерб', time: '4 месяца' },
@@ -800,12 +823,12 @@ function demo() {
 
 // ─── CALC STATE ───────────────────────────────────────────────
 const calcData = [
-  { icon:'🏛️', label:'Гражданский спор',   base:5000,  time:'3–5 дн' },
-  { icon:'🏠', label:'Недвижимость',        base:8000,  time:'5–10 дн' },
-  { icon:'👨‍👩‍👧', label:'Семейное дело',      base:6000,  time:'7–14 дн' },
-  { icon:'💼', label:'Бизнес / Корпоратив', base:12000, time:'3–7 дн' },
-  { icon:'⚖️', label:'Уголовное дело',       base:25000, time:'от 30 дн' },
-  { icon:'📄', label:'Документы / договор', base:3000,  time:'1–2 дн' }
+  { icon:'Civ.', label:'Гражданский спор',   base:5000,  time:'3–5 дн' },
+  { icon:'Re.',  label:'Недвижимость',        base:8000,  time:'5–10 дн' },
+  { icon:'Fam.', label:'Семейное дело',       base:6000,  time:'7–14 дн' },
+  { icon:'Corp.',label:'Бизнес / Корпоратив', base:12000, time:'3–7 дн' },
+  { icon:'Cr.',  label:'Уголовное дело',       base:25000, time:'от 30 дн' },
+  { icon:'Doc.', label:'Документы / договор', base:3000,  time:'1–2 дн' }
 ];
 let selCat = 0, urgMult = 1;
 
@@ -926,7 +949,7 @@ function render(data) {
           <div class="case-title">${c.title}</div>
           <div class="case-desc">${c.situation}</div>
           <div class="case-result">
-            <div class="case-result-icon">✓</div>
+            <div class="case-result-icon">—</div>
             <div>
               <div class="case-result-label">Результат</div>
               <div class="case-result-val">${c.result}</div>
