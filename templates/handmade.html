@@ -331,6 +331,16 @@ body::before {
 .process-step:last-child { border-right: none; padding-right: 0; padding-left: 36px; }
 .process-step:nth-child(2) { padding: 40px 36px; }
 
+.step-img-wrap {
+  width: 100%; aspect-ratio: 3/2; overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 20px; border-radius: 2px;
+  position: relative;
+}
+.step-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
 .step-num {
   font-family: 'Playfair Display', serif;
   font-size: 52px; font-weight: 400;
@@ -1034,6 +1044,7 @@ function getDemoData() {
     product_features: ['Натуральная льняная нить', 'Авторская керамическая подвеска', 'Бронзовая застёжка-регулятор', 'Упакован в крафтовую коробку'],
     avg_check: '3200',
     hero_image_query: 'handmade craft workshop linen',
+    product_image_query: 'handmade bracelet ceramic jewelry',
     isDemo: false
   };
 }
@@ -1067,10 +1078,21 @@ function render(data) {
   feats.forEach((f, i) => {
     stepsEl.innerHTML += `
       <div class="process-step">
+        <div class="step-img-wrap" id="obj-img-ph-${i}"></div>
         <span class="step-num">0${i + 1}</span>
         <div class="step-title">${f.title}</div>
         <div class="step-desc">${f.desc}</div>
       </div>`;
+  });
+  // Load images for each step card
+  const stepQueries = [
+    'craft sketch drawing hands',
+    'natural linen fabric texture materials',
+    'handmade gift wrapping kraft box'
+  ];
+  feats.forEach((f, i) => {
+    const q = (f.image_query) || stepQueries[i] || 'handmade craft';
+    loadCardImage(q, `obj-img-ph-${i}`);
   });
 
   // Product
@@ -1101,21 +1123,25 @@ function render(data) {
     `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
   // Hero image
-  loadHeroImage(data.hero_image_query || 'handmade craft studio');
+  loadCardImage(data.hero_image_query || 'handmade craft studio', 'hero-img-wrap');
+
+  // Product spotlight image
+  loadCardImage(data.product_image_query || data.hero_image_query || 'handmade jewelry bracelet craft', 'product-img-frame');
 }
 
 // ─── IMAGE LOADING ────────────────────────────────────────────
-async function loadHeroImage(query) {
+async function loadCardImage(query, id) {
   try {
     const resp = await fetch('/image?q=' + encodeURIComponent(query));
     if (!resp.ok) throw new Error('no image');
     const blob = await resp.blob();
     const url = URL.createObjectURL(blob);
-    const wrap = document.getElementById('hero-img-wrap');
+    const wrap = document.getElementById(id);
+    if (!wrap) return;
     wrap.innerHTML = '';
     const img = document.createElement('img');
     img.src = url;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;min-height:500px;';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     wrap.appendChild(img);
   } catch(e) {
     // keep placeholder
