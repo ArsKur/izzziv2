@@ -4,37 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wellness</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════════════
-   YOGA / WELLNESS TEMPLATE
-   Japonisme × Bauhaus. Тепло, воздух, телесность.
-   Земляная охра · полынь · молоко · уголь
+   YOGA / WELLNESS / SPA TEMPLATE
+   Japonisme × organic warmth
+   Охра · полынь · молоко · уголь
+   Работает для: йога-студий, спа, медитации,
+   wellness-центров, ретритов, массажных
    ════════════════════════════════════════════════ */
 
 :root {
-  --cream:   #f5f0e8;
-  --warm:    #ede5d4;
-  --linen:   #e8dfc9;
-  --ochre:   #c4954a;
-  --ochre2:  #dba85c;
-  --sage:    #7d8c74;
-  --sage2:   #a3b09a;
-  --clay:    #8b6347;
-  --coal:    #1e1c18;
-  --smoke:   #4a4740;
-  --mist:    rgba(30,28,24,0.38);
-  --mist2:   rgba(30,28,24,0.18);
-  --line:    rgba(30,28,24,0.1);
-  --line2:   rgba(30,28,24,0.06);
-  --serif:   'Cormorant Garamond', Georgia, serif;
-  --sans:    'DM Sans', sans-serif;
-  --r:       40px;
+  --cream:  #f5f0e8;
+  --warm:   #ede5d4;
+  --linen:  #e3d9c4;
+  --ochre:  #b8864a;
+  --ochre2: #d4a06a;
+  --sage:   #7d8c74;
+  --sage2:  #a3b09a;
+  --coal:   #1c1a16;
+  --smoke:  #4a4640;
+  --mist:   rgba(28,26,22,0.4);
+  --line:   rgba(28,26,22,0.09);
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --sans:   'DM Sans', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--cream);
   color: var(--coal);
@@ -45,704 +42,539 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* grain texture */
-body::after {
-  content: '';
-  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: .55;
-}
-
 /* ── LOADING ─────────────────────────────────── */
 #loading-screen {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--cream);
   display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 24px;
+  flex-direction: column; gap: 28px;
   transition: opacity .6s, visibility .6s;
 }
 #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loading-symbol {
-  width: 48px; height: 48px; position: relative;
+.ld-ring {
+  width: 44px; height: 44px; position: relative;
 }
-.loading-symbol::before, .loading-symbol::after {
-  content: '';
-  position: absolute; border-radius: 50%;
-  border: 1.5px solid var(--ochre);
+.ld-ring::before, .ld-ring::after {
+  content: ''; position: absolute; border-radius: 50%;
+  border: 1px solid transparent;
 }
-.loading-symbol::before {
-  inset: 0;
-  animation: spinSlow 3s linear infinite;
+.ld-ring::before {
+  inset: 0; border-top-color: var(--ochre);
+  animation: spin 1.8s linear infinite;
 }
-.loading-symbol::after {
-  inset: 10px;
-  border-color: var(--sage);
-  animation: spinSlow 2s linear infinite reverse;
+.ld-ring::after {
+  inset: 10px; border-top-color: var(--sage);
+  animation: spin 1.2s linear infinite reverse;
 }
-@keyframes spinSlow { to { transform: rotate(360deg); } }
-.loading-name {
-  font-family: var(--serif); font-size: 18px; font-weight: 300;
-  color: var(--smoke); letter-spacing: .15em; text-transform: uppercase;
+@keyframes spin { to { transform: rotate(360deg); } }
+.ld-name {
+  font-family: var(--serif); font-size: 17px; font-weight: 300;
+  color: var(--smoke); letter-spacing: .14em; text-transform: uppercase;
 }
 
 /* ── NAVBAR ──────────────────────────────────── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   display: flex; align-items: center;
-  padding: 0 48px; height: 60px;
-  background: rgba(245,240,232,.88);
-  backdrop-filter: blur(20px) saturate(140%);
+  padding: 0 52px; height: 62px;
+  background: rgba(245,240,232,.9);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);
   transition: transform .4s ease;
 }
 .nav-logo {
-  font-family: var(--serif); font-size: 19px; font-weight: 400;
-  color: var(--coal); letter-spacing: .04em;
-  margin-right: auto;
+  font-family: var(--serif); font-size: 20px; font-weight: 400;
+  color: var(--coal); letter-spacing: .03em; margin-right: auto;
 }
 .nav-logo em { font-style: italic; color: var(--ochre); }
-.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
 .nav-links a {
   font-size: 13px; font-weight: 400; color: var(--smoke);
-  text-decoration: none; letter-spacing: .04em;
-  transition: color .2s;
+  text-decoration: none; letter-spacing: .04em; transition: color .2s;
 }
 .nav-links a:hover { color: var(--coal); }
-.nav-cta {
-  margin-left: 36px;
-  padding: 8px 22px; border-radius: 40px;
-  background: var(--coal); border: none;
-  color: var(--cream); font-family: var(--sans);
-  font-size: 13px; font-weight: 400; letter-spacing: .04em;
-  cursor: pointer; transition: all .3s;
+.nav-btn {
+  margin-left: 40px; padding: 9px 24px; border-radius: 40px;
+  background: var(--coal); border: none; color: var(--cream);
+  font-family: var(--sans); font-size: 13px; font-weight: 400;
+  letter-spacing: .04em; cursor: pointer; transition: background .3s;
 }
-.nav-cta:hover { background: var(--ochre); }
+.nav-btn:hover { background: var(--ochre); }
 
 /* ── HERO ────────────────────────────────────── */
 .hero {
-  min-height: 100vh;
+  padding-top: 62px; min-height: 100vh;
   display: grid; grid-template-columns: 1fr 1fr;
-  padding-top: 60px; overflow: hidden;
+  overflow: hidden;
 }
 
-.hero-left {
+/* LEFT — text */
+.hero-l {
   display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 64px 80px 80px;
-  position: relative;
+  padding: 90px 64px 80px 80px; position: relative;
 }
-
-/* decorative vertical line */
-.hero-left::before {
+.hero-l::after {
   content: '';
-  position: absolute; top: 15%; bottom: 15%;
-  right: 0; width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--line), var(--line), transparent);
+  position: absolute; right: 0; top: 15%; bottom: 15%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 30%, var(--line) 70%, transparent);
 }
-
-.hero-season {
-  display: inline-flex; align-items: center; gap: 10px;
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 14px;
   font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
   color: var(--sage); margin-bottom: 36px;
 }
-.hero-season::before {
-  content: '';
-  width: 28px; height: 1px; background: var(--sage);
-}
+.hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--sage); flex-shrink: 0; }
 
 .hero-title {
   font-family: var(--serif);
-  font-size: clamp(44px, 5.5vw, 78px);
-  font-weight: 300; line-height: 1.08;
+  font-size: clamp(46px, 5.5vw, 80px);
+  font-weight: 300; line-height: 1.06;
   letter-spacing: -.01em; color: var(--coal);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 .hero-title em { font-style: italic; color: var(--ochre); }
 
 .hero-desc {
-  font-size: 16px; color: var(--smoke); line-height: 1.75;
-  max-width: 380px; margin-bottom: 44px; font-weight: 300;
+  font-size: 16px; color: var(--smoke); line-height: 1.78;
+  max-width: 370px; margin-bottom: 48px; font-weight: 300;
 }
 
-.hero-actions { display: flex; align-items: center; gap: 20px; }
-.btn-start {
+.hero-btns { display: flex; align-items: center; gap: 22px; margin-bottom: 64px; }
+.btn-main {
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 30px; border-radius: 50px;
+  padding: 14px 32px; border-radius: 50px;
   background: var(--coal); border: none; color: var(--cream);
   font-family: var(--sans); font-size: 14px; font-weight: 400;
-  letter-spacing: .04em; cursor: pointer; transition: all .35s;
+  letter-spacing: .04em; cursor: pointer; transition: all .3s;
 }
-.btn-start:hover { background: var(--ochre); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(196,149,74,.3); }
-.btn-start svg { width: 16px; height: 16px; }
-.btn-link {
+.btn-main:hover { background: var(--ochre); box-shadow: 0 12px 36px rgba(184,134,74,.28); }
+.btn-ghost-sm {
   font-size: 13px; color: var(--smoke); letter-spacing: .04em;
-  cursor: pointer; border-bottom: 1px solid var(--line);
-  transition: color .2s, border-color .2s; background: none; border-top: none; border-left: none; border-right: none;
-  padding: 2px 0; font-family: var(--sans);
+  cursor: pointer; background: none; border: none;
+  border-bottom: 1px solid var(--line); padding: 2px 0;
+  font-family: var(--sans); transition: color .2s, border-color .2s;
 }
-.btn-link:hover { color: var(--coal); border-color: var(--coal); }
+.btn-ghost-sm:hover { color: var(--coal); border-color: var(--coal); }
 
-/* Breadcrumb stats */
 .hero-stats {
-  display: flex; gap: 40px; margin-top: 60px;
+  display: flex; gap: 44px;
   padding-top: 32px; border-top: 1px solid var(--line);
 }
-.stat-num {
-  font-family: var(--serif); font-size: 32px; font-weight: 300;
+.stat { }
+.stat-n {
+  font-family: var(--serif); font-size: 34px; font-weight: 300;
   color: var(--coal); line-height: 1;
 }
-.stat-label { font-size: 12px; color: var(--mist); letter-spacing: .06em; margin-top: 4px; }
+.stat-l { font-size: 12px; color: var(--mist); margin-top: 5px; letter-spacing: .04em; }
 
-/* ── BREATHING WIDGET (hero right) ──────────────*/
-.hero-right {
+/* RIGHT — hero image */
+.hero-r {
+  position: relative; overflow: hidden;
   background: var(--warm);
+}
+.hero-r-placeholder {
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, var(--warm) 0%, var(--linen) 100%);
+  font-size: 80px; opacity: .15;
 }
-
-/* soft organic blob bg */
-.hero-right::before {
+#hero-img {
+  width: 100%; height: 100%; object-fit: cover; display: none;
+  position: absolute; inset: 0;
+}
+/* subtle vignette over hero img */
+.hero-r::after {
   content: '';
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px; height: 500px; border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
-  background: radial-gradient(circle at 40% 40%, rgba(196,149,74,.12), rgba(125,140,116,.08) 60%, transparent 80%);
-  animation: morphBlob 12s ease-in-out infinite;
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(245,240,232,.35) 0%, transparent 30%),
+              linear-gradient(to top, rgba(28,26,22,.18) 0%, transparent 40%);
 }
-@keyframes morphBlob {
-  0%,100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
-  33%  { border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
-  66%  { border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%; }
+/* floating tag on hero image */
+.hero-tag {
+  position: absolute; bottom: 40px; left: 36px; z-index: 2;
+  background: rgba(245,240,232,.88); backdrop-filter: blur(12px);
+  border-radius: 14px; padding: 16px 20px;
+  border: 1px solid rgba(255,255,255,.5);
+}
+.hero-tag-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--sage); margin-bottom: 4px; }
+.hero-tag-val   { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--coal); }
+
+/* ── MOOD STRIP ──────────────────────────────── */
+/* Three wide images side by side — mood board feel */
+.mood-section {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  height: 420px; overflow: hidden;
+}
+.mood-cell {
+  position: relative; overflow: hidden; background: var(--linen);
+  cursor: pointer;
+}
+.mood-cell:hover .mood-overlay { opacity: 1; }
+.mood-cell:hover .mood-img-el { transform: scale(1.04); }
+.mood-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; opacity: .15;
+}
+.mood-img-el {
+  width: 100%; height: 100%; object-fit: cover; display: none;
+  transition: transform .8s ease;
+}
+.mood-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(28,26,22,.55) 0%, transparent 50%);
+  opacity: .6; transition: opacity .4s;
+  display: flex; align-items: flex-end; padding: 28px;
+}
+.mood-caption {
+  font-family: var(--serif); font-size: 20px; font-weight: 300;
+  font-style: italic; color: var(--cream); letter-spacing: .02em;
 }
 
-.breath-widget {
-  position: relative; z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 32px;
+/* ── ABOUT SPLIT ─────────────────────────────── */
+.about-section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 600px;
 }
-
-.breath-label-top {
-  font-family: var(--serif); font-size: 13px; font-weight: 300;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--mist);
-  text-align: center;
+.about-img {
+  position: relative; overflow: hidden; background: var(--warm);
 }
-
-.breath-ring {
-  position: relative;
-  width: 220px; height: 220px;
-  cursor: pointer; user-select: none;
+.about-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 64px; opacity: .12;
 }
-
-.breath-svg {
-  position: absolute; inset: 0; width: 100%; height: 100%;
+#about-img {
+  width: 100%; height: 100%; object-fit: cover; display: none;
 }
-
-.breath-track {
-  fill: none; stroke: var(--linen); stroke-width: 1.5;
+.about-content {
+  padding: 80px 72px; background: var(--coal); color: var(--cream);
+  display: flex; flex-direction: column; justify-content: center;
 }
-.breath-progress {
-  fill: none; stroke: var(--ochre); stroke-width: 1.5;
-  stroke-linecap: round;
-  transform-origin: 50% 50%; transform: rotate(-90deg);
-  stroke-dasharray: 565.5; /* 2π × 90 */
-  stroke-dashoffset: 565.5;
-  transition: stroke-dashoffset .1s linear;
-}
-
-.breath-inner {
-  position: absolute; inset: 20px;
-  border-radius: 50%; background: var(--cream);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 4px;
-  box-shadow: inset 0 2px 20px rgba(196,149,74,.08), 0 8px 40px rgba(30,28,24,.06);
-  animation: breathePulse 4s ease-in-out infinite;
-}
-@keyframes breathePulse {
-  0%,100% { transform: scale(1); box-shadow: inset 0 2px 20px rgba(196,149,74,.08), 0 8px 40px rgba(30,28,24,.06); }
-  50%      { transform: scale(1.06); box-shadow: inset 0 2px 20px rgba(196,149,74,.16), 0 16px 60px rgba(196,149,74,.15); }
-}
-
-.breath-phase {
-  font-family: var(--serif); font-size: 15px; font-weight: 300;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--ochre);
-}
-.breath-count {
-  font-family: var(--serif); font-size: 44px; font-weight: 300;
-  color: var(--coal); line-height: 1; letter-spacing: -.02em;
-}
-.breath-sub {
-  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--mist); font-weight: 400;
-}
-
-.breath-cycles {
-  display: flex; gap: 8px;
-}
-.cycle-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--linen); border: 1px solid var(--ochre);
-  transition: background .3s;
-}
-.cycle-dot.done { background: var(--ochre); }
-
-.breath-hint {
-  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--mist); font-weight: 300; text-align: center;
-}
-
-/* decorative circles in hero-right corner */
-.deco-ring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid var(--line); pointer-events: none;
-}
-.deco-ring-1 { width: 400px; height: 400px; top: -100px; right: -100px; opacity: .4; }
-.deco-ring-2 { width: 200px; height: 200px; bottom: 40px; left: 40px; opacity: .25; }
-
-/* ── RHYTHM OF THE DAY ───────────────────────── */
-.rhythm-section {
-  padding: 120px 80px;
-  background: var(--coal);
-  color: var(--cream);
-  position: relative; overflow: hidden;
-}
-.rhythm-section::before {
-  content: '';
-  position: absolute; bottom: 0; right: 0;
-  width: 400px; height: 400px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,149,74,.08), transparent 70%);
-  transform: translate(30%, 30%);
-}
-
-.rhythm-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 72px;
-}
-.rhythm-eyebrow {
+.about-eyebrow {
   font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ochre); margin-bottom: 12px;
+  color: var(--ochre2); margin-bottom: 20px;
 }
-.rhythm-title {
-  font-family: var(--serif); font-size: clamp(36px,4vw,60px);
+.about-title {
+  font-family: var(--serif); font-size: clamp(30px,3.5vw,52px);
   font-weight: 300; line-height: 1.1; color: var(--cream);
+  margin-bottom: 24px;
 }
-.rhythm-title em { font-style: italic; color: var(--ochre2); }
-.rhythm-desc {
-  max-width: 300px; font-size: 14px; color: rgba(245,240,232,.5);
+.about-title em { font-style: italic; color: var(--ochre2); }
+.about-text {
+  font-size: 15px; color: rgba(245,240,232,.55); line-height: 1.8;
+  font-weight: 300; margin-bottom: 40px;
+}
+.about-pillars {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.pillar {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid rgba(245,240,232,.07);
+}
+.pillar:last-child { border-bottom: none; }
+.pillar-num {
+  font-family: var(--serif); font-size: 28px; font-weight: 300;
+  color: var(--ochre); line-height: 1; flex-shrink: 0; width: 36px;
+}
+.pillar-body strong {
+  display: block; font-size: 14px; font-weight: 500;
+  color: var(--cream); margin-bottom: 2px;
+}
+.pillar-body span { font-size: 13px; color: rgba(245,240,232,.45); font-weight: 300; }
+
+/* ── SERVICES ────────────────────────────────── */
+.services-section {
+  padding: 120px 80px;
+  background: var(--cream);
+}
+.services-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 64px;
+}
+.services-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); margin-bottom: 14px; }
+.services-title {
+  font-family: var(--serif); font-size: clamp(32px,4vw,56px);
+  font-weight: 300; line-height: 1.1; color: var(--coal);
+}
+.services-title em { font-style: italic; color: var(--ochre); }
+.services-desc {
+  max-width: 280px; font-size: 14px; color: var(--smoke);
   line-height: 1.7; font-weight: 300;
 }
 
-.rhythm-timeline {
-  position: relative;
-}
-
-/* horizontal time line */
-.timeline-track {
-  position: relative; margin-bottom: 48px;
-}
-.timeline-line {
-  height: 1px; background: rgba(245,240,232,.1);
-  position: relative; margin: 0 0 0 80px;
-}
-.timeline-fill {
-  position: absolute; left: 0; top: 0; height: 100%;
-  background: linear-gradient(90deg, var(--ochre), var(--sage));
-  width: 60%; transition: width .6s ease;
-}
-.timeline-labels {
-  display: flex; justify-content: space-between;
-  padding-left: 80px; margin-top: 12px;
-}
-.timeline-label {
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(245,240,232,.3); font-weight: 300;
-}
-
-.rhythm-slots {
-  display: grid; grid-template-columns: 80px 1fr 1fr 1fr;
-  gap: 0;
-}
-.slot-time-col {
-  display: flex; flex-direction: column; gap: 24px;
-  padding-top: 4px;
-}
-.slot-time {
-  font-family: var(--serif); font-size: 13px; font-weight: 300;
-  color: rgba(245,240,232,.3); letter-spacing: .06em;
-  height: 100px; display: flex; align-items: flex-start;
-}
-
-.slot-col {
-  border-left: 1px solid rgba(245,240,232,.06);
-  padding: 0 16px; display: flex; flex-direction: column; gap: 12px;
-}
-.slot-col-label {
-  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(245,240,232,.3); padding-bottom: 12px;
-  border-bottom: 1px solid rgba(245,240,232,.06);
-  margin-bottom: 4px;
-}
-
-.slot-card {
-  border-radius: 14px; padding: 16px 18px;
-  cursor: pointer; transition: all .3s;
-  position: relative; overflow: hidden;
-}
-.slot-card:hover { transform: translateY(-2px); }
-.slot-card.morning { background: rgba(196,149,74,.12); border: 1px solid rgba(196,149,74,.2); }
-.slot-card.midday  { background: rgba(125,140,116,.10); border: 1px solid rgba(125,140,116,.18); }
-.slot-card.evening { background: rgba(245,240,232,.05); border: 1px solid rgba(245,240,232,.1); }
-.slot-card.morning:hover { background: rgba(196,149,74,.2); }
-.slot-card.midday:hover  { background: rgba(125,140,116,.18); }
-.slot-card.evening:hover { background: rgba(245,240,232,.1); }
-
-.slot-name { font-family: var(--serif); font-size: 16px; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
-.slot-dur  { font-size: 11px; letter-spacing: .08em; color: rgba(245,240,232,.4); margin-bottom: 8px; }
-.slot-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.slot-tag  {
-  font-size: 10px; letter-spacing: .06em; padding: 2px 8px;
-  border-radius: 20px; font-weight: 300;
-}
-.slot-tag.ochre { background: rgba(196,149,74,.2); color: var(--ochre2); }
-.slot-tag.sage  { background: rgba(125,140,116,.2); color: var(--sage2); }
-.slot-tag.mist  { background: rgba(245,240,232,.08); color: rgba(245,240,232,.5); }
-
-/* ── PRACTICES ───────────────────────────────── */
-.practices-section {
-  padding: 120px 80px;
-  background: var(--cream);
-}
-.practices-header { margin-bottom: 64px; }
-.practices-eyebrow {
-  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--sage); margin-bottom: 16px;
-}
-.practices-title {
-  font-family: var(--serif); font-size: clamp(34px,4vw,58px);
-  font-weight: 300; line-height: 1.1; color: var(--coal);
-  max-width: 560px;
-}
-.practices-title em { font-style: italic; color: var(--ochre); }
-
-.practices-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+/* grid: 2 big + 4 small */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
   gap: 2px; background: var(--line);
 }
-.practice-card {
+.service-card {
   background: var(--cream); padding: 40px 36px;
-  cursor: pointer; transition: all .35s;
   position: relative; overflow: hidden;
+  transition: background .35s; cursor: pointer;
+  display: flex; flex-direction: column;
 }
-.practice-card:hover { background: var(--warm); }
-.practice-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 36px; right: 36px; height: 1px;
-  background: linear-gradient(90deg, var(--ochre), transparent);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform .4s ease;
-}
-.practice-card:hover::after { transform: scaleX(1); }
-
-.pc-icon {
-  width: 48px; height: 48px; margin-bottom: 24px;
-  opacity: .7; transition: opacity .3s;
-}
-.practice-card:hover .pc-icon { opacity: 1; }
-
-.pc-name {
-  font-family: var(--serif); font-size: 22px; font-weight: 400;
-  color: var(--coal); margin-bottom: 6px; line-height: 1.2;
-}
-.pc-sanskrit {
-  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--ochre); margin-bottom: 16px; font-weight: 300;
-}
-.pc-desc {
-  font-size: 13px; color: var(--smoke); line-height: 1.7;
-  font-weight: 300; margin-bottom: 24px;
-}
-.pc-meta {
-  display: flex; gap: 16px; align-items: center;
-}
-.pc-dur {
-  font-size: 12px; color: var(--mist); letter-spacing: .06em;
-  display: flex; align-items: center; gap: 6px;
-}
-.pc-dur::before {
-  content: '';
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--ochre); flex-shrink: 0;
-}
-.pc-level {
-  font-size: 11px; padding: 3px 10px; border-radius: 20px;
-  background: var(--warm); color: var(--smoke); letter-spacing: .06em;
-}
-
-/* ── TEACHER BLOCK ───────────────────────────── */
-.teacher-section {
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 560px; overflow: hidden;
-}
-.teacher-img {
+.service-card:hover { background: var(--warm); }
+.service-card.wide { grid-column: span 2; }
+.svc-img-wrap {
+  width: 100%; aspect-ratio: 16/7;
+  margin-bottom: 28px; overflow: hidden;
   background: var(--linen);
-  position: relative; overflow: hidden;
-  display: flex; align-items: flex-end;
+  border-radius: 10px; position: relative;
 }
-.teacher-img-el {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: grayscale(20%) contrast(1.05);
+.svc-img-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; opacity: .2; }
+.svc-img-el { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: 10px; }
+.svc-num {
+  font-family: var(--serif); font-size: 13px; font-weight: 300;
+  color: var(--ochre); letter-spacing: .1em; margin-bottom: 12px;
 }
-.teacher-img-placeholder {
-  width: 100%; height: 100%; min-height: 560px;
-  background: linear-gradient(160deg, var(--linen) 0%, var(--warm) 100%);
-  display: flex; align-items: center; justify-content: center;
+.svc-name {
+  font-family: var(--serif); font-size: 24px; font-weight: 400;
+  color: var(--coal); margin-bottom: 10px; line-height: 1.2;
 }
-.teacher-img-placeholder svg { width: 80px; height: 80px; opacity: .2; }
-.teacher-img-caption {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 24px 36px;
-  background: linear-gradient(to top, rgba(30,28,24,.5), transparent);
+.svc-desc {
+  font-size: 13px; color: var(--smoke); line-height: 1.7;
+  font-weight: 300; margin-bottom: 20px; flex: 1;
 }
-.teacher-img-name {
-  font-family: var(--serif); font-size: 20px; font-weight: 400;
-  color: var(--cream); letter-spacing: .04em;
+.svc-meta { display: flex; gap: 14px; align-items: center; }
+.svc-dur {
+  font-size: 12px; color: var(--mist); letter-spacing: .05em;
+  display: flex; align-items: center; gap: 7px;
 }
-.teacher-img-title { font-size: 12px; color: rgba(245,240,232,.6); letter-spacing: .1em; }
+.svc-dur::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--ochre); flex-shrink: 0; }
+.svc-price {
+  font-family: var(--serif); font-size: 18px; font-weight: 400;
+  color: var(--coal); margin-left: auto;
+}
+/* arrow on hover */
+.service-card::after {
+  content: '→';
+  position: absolute; top: 36px; right: 36px;
+  font-size: 18px; color: var(--ochre); opacity: 0;
+  transition: opacity .3s, transform .3s;
+}
+.service-card:hover::after { opacity: 1; transform: translateX(4px); }
 
-.teacher-content {
-  background: var(--warm);
-  padding: 80px 72px;
-  display: flex; flex-direction: column; justify-content: center;
+/* ── ATMOSPHERE STRIP (full-width image) ─────── */
+.atm-section {
+  height: 500px; position: relative; overflow: hidden;
+  background: var(--linen);
 }
-.teacher-eyebrow {
+.atm-placeholder {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center; font-size: 80px; opacity: .12;
+}
+#atm-img {
+  width: 100%; height: 100%; object-fit: cover; display: none;
+}
+.atm-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(28,26,22,.62) 0%, rgba(28,26,22,.1) 60%, transparent 100%);
+}
+.atm-content {
+  position: absolute; top: 50%; left: 80px;
+  transform: translateY(-50%);
+}
+.atm-tag {
   font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--sage); margin-bottom: 20px;
+  color: var(--ochre2); margin-bottom: 20px;
 }
-.teacher-quote {
-  font-family: var(--serif); font-size: clamp(22px,2.5vw,34px);
-  font-weight: 300; font-style: italic;
-  line-height: 1.4; color: var(--coal); margin-bottom: 32px;
+.atm-title {
+  font-family: var(--serif); font-size: clamp(36px,4.5vw,66px);
+  font-weight: 300; line-height: 1.1; color: var(--cream);
+  max-width: 520px; margin-bottom: 32px;
 }
-.teacher-quote::before { content: '«'; color: var(--ochre); }
-.teacher-quote::after  { content: '»'; color: var(--ochre); }
-.teacher-bio {
-  font-size: 14px; color: var(--smoke); line-height: 1.75;
-  font-weight: 300; margin-bottom: 40px;
+.atm-title em { font-style: italic; color: var(--ochre2); }
+.atm-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 30px; border-radius: 40px;
+  background: rgba(245,240,232,.15); border: 1px solid rgba(245,240,232,.3);
+  color: var(--cream); backdrop-filter: blur(10px);
+  font-family: var(--sans); font-size: 14px; font-weight: 400;
+  letter-spacing: .05em; cursor: pointer; transition: all .3s;
 }
-.teacher-certs {
-  display: flex; flex-wrap: wrap; gap: 10px;
-}
-.cert-pill {
-  font-size: 11px; letter-spacing: .08em; padding: 6px 14px;
-  border-radius: 30px; background: var(--cream);
-  border: 1px solid var(--line); color: var(--smoke); font-weight: 300;
-}
+.atm-btn:hover { background: var(--ochre); border-color: var(--ochre); }
 
-/* ── OFFERINGS / PRICE BLOCK ─────────────────── */
-.offerings-section {
+/* ── ABONEMENTS / PRICING ────────────────────── */
+.pricing-section {
   padding: 120px 80px;
-  background: var(--cream);
-  border-top: 1px solid var(--line);
+  background: var(--warm);
 }
-.offerings-header { text-align: center; margin-bottom: 64px; }
-.offerings-eyebrow {
-  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ochre); margin-bottom: 16px;
-}
-.offerings-title {
+.pricing-header { text-align: center; margin-bottom: 64px; }
+.pricing-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ochre); margin-bottom: 16px; }
+.pricing-title {
   font-family: var(--serif); font-size: clamp(34px,4vw,58px);
   font-weight: 300; color: var(--coal); line-height: 1.1;
 }
-.offerings-grid {
+.pricing-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px; max-width: 1040px; margin: 0 auto;
+  gap: 20px; max-width: 1020px; margin: 0 auto;
+  align-items: start;
 }
-.offering-card {
-  border: 1px solid var(--line); border-radius: 24px;
-  padding: 40px 36px; background: var(--cream);
+.price-card {
+  background: var(--cream); border: 1px solid var(--line);
+  border-radius: 24px; padding: 40px 34px;
   display: flex; flex-direction: column;
-  transition: all .35s; cursor: pointer;
-  position: relative; overflow: hidden;
+  transition: all .35s; cursor: pointer; position: relative;
 }
-.offering-card:hover { border-color: var(--ochre); transform: translateY(-4px); box-shadow: 0 24px 60px rgba(196,149,74,.1); }
-.offering-card.featured {
-  background: var(--coal); border-color: var(--coal);
+.price-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(184,134,74,.12); border-color: rgba(184,134,74,.3); }
+.price-card.featured { background: var(--coal); border-color: var(--coal); }
+.price-card.featured:hover { border-color: var(--ochre); }
+.pc-badge {
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  background: var(--ochre); color: var(--cream);
+  font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 0 0 8px 8px;
 }
-.offering-card.featured:hover { border-color: var(--ochre); }
-.of-badge {
-  position: absolute; top: 24px; right: 24px;
-  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 20px;
-  background: var(--ochre); color: var(--cream); font-weight: 500;
-}
-.of-name {
+.pc-name {
   font-family: var(--serif); font-size: 22px; font-weight: 400;
-  color: var(--coal); margin-bottom: 8px;
+  color: var(--coal); margin-bottom: 10px;
 }
-.offering-card.featured .of-name { color: var(--cream); }
-.of-price {
-  font-family: var(--serif); font-size: 44px; font-weight: 300;
-  color: var(--coal); line-height: 1; margin-bottom: 6px;
+.price-card.featured .pc-name { color: var(--cream); }
+.pc-price {
+  font-family: var(--serif); font-size: 48px; font-weight: 300;
+  color: var(--coal); line-height: 1; margin-bottom: 4px;
 }
-.offering-card.featured .of-price { color: var(--cream); }
-.of-price sub { font-size: 16px; vertical-align: baseline; color: var(--mist); }
-.offering-card.featured .of-price sub { color: rgba(245,240,232,.4); }
-.of-period {
-  font-size: 12px; color: var(--mist); margin-bottom: 28px; letter-spacing: .06em;
+.price-card.featured .pc-price { color: var(--cream); }
+.pc-price sub { font-size: 16px; vertical-align: baseline; color: var(--mist); }
+.price-card.featured .pc-price sub { color: rgba(245,240,232,.4); }
+.pc-period { font-size: 12px; color: var(--mist); margin-bottom: 28px; letter-spacing: .05em; }
+.price-card.featured .pc-period { color: rgba(245,240,232,.4); }
+.pc-div { height: 1px; background: var(--line); margin: 0 0 24px; }
+.price-card.featured .pc-div { background: rgba(245,240,232,.1); }
+.pc-list { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 32px; flex: 1; }
+.pc-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--smoke); font-weight: 300; line-height: 1.4;
 }
-.offering-card.featured .of-period { color: rgba(245,240,232,.4); }
-.of-divider { height: 1px; background: var(--line); margin: 0 0 24px; }
-.offering-card.featured .of-divider { background: rgba(245,240,232,.1); }
-.of-includes { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; flex: 1; }
-.of-includes li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--smoke); font-weight: 300; }
-.offering-card.featured .of-includes li { color: rgba(245,240,232,.7); }
-.of-includes li::before {
-  content: '';
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--sage); flex-shrink: 0;
-}
-.of-btn {
-  width: 100%; padding: 14px; border-radius: 40px;
+.price-card.featured .pc-list li { color: rgba(245,240,232,.6); }
+.pc-list li::before { content: '·'; color: var(--sage); font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: -1px; }
+.pc-btn {
+  width: 100%; padding: 14px; border-radius: 40px; border: none;
   font-family: var(--sans); font-size: 14px; font-weight: 400;
-  letter-spacing: .04em; cursor: pointer; transition: all .3s; border: none;
+  letter-spacing: .04em; cursor: pointer; transition: all .3s;
 }
-.of-btn.outline { background: transparent; border: 1px solid var(--line); color: var(--coal); }
-.of-btn.outline:hover { border-color: var(--coal); }
-.of-btn.filled { background: var(--ochre); color: var(--cream); }
-.of-btn.filled:hover { background: var(--clay); }
-.of-btn.dark { background: var(--cream); color: var(--coal); }
-.of-btn.dark:hover { background: var(--ochre); color: var(--cream); }
+.pc-btn.outline { background: transparent; border: 1px solid var(--line); color: var(--coal); }
+.pc-btn.outline:hover { border-color: var(--coal); }
+.pc-btn.solid { background: var(--ochre); color: var(--cream); }
+.pc-btn.solid:hover { background: #9a6e38; }
+.pc-btn.inv { background: var(--cream); color: var(--coal); }
+.pc-btn.inv:hover { background: var(--ochre); color: var(--cream); }
 
-/* ── PHILOSOPHY ──────────────────────────────── */
-.philosophy-section {
-  padding: 100px 80px;
-  background: var(--warm);
+/* ── CLOSING QUOTE ───────────────────────────── */
+.quote-section {
+  padding: 100px 80px; background: var(--cream);
   text-align: center; position: relative; overflow: hidden;
 }
-.philosophy-section::before {
-  content: '';
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px; height: 600px; border-radius: 50%;
-  border: 1px solid var(--line);
-  pointer-events: none;
-}
-.philosophy-section::after {
-  content: '';
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 360px; height: 360px; border-radius: 50%;
-  border: 1px solid var(--line);
-  pointer-events: none;
-}
-.philosophy-eyebrow {
-  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--sage); margin-bottom: 24px; position: relative;
-}
-.philosophy-text {
-  font-family: var(--serif); font-size: clamp(22px,3vw,40px);
-  font-weight: 300; font-style: italic; line-height: 1.5;
-  color: var(--coal); max-width: 700px; margin: 0 auto 40px;
-  position: relative;
-}
-.philosophy-attr {
-  font-size: 13px; color: var(--mist); letter-spacing: .1em;
-  text-transform: uppercase; font-weight: 300; position: relative;
-}
-
-/* ── CTA FINAL ───────────────────────────────── */
-.cta-section {
-  background: var(--coal);
-  padding: 140px 80px;
-  text-align: center; position: relative; overflow: hidden;
-}
-.cta-bg-ring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid rgba(245,240,232,.04);
+.quote-ring {
+  position: absolute; border-radius: 50%; border: 1px solid var(--line);
   top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
 }
-.cta-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ochre); margin-bottom: 20px; position: relative; }
-.cta-title {
-  font-family: var(--serif); font-size: clamp(38px,5vw,72px);
-  font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 16px;
+.quote-text {
+  font-family: var(--serif); font-size: clamp(22px,3vw,42px);
+  font-weight: 300; font-style: italic; line-height: 1.5;
+  color: var(--coal); max-width: 680px; margin: 0 auto 28px;
   position: relative;
+}
+.quote-text::before { content: '«'; color: var(--ochre); }
+.quote-text::after  { content: '»'; color: var(--ochre); }
+.quote-attr { font-size: 13px; color: var(--mist); letter-spacing: .1em; text-transform: uppercase; position: relative; }
+
+/* ── CTA ─────────────────────────────────────── */
+.cta-section {
+  padding: 140px 80px; background: var(--coal);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-60%);
+  width: 600px; height: 400px; pointer-events: none;
+  background: radial-gradient(ellipse, rgba(184,134,74,.1) 0%, transparent 65%);
+}
+.cta-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ochre2); margin-bottom: 20px; position: relative; }
+.cta-title {
+  font-family: var(--serif); font-size: clamp(40px,5.5vw,76px);
+  font-weight: 300; line-height: 1.05; color: var(--cream);
+  margin-bottom: 18px; position: relative;
 }
 .cta-title em { font-style: italic; color: var(--ochre2); }
-.cta-sub { font-size: 15px; color: rgba(245,240,232,.45); margin-bottom: 48px; font-weight: 300; position: relative; }
+.cta-sub { font-size: 15px; color: rgba(245,240,232,.42); margin-bottom: 48px; font-weight: 300; position: relative; }
 .cta-btn {
   display: inline-flex; align-items: center; gap: 12px;
-  padding: 16px 40px; border-radius: 50px;
+  padding: 16px 42px; border-radius: 50px;
   background: var(--ochre); border: none; color: var(--cream);
   font-family: var(--sans); font-size: 15px; font-weight: 400;
-  letter-spacing: .05em; cursor: pointer; transition: all .35s;
-  position: relative;
+  letter-spacing: .05em; cursor: pointer; transition: all .35s; position: relative;
 }
-.cta-btn:hover { background: var(--ochre2); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(196,149,74,.35); }
-.cta-note { font-size: 12px; color: rgba(245,240,232,.3); margin-top: 20px; letter-spacing: .06em; position: relative; }
+.cta-btn:hover { background: var(--ochre2); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(184,134,74,.35); }
+.cta-note { font-size: 12px; color: rgba(245,240,232,.25); margin-top: 22px; letter-spacing: .06em; position: relative; }
 
 /* ── FOOTER ──────────────────────────────────── */
 footer {
   background: var(--coal); border-top: 1px solid rgba(245,240,232,.06);
-  padding: 36px 80px;
+  padding: 32px 80px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; color: rgba(245,240,232,.4); letter-spacing: .04em; }
-.footer-logo em { font-style: italic; color: var(--ochre); }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: 12px; color: rgba(245,240,232,.25); text-decoration: none; letter-spacing: .06em; transition: color .2s; }
+.footer-brand { font-family: var(--serif); font-size: 17px; font-weight: 300; color: rgba(245,240,232,.35); }
+.footer-brand em { font-style: italic; color: var(--ochre); }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 12px; color: rgba(245,240,232,.22); text-decoration: none; letter-spacing: .05em; transition: color .2s; }
 .footer-links a:hover { color: rgba(245,240,232,.6); }
-.footer-copy { font-size: 12px; color: rgba(245,240,232,.2); }
+.footer-copy { font-size: 12px; color: rgba(245,240,232,.18); }
 
 /* ── MODAL ───────────────────────────────────── */
-.modal-overlay {
+.modal-ov {
   position: fixed; inset: 0; z-index: 1000;
-  background: rgba(30,28,24,.7); backdrop-filter: blur(16px);
+  background: rgba(28,26,22,.68); backdrop-filter: blur(16px);
   display: flex; align-items: center; justify-content: center;
   opacity: 0; visibility: hidden; transition: all .35s;
 }
-.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-ov.active { opacity: 1; visibility: visible; }
 .modal-box {
   background: var(--cream); border-radius: 28px;
   padding: 48px; width: 100%; max-width: 440px;
-  position: relative;
-  box-shadow: 0 40px 80px rgba(30,28,24,.25);
+  position: relative; box-shadow: 0 40px 80px rgba(28,26,22,.22);
 }
-.modal-close {
-  position: absolute; top: 20px; right: 20px;
+.modal-x {
+  position: absolute; top: 18px; right: 18px;
   background: var(--warm); border: none; border-radius: 50%;
   width: 32px; height: 32px; font-size: 18px; line-height: 1;
   color: var(--smoke); cursor: pointer; transition: all .2s;
 }
-.modal-close:hover { background: var(--linen); color: var(--coal); }
+.modal-x:hover { background: var(--linen); }
 .modal-studio { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--sage); margin-bottom: 8px; }
 .modal-plan { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--coal); margin-bottom: 4px; }
-.modal-price { font-family: var(--serif); font-size: 40px; font-weight: 300; color: var(--coal); margin-bottom: 32px; }
+.modal-price { font-family: var(--serif); font-size: 42px; font-weight: 300; color: var(--coal); margin-bottom: 32px; }
 .modal-price sub { font-size: 16px; vertical-align: baseline; color: var(--mist); }
-.modal-input {
-  width: 100%; padding: 14px 16px; margin-bottom: 12px;
+.m-input {
+  width: 100%; padding: 13px 16px; margin-bottom: 12px;
   background: var(--warm); border: 1px solid var(--line);
   border-radius: 14px; color: var(--coal);
   font-family: var(--sans); font-size: 14px; outline: none;
   transition: border-color .2s;
 }
-.modal-input:focus { border-color: var(--ochre); }
-.modal-row { display: flex; gap: 10px; }
-.modal-submit {
-  width: 100%; padding: 16px; border-radius: 50px; border: none;
+.m-input:focus { border-color: var(--ochre); }
+.m-row { display: flex; gap: 10px; }
+.m-submit {
+  width: 100%; padding: 15px; border-radius: 50px; border: none;
   background: var(--coal); color: var(--cream);
   font-family: var(--sans); font-size: 14px; font-weight: 400;
-  letter-spacing: .05em; cursor: pointer; transition: all .3s;
-  margin-top: 4px;
+  letter-spacing: .05em; cursor: pointer; transition: background .3s; margin-top: 4px;
 }
-.modal-submit:hover { background: var(--ochre); }
-.modal-secure { text-align: center; font-size: 11px; color: var(--mist); margin-top: 12px; letter-spacing: .06em; }
-.modal-success { display: none; text-align: center; padding: 20px 0; }
-.modal-success.show { display: block; }
-.success-sym { font-size: 40px; margin-bottom: 16px; }
-.success-title { font-family: var(--serif); font-size: 28px; font-weight: 300; color: var(--coal); margin-bottom: 10px; }
-.success-text { font-size: 14px; color: var(--smoke); line-height: 1.7; font-weight: 300; }
+.m-submit:hover { background: var(--ochre); }
+.m-secure { text-align: center; font-size: 11px; color: var(--mist); margin-top: 10px; letter-spacing: .06em; }
+.m-success { display: none; text-align: center; padding: 16px 0; }
+.m-success.show { display: block; }
+.ms-icon { font-size: 42px; margin-bottom: 14px; }
+.ms-title { font-family: var(--serif); font-size: 28px; font-weight: 300; color: var(--coal); margin-bottom: 8px; }
+.ms-text { font-size: 14px; color: var(--smoke); line-height: 1.7; font-weight: 300; }
 
-/* ── REVEAL ANIMATION ────────────────────────── */
+/* ── REVEAL ──────────────────────────────────── */
 .reveal {
-  opacity: 0; transform: translateY(28px);
+  opacity: 0; transform: translateY(26px);
   transition: opacity .8s ease, transform .8s ease;
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -756,312 +588,178 @@ footer {
 
 <!-- LOADING -->
 <div id="loading-screen">
-  <div class="loading-symbol"></div>
-  <div class="loading-name" id="loading-name">Studio</div>
+  <div class="ld-ring"></div>
+  <div class="ld-name" id="ld-name">Studio</div>
 </div>
 
 <!-- NAVBAR -->
 <nav id="navbar">
   <div class="nav-logo" id="nav-logo">Studio <em>wellness</em></div>
   <ul class="nav-links">
-    <li><a href="#">Практики</a></li>
-    <li><a href="#">Расписание</a></li>
-    <li><a href="#">Преподаватель</a></li>
+    <li><a href="#">Услуги</a></li>
+    <li><a href="#">О нас</a></li>
     <li><a href="#">Абонементы</a></li>
+    <li><a href="#">Контакты</a></li>
   </ul>
-  <button class="nav-cta" onclick="openModal()">Начать практику</button>
+  <button class="nav-btn" onclick="openModal()">Начать практику</button>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left">
-    <div class="hero-season" id="hero-season">Практика присутствия</div>
-
-    <h1 class="hero-title" id="hero-title">
-      Найди тишину<br>внутри <em>движения</em>
-    </h1>
-
-    <p class="hero-desc" id="hero-desc">
-      Студия осознанных практик — йога, медитация и дыхательные техники
-      для тех, кто хочет вернуть контакт с собой.
-    </p>
-
-    <div class="hero-actions">
-      <button class="btn-start" onclick="openModal()">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="8" cy="8" r="6.5"/>
-          <path d="M6.5 5.5l3 2.5-3 2.5V5.5z" fill="currentColor" stroke="none"/>
-        </svg>
-        Начать практику
-      </button>
-      <button class="btn-link">Смотреть расписание</button>
+  <div class="hero-l">
+    <div class="hero-eyebrow" id="hero-eyebrow">Пространство для восстановления</div>
+    <h1 class="hero-title" id="hero-title">Место, где<br>тело вспоминает<br><em>покой</em></h1>
+    <p class="hero-desc" id="hero-desc">Студия осознанного восстановления для тех, кто хочет замедлиться и вернуть контакт с собой.</p>
+    <div class="hero-btns">
+      <button class="btn-main" onclick="openModal()">Начать практику</button>
+      <button class="btn-ghost-sm">Смотреть расписание</button>
     </div>
-
-    <div class="hero-stats" id="hero-stats">
-      <div>
-        <div class="stat-num" id="stat-students">0</div>
-        <div class="stat-label">учеников</div>
-      </div>
-      <div>
-        <div class="stat-num" id="stat-years">0</div>
-        <div class="stat-label">лет практики</div>
-      </div>
-      <div>
-        <div class="stat-num" id="stat-hours">0</div>
-        <div class="stat-label">часов обучения</div>
-      </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n" id="stat-1">0</div><div class="stat-l" id="stat-1-l">лет в практике</div></div>
+      <div class="stat"><div class="stat-n" id="stat-2">0</div><div class="stat-l" id="stat-2-l">гостей в месяц</div></div>
+      <div class="stat"><div class="stat-n" id="stat-3">0</div><div class="stat-l" id="stat-3-l">программ</div></div>
     </div>
   </div>
-
-  <div class="hero-right">
-    <div class="deco-ring deco-ring-1"></div>
-    <div class="deco-ring deco-ring-2"></div>
-
-    <div class="breath-widget">
-      <div class="breath-label-top">Дыхательная пауза</div>
-
-      <div class="breath-ring" id="breath-ring" onclick="toggleBreath()">
-        <svg class="breath-svg" viewBox="0 0 220 220">
-          <circle class="breath-track" cx="110" cy="110" r="90"/>
-          <circle class="breath-progress" id="breath-progress" cx="110" cy="110" r="90"/>
-        </svg>
-        <div class="breath-inner">
-          <div class="breath-phase" id="breath-phase">Вдох</div>
-          <div class="breath-count" id="breath-count">4</div>
-          <div class="breath-sub">секунды</div>
-        </div>
-      </div>
-
-      <div class="breath-cycles" id="breath-cycles">
-        <div class="cycle-dot"></div>
-        <div class="cycle-dot"></div>
-        <div class="cycle-dot"></div>
-        <div class="cycle-dot"></div>
-        <div class="cycle-dot"></div>
-      </div>
-
-      <div class="breath-hint" id="breath-hint">Нажмите, чтобы начать</div>
+  <div class="hero-r">
+    <div class="hero-r-placeholder" id="hero-placeholder">🌿</div>
+    <img id="hero-img" alt="">
+    <div class="hero-tag">
+      <div class="hero-tag-label" id="hero-tag-label">Следующий сеанс</div>
+      <div class="hero-tag-val" id="hero-tag-val">Сегодня · 18:00</div>
     </div>
   </div>
 </section>
 
-<!-- RHYTHM OF DAY -->
-<section class="rhythm-section reveal">
-  <div class="rhythm-header">
+<!-- MOOD STRIP -->
+<div class="mood-section reveal">
+  <div class="mood-cell">
+    <div class="mood-placeholder" id="mood-ph-1">🕯️</div>
+    <img class="mood-img-el" id="mood-img-1" alt="">
+    <div class="mood-overlay"><div class="mood-caption" id="mood-cap-1">Тишина</div></div>
+  </div>
+  <div class="mood-cell">
+    <div class="mood-placeholder" id="mood-ph-2">🌺</div>
+    <img class="mood-img-el" id="mood-img-2" alt="">
+    <div class="mood-overlay"><div class="mood-caption" id="mood-cap-2">Восстановление</div></div>
+  </div>
+  <div class="mood-cell">
+    <div class="mood-placeholder" id="mood-ph-3">✨</div>
+    <img class="mood-img-el" id="mood-img-3" alt="">
+    <div class="mood-overlay"><div class="mood-caption" id="mood-cap-3">Лёгкость</div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-img">
+    <div class="about-placeholder">🌸</div>
+    <img id="about-img" alt="">
+  </div>
+  <div class="about-content reveal">
+    <div class="about-eyebrow">О студии</div>
+    <h2 class="about-title" id="about-title">Философия <em>бережного</em> подхода</h2>
+    <p class="about-text" id="about-text">Мы создали пространство, где нет спешки и соревнования — только внимание к себе. Каждая программа выстроена вокруг одной идеи: тело знает путь домой, ему нужна тихая дорожка.</p>
+    <div class="about-pillars" id="about-pillars">
+      <!-- filled by render -->
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section reveal">
+  <div class="services-header">
     <div>
-      <div class="rhythm-eyebrow">Ритм дня</div>
-      <h2 class="rhythm-title">Практика в <em>каждом</em><br>времени суток</h2>
+      <div class="services-eyebrow">Программы</div>
+      <h2 class="services-title" id="services-title">Найди <em>своё</em></h2>
     </div>
-    <p class="rhythm-desc">Тело знает, что ему нужно. Мы помогаем настроиться на его язык — утром, в полдень и вечером.</p>
+    <p class="services-desc" id="services-desc">Каждая программа — отдельный путь к восстановлению. Выбери по состоянию, а не по названию.</p>
   </div>
-
-  <div class="rhythm-timeline">
-    <div class="timeline-track">
-      <div class="timeline-line"><div class="timeline-fill"></div></div>
-      <div class="timeline-labels">
-        <span class="timeline-label">06:00</span>
-        <span class="timeline-label">09:00</span>
-        <span class="timeline-label">12:00</span>
-        <span class="timeline-label">17:00</span>
-        <span class="timeline-label">21:00</span>
-      </div>
-    </div>
-
-    <div class="rhythm-slots">
-      <div class="slot-time-col">
-        <div class="slot-time">Утро</div>
-        <div class="slot-time">День</div>
-        <div class="slot-time">Вечер</div>
-      </div>
-
-      <!-- Утро -->
-      <div class="slot-col">
-        <div class="slot-col-label">Пробуждение</div>
-        <div class="slot-card morning">
-          <div class="slot-name" id="rhythm-m1-name">Сурья Намаскар</div>
-          <div class="slot-dur">30 мин · 6:30</div>
-          <div class="slot-tags">
-            <span class="slot-tag ochre">Энергия</span>
-            <span class="slot-tag sage">Гибкость</span>
-          </div>
-        </div>
-        <div class="slot-card morning">
-          <div class="slot-name">Пранаяма</div>
-          <div class="slot-dur">15 мин · 7:30</div>
-          <div class="slot-tags">
-            <span class="slot-tag ochre">Дыхание</span>
-          </div>
-        </div>
-        <div class="slot-card midday" style="opacity:0">placeholder</div>
-        <div class="slot-card evening" style="opacity:0">placeholder</div>
-      </div>
-
-      <!-- День -->
-      <div class="slot-col">
-        <div class="slot-col-label">Восстановление</div>
-        <div class="slot-card morning" style="opacity:0">placeholder</div>
-        <div class="slot-card midday">
-          <div class="slot-name" id="rhythm-d1-name">Медитация</div>
-          <div class="slot-dur">20 мин · 13:00</div>
-          <div class="slot-tags">
-            <span class="slot-tag sage">Фокус</span>
-            <span class="slot-tag mist">Стресс</span>
-          </div>
-        </div>
-        <div class="slot-card midday">
-          <div class="slot-name">Растяжка шеи</div>
-          <div class="slot-dur">10 мин · 15:00</div>
-          <div class="slot-tags">
-            <span class="slot-tag mist">Офис</span>
-          </div>
-        </div>
-        <div class="slot-card evening" style="opacity:0">placeholder</div>
-      </div>
-
-      <!-- Вечер -->
-      <div class="slot-col">
-        <div class="slot-col-label">Завершение</div>
-        <div class="slot-card morning" style="opacity:0">placeholder</div>
-        <div class="slot-card midday" style="opacity:0">placeholder</div>
-        <div class="slot-card evening">
-          <div class="slot-name" id="rhythm-e1-name">Йога Нидра</div>
-          <div class="slot-dur">45 мин · 19:00</div>
-          <div class="slot-tags">
-            <span class="slot-tag mist">Сон</span>
-            <span class="slot-tag sage">Расслабление</span>
-          </div>
-        </div>
-        <div class="slot-card evening">
-          <div class="slot-name">Инь-йога</div>
-          <div class="slot-dur">60 мин · 20:30</div>
-          <div class="slot-tags">
-            <span class="slot-tag mist">Глубина</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="services-grid" id="services-grid">
+    <!-- filled by render -->
   </div>
 </section>
 
-<!-- PRACTICES -->
-<section class="practices-section reveal">
-  <div class="practices-header">
-    <div class="practices-eyebrow">Практики</div>
-    <h2 class="practices-title" id="practices-title">
-      Шесть путей к <em>внутренней тишине</em>
-    </h2>
+<!-- ATMOSPHERE -->
+<div class="atm-section reveal">
+  <div class="atm-placeholder">🌅</div>
+  <img id="atm-img" alt="">
+  <div class="atm-overlay"></div>
+  <div class="atm-content">
+    <div class="atm-tag" id="atm-tag">Первое посещение</div>
+    <h2 class="atm-title" id="atm-title">Первый сеанс —<br><em>бесплатно</em></h2>
+    <button class="atm-btn" onclick="openModal()">Записаться →</button>
   </div>
+</div>
 
-  <div class="practices-grid" id="practices-grid">
-    <!-- filled by render() -->
+<!-- PRICING -->
+<section class="pricing-section reveal">
+  <div class="pricing-header">
+    <div class="pricing-eyebrow">Абонементы</div>
+    <h2 class="pricing-title" id="pricing-title">Выбери свой ритм</h2>
+  </div>
+  <div class="pricing-grid" id="pricing-grid">
+    <!-- filled by render -->
   </div>
 </section>
 
-<!-- TEACHER -->
-<section class="teacher-section">
-  <div class="teacher-img">
-    <div class="teacher-img-placeholder">
-      <svg viewBox="0 0 100 100" fill="none">
-        <circle cx="50" cy="35" r="18" stroke="#c4954a" stroke-width="1.5"/>
-        <path d="M15 85 Q50 55 85 85" stroke="#c4954a" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <div class="teacher-img-caption">
-      <div class="teacher-img-name" id="teacher-name">Арья Кумарасвами</div>
-      <div class="teacher-img-title" id="teacher-title">Преподаватель · 14 лет практики</div>
-    </div>
-  </div>
-  <div class="teacher-content reveal">
-    <div class="teacher-eyebrow">Преподаватель</div>
-    <div class="teacher-quote" id="teacher-quote">
-      Йога — не позы. Это способность слышать себя в любой позе
-    </div>
-    <p class="teacher-bio" id="teacher-bio">
-      Прошла обучение в Индии, Таиланде и Испании. Специализируется на
-      терапевтической йоге и работе с тревожностью через тело.
-      Убеждена, что каждое тело знает путь домой — нужна только
-      тихая дорожка.
-    </p>
-    <div class="teacher-certs">
-      <span class="cert-pill">RYT 500</span>
-      <span class="cert-pill">Йога Нидра</span>
-      <span class="cert-pill">Trauma-informed</span>
-      <span class="cert-pill">Пранаяма</span>
-    </div>
-  </div>
-</section>
-
-<!-- OFFERINGS -->
-<section class="offerings-section reveal">
-  <div class="offerings-header">
-    <div class="offerings-eyebrow">Абонементы</div>
-    <h2 class="offerings-title" id="offerings-title">Выбери свой ритм</h2>
-  </div>
-  <div class="offerings-grid" id="offerings-grid">
-    <!-- filled by render() -->
-  </div>
-</section>
-
-<!-- PHILOSOPHY -->
-<section class="philosophy-section reveal">
-  <div class="philosophy-eyebrow">Философия студии</div>
-  <div class="philosophy-text" id="philosophy-text">
-    Тело — не инструмент, которым нужно управлять. Это мудрость, которую стоит слушать
-  </div>
-  <div class="philosophy-attr" id="philosophy-attr">— Студия · <span id="nav-city">Москва</span></div>
+<!-- QUOTE -->
+<section class="quote-section reveal">
+  <div class="quote-ring" style="width:560px;height:560px;"></div>
+  <div class="quote-ring" style="width:320px;height:320px;"></div>
+  <div class="quote-text" id="quote-text">Тело не инструмент, которым нужно управлять. Это мудрость, которую стоит слушать</div>
+  <div class="quote-attr" id="quote-attr">— студия</div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-  <div class="cta-bg-ring" style="width:700px;height:700px;"></div>
-  <div class="cta-bg-ring" style="width:420px;height:420px;"></div>
+  <div class="cta-glow"></div>
   <div class="cta-eyebrow">Первый шаг — самый важный</div>
-  <h2 class="cta-title reveal">Начни <em>сегодня</em><br>без подготовки</h2>
-  <p class="cta-sub">Первое занятие — бесплатно. Никакого опыта не нужно.</p>
+  <h2 class="cta-title reveal" id="cta-title">Начни <em>сегодня</em></h2>
+  <p class="cta-sub">Первый визит бесплатно. Никакой подготовки.</p>
   <button class="cta-btn reveal" onclick="openModal()">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="8" cy="8" r="6.5"/>
       <path d="M6.5 5.5l3 2.5-3 2.5V5.5z" fill="currentColor" stroke="none"/>
     </svg>
     Начать практику
   </button>
-  <div class="cta-note">Онлайн и офлайн · <span id="cta-city">Москва</span></div>
+  <div class="cta-note" id="cta-note">Онлайн и офлайн · Москва</div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo" id="footer-logo">Studio <em>wellness</em></div>
+  <div class="footer-brand" id="footer-brand">Studio <em>wellness</em></div>
   <div class="footer-links">
-    <a href="#">Практики</a>
+    <a href="#">Услуги</a>
     <a href="#">Расписание</a>
-    <a href="#">Преподаватель</a>
+    <a href="#">О нас</a>
     <a href="#">Instagram</a>
   </div>
   <div class="footer-copy" id="footer-copy">© 2025</div>
 </footer>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+<div class="modal-ov" id="modal" onclick="handleOvClick(event)">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div id="modal-form-view">
-      <div class="modal-studio" id="modal-studio">Студия практик</div>
-      <div class="modal-plan" id="modal-plan">Пробное занятие</div>
-      <div class="modal-price" id="modal-price">Бесплатно</div>
-      <input class="modal-input" type="text" placeholder="Ваше имя">
-      <input class="modal-input" type="tel" placeholder="+7 (___) ___-__-__">
-      <input class="modal-input" type="email" placeholder="Email для подтверждения">
-      <div class="modal-row">
-        <input class="modal-input" style="margin-bottom:0" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
+    <button class="modal-x" onclick="closeModal()">×</button>
+    <div id="m-form">
+      <div class="modal-studio" id="m-studio">Студия</div>
+      <div class="modal-plan" id="m-plan">Первое занятие</div>
+      <div class="modal-price" id="m-price">Бесплатно</div>
+      <input class="m-input" type="text" placeholder="Ваше имя">
+      <input class="m-input" type="tel" placeholder="+7 (___) ___-__-__">
+      <input class="m-input" type="email" placeholder="Email">
+      <div class="m-row">
+        <input class="m-input" style="margin-bottom:0" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
       </div>
-      <button class="modal-submit" onclick="simulatePay()">Записаться на первое занятие</button>
-      <div class="modal-secure">Безопасная оплата · ЮKassa · PCI DSS</div>
+      <button class="m-submit" onclick="simulatePay()">Записаться</button>
+      <div class="m-secure">Безопасная оплата · ЮKassa · PCI DSS</div>
     </div>
-    <div class="modal-success" id="modal-success">
-      <div class="success-sym">🌿</div>
-      <div class="success-title">Вы записаны</div>
-      <div class="success-text">Подтверждение придёт на почту.<br>Ждём вас — приходите в удобной одежде.</div>
-      <button class="modal-submit" style="margin-top:28px;background:var(--ochre)" onclick="closeModal()">Закрыть</button>
+    <div class="m-success" id="m-success">
+      <div class="ms-icon">🌿</div>
+      <div class="ms-title">Вы записаны</div>
+      <div class="ms-text">Подтверждение придёт на почту.<br>Приходите в удобной одежде — остальное у нас есть.</div>
+      <button class="m-submit" style="margin-top:28px;background:var(--ochre)" onclick="closeModal()">Закрыть</button>
     </div>
   </div>
 </div>
@@ -1072,33 +770,37 @@ footer {
 // ═══════════════════════════════════════════════════
 function getDemoData() {
   return {
-    bizName: 'Arya Yoga Studio',
+    bizName: 'Arya Wellness',
     bizCity: 'Москва',
     bizType: 'Йога / Wellness',
-    hero_title: 'Найди тишину\nвнутри движения',
-    hero_desc: 'Студия осознанных практик — йога, медитация и дыхательные техники для тех, кто хочет вернуть контакт с собой.',
-    features_title: 'Почему это работает',
+    hero_title: 'Место, где\nтело вспоминает\nпокой',
+    hero_desc: 'Студия осознанного восстановления — для тех, кто хочет замедлиться и вернуть контакт с собой.',
+    features_title: 'Наш подход',
     features: [
-      { title: 'Без опыта',    desc: 'Подходит абсолютным новичкам. Первое занятие — бесплатно, без обязательств.' },
-      { title: 'Малые группы', desc: 'До 8 человек в группе — преподаватель видит каждого и подстраивает практику.' },
-      { title: 'Онлайн и офлайн', desc: 'Занимайтесь в студии или из дома — расписание едино для всех форматов.' }
+      { title: 'Тело как ориентир',   desc: 'Работаем не с симптомами, а с причинами — хроническим напряжением и потерей связи с собой.' },
+      { title: 'Малые группы',        desc: 'До 8 человек в зале. Преподаватель видит каждого и подстраивает нагрузку.' },
+      { title: 'Без опыта и формы',   desc: 'Приходи как есть. Первый визит бесплатно, без обязательств.' }
     ],
-    target_audience: 'Люди 25–45 лет с высоким уровнем стресса, офисные работники',
-    main_pain: 'Хроническое напряжение в теле и голове, невозможность «выключиться»',
+    target_audience: 'Люди 25–50 лет с высоким уровнем стресса, ищущие восстановление',
+    main_pain: 'Хроническое напряжение, невозможность расслабиться и «выключиться»',
     marketing_channel: 'соцсети',
-    avg_check: '8900',
-    kpi_forecast: '40 новых учеников и 15 абонементов в первый месяц',
-    product_name: 'Абонемент «Практик» — 8 занятий',
-    product_desc: 'Восемь занятий любого формата в течение месяца. Йога, медитация, Нидра — выбираете сами каждый раз.',
-    product_features: ['Все форматы занятий', 'Онлайн-трансляции включены', 'Запись в личном кабинете', 'Первое занятие бесплатно'],
-    product_image_query: 'yoga studio serene',
-    hero_image_query: 'yoga meditation peaceful',
+    avg_check: '8500',
+    kpi_forecast: '35 новых гостей и 12 абонементов в первый месяц',
+    product_name: 'Абонемент «Восстановление» — 8 сеансов',
+    product_desc: 'Восемь сеансов любого формата в течение месяца. Yoga, Nidra, массаж, медитация — выбираете каждый раз.',
+    product_features: ['Все форматы', 'Онлайн-доступ включён', 'Личный кабинет', 'Первый визит бесплатно'],
+    product_image_query: 'spa wellness studio serene',
+    hero_image_query: 'spa wellness calm interior',
     products: [
-      { name: 'Разовое',   desc: 'Одно занятие на выбор.',                       price: '1400', badge: '',    features: ['Любой формат', 'Онлайн или офлайн', 'Без записи заранее'] },
-      { name: 'Практик',   desc: '8 занятий в месяц — для тех, кто серьёзно.',  price: '8900', badge: 'hit', features: ['8 занятий любого формата', 'Онлайн-доступ включён', 'Личный кабинет', 'Приоритетная запись'] },
-      { name: 'Погружение',desc: 'Безлимит на весь месяц + индивидуальная.',    price: '14900',badge: '',    features: ['Безлимитные занятия', '1 индивидуальная сессия', 'Видеозаписи занятий', 'Персональный план'] }
+      { name: 'Разовый',        desc: 'Один сеанс на выбор — без записи заранее.',                price: '1500', badge: '',    features: ['Любой формат', 'Офлайн или онлайн', 'Без абонемента'] },
+      { name: 'Восстановление', desc: '8 сеансов в месяц для тех, кто начинает серьёзно.',       price: '8500', badge: 'hit', features: ['8 сеансов любого формата', 'Онлайн-трансляции', 'Приоритетная запись', 'Личный кабинет'] },
+      { name: 'Погружение',     desc: 'Безлимит + индивидуальный сеанс раз в месяц.',           price: '14900',badge: '',    features: ['Безлимитные сеансы', '1 индивидуальная сессия', 'Видеозаписи занятий', 'Персональный план'] }
     ],
-    looks: [],
+    looks: [
+      { name: 'Утреннее спокойствие', image_query: 'morning meditation yoga calm' },
+      { name: 'Глубокое расслабление', image_query: 'spa massage relaxation calm' },
+      { name: 'Внутренняя лёгкость',  image_query: 'wellness nature light peaceful' }
+    ],
     reviews: []
   };
 }
@@ -1109,218 +811,211 @@ function getDemoData() {
 function render(data) {
   const name = data.bizName || 'Wellness Studio';
   const city = data.bizCity || 'Москва';
+  const words = name.split(' ');
 
   document.title = name;
 
   // Loading & nav
-  document.getElementById('loading-name').textContent = name;
-  document.getElementById('nav-logo').innerHTML = `${name.split(' ')[0]} <em>wellness</em>`;
+  document.getElementById('ld-name').textContent = name;
+  document.getElementById('nav-logo').innerHTML = `${words[0]} <em>${words.slice(1).join(' ') || 'wellness'}</em>`;
 
   // Hero
-  const titleParts = (data.hero_title || 'Найди тишину\nвнутри движения').split('\n');
-  document.getElementById('hero-title').innerHTML =
-    titleParts.map((p, i) => i === 1 ? `${p.split(' ')[0]} <em>${p.split(' ').slice(1).join(' ')}</em>` : p).join('<br>');
+  const titleParts = (data.hero_title || 'Место, где\nтело вспоминает\nпокой').split('\n');
+  const lastPart = titleParts[titleParts.length - 1];
+  const htmlParts = titleParts.map((p, i) =>
+    i === titleParts.length - 1 ? `<em>${p}</em>` : p
+  );
+  document.getElementById('hero-title').innerHTML = htmlParts.join('<br>');
   document.getElementById('hero-desc').textContent = data.hero_desc || '';
-  document.getElementById('hero-season').textContent = data.bizType || 'Практика присутствия';
+  document.getElementById('hero-eyebrow').textContent = data.bizType || 'Пространство для восстановления';
 
-  // Stats — derive from description or use sensible wellness defaults
-  animateStat('stat-students', 340);
-  animateStat('stat-years', 8);
-  animateStat('stat-hours', 500);
+  // Stats
+  animateStat('stat-1', 8, '', '');
+  animateStat('stat-2', 240, '', '');
+  animateStat('stat-3', 12, '', '');
 
-  // Practices grid
-  buildPractices(data);
+  // About pillars from features
+  const pillarsEl = document.getElementById('about-pillars');
+  const features = data.features || [];
+  pillarsEl.innerHTML = features.slice(0, 3).map((f, i) => `
+    <div class="pillar">
+      <div class="pillar-num">0${i+1}</div>
+      <div class="pillar-body">
+        <strong>${f.title}</strong>
+        <span>${f.desc}</span>
+      </div>
+    </div>`).join('');
 
-  // Offerings
-  buildOfferings(data, name);
-
-  // Teacher
-  document.getElementById('teacher-quote').textContent =
-    data.features && data.features[0]
-      ? data.features[0].desc.split('.')[0]
-      : 'Йога — не позы. Это способность слышать себя в любой позе';
-
-  // Cities
-  document.getElementById('nav-city').textContent = city;
-  document.getElementById('cta-city').textContent = city;
-  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}`;
-  document.getElementById('footer-logo').innerHTML = `${name.split(' ')[0]} <em>wellness</em>`;
-
-  // Rhythm schedule names from data if available
-  if (data.products && data.products[0]) {
-    document.getElementById('rhythm-m1-name').textContent = 'Сурья Намаскар';
+  // About title / text
+  if (data.features_title) {
+    document.getElementById('about-title').innerHTML = `<em>${data.features_title}</em>`;
   }
+  document.getElementById('about-text').textContent =
+    data.main_pain
+      ? `Мы создали пространство для тех, кого беспокоит: ${data.main_pain.toLowerCase()}. Без спешки, без соревнований — только внимание к себе.`
+      : 'Мы создали пространство, где нет спешки и соревнования — только внимание к себе.';
 
-  // Modal
-  const price = parseInt(data.avg_check) || 8900;
-  document.getElementById('modal-studio').textContent = name;
-  document.getElementById('modal-plan').textContent = data.product_name || 'Пробное занятие';
-  document.getElementById('modal-price').innerHTML = `${price.toLocaleString('ru-RU')} <sub>₽/мес</sub>`;
+  // Services grid from products
+  buildServices(data);
+
+  // Mood strip images (from looks[] or fallback queries)
+  const moods = data.looks && data.looks.length >= 3 ? data.looks : [
+    { name: 'Тишина',        image_query: 'candle spa meditation calm' },
+    { name: 'Восстановление', image_query: 'wellness massage relaxation' },
+    { name: 'Лёгкость',       image_query: 'yoga nature light morning' }
+  ];
+  moods.slice(0,3).forEach((m, i) => {
+    const n = i + 1;
+    if (m.name) document.getElementById(`mood-cap-${n}`).textContent = m.name;
+    if (m.image_query) loadImg(`mood-img-${n}`, m.image_query);
+  });
+
+  // Hero image
+  loadImg('hero-img', data.hero_image_query || 'spa wellness calm interior');
+
+  // About image
+  loadImg('about-img', data.product_image_query || 'yoga wellness studio interior');
+
+  // Atmosphere image
+  loadImg('atm-img', data.hero_image_query || 'spa wellness peaceful nature');
+
+  // Atmosphere text
+  document.getElementById('atm-tag').textContent = 'Первое посещение';
+  document.getElementById('atm-title').innerHTML = `Первый сеанс —<br><em>бесплатно</em>`;
+
+  // Pricing
+  buildPricing(data);
+
+  // Quote
+  if (data.features && data.features[1]) {
+    const q = data.features[1].desc.split('.')[0];
+    document.getElementById('quote-text').textContent = q;
+  }
+  document.getElementById('quote-attr').textContent = `— ${name}`;
+
+  // CTA / footer
+  document.getElementById('cta-note').textContent = `Онлайн и офлайн · ${city}`;
+  document.getElementById('footer-brand').innerHTML = `${words[0]} <em>${words.slice(1).join(' ') || 'wellness'}</em>`;
+  document.getElementById('footer-copy').textContent = `© ${new Date().getFullYear()} ${name}`;
+
+  // Modal defaults
+  const price = parseInt(data.avg_check) || 8500;
+  document.getElementById('m-studio').textContent = name;
+  document.getElementById('m-plan').textContent = data.product_name || 'Первое занятие';
+  document.getElementById('m-price').innerHTML = `${price.toLocaleString('ru-RU')} <sub>₽/мес</sub>`;
 }
 
-// ── PRACTICES GRID ─────────────────────────────────
-const DEFAULT_PRACTICES = [
-  { name: 'Хатха-йога',  sanskrit: 'Hatha Yoga', desc: 'Классические асаны с фокусом на выравнивание тела и работу с дыханием. Подходит для всех уровней.', dur: '60 мин', level: 'Все уровни', icon: '🌀' },
-  { name: 'Йога Нидра',  sanskrit: 'Yoga Nidra', desc: 'Практика осознанного сна — состояние между бодрствованием и сном. Глубокое восстановление за 45 минут.', dur: '45 мин', level: 'Любой', icon: '🌙' },
-  { name: 'Пранаяма',    sanskrit: 'Pranayama',  desc: 'Управление дыханием как инструмент для работы с нервной системой. Снижает тревожность, улучшает концентрацию.', dur: '30 мин', level: 'Все уровни', icon: '🌬️' },
-  { name: 'Медитация',   sanskrit: 'Dhyana',     desc: 'Практика наблюдения без оценки. Тренируем умение замечать мысли, не следуя за ними.', dur: '20–40 мин', level: 'Любой', icon: '🧘' },
-  { name: 'Инь-йога',    sanskrit: 'Yin Yoga',   desc: 'Долгие удержания поз для глубокой работы с соединительной тканью и суставами. Медленно и глубоко.', dur: '75 мин', level: 'Все уровни', icon: '🌿' },
-  { name: 'Виньяса',     sanskrit: 'Vinyasa',    desc: 'Динамическая практика: движение синхронизировано с дыханием. Развивает силу, гибкость и концентрацию.', dur: '60 мин', level: 'Средний', icon: '🔥' },
+// ── IMAGE LOADER (same pattern as education.html) ──
+async function loadImg(imgId, query) {
+  try {
+    const r = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!r.ok) throw 0;
+    const url = URL.createObjectURL(await r.blob());
+    const img = document.getElementById(imgId);
+    if (!img) return;
+    img.src = url;
+    img.style.display = 'block';
+    // hide placeholder (previousElementSibling)
+    if (img.previousElementSibling) img.previousElementSibling.style.display = 'none';
+  } catch(e) {}
+}
+
+// ── SERVICES ───────────────────────────────────────
+const DEFAULT_SERVICES = [
+  { emoji:'🛁', name:'Восстановительные ванны', desc:'Минеральные и травяные — снимают мышечное напряжение и перезагружают нервную систему.', dur:'45–60 мин' },
+  { emoji:'🌿', name:'Массаж',                  desc:'Расслабляющий, тайский, лимфодренажный — подбираем под ваше состояние.',               dur:'60–90 мин' },
+  { emoji:'🧘', name:'Йога и медитация',         desc:'Малые группы до 8 человек. Классическая хатха, инь-йога и нидра.',                   dur:'60 мин'    },
+  { emoji:'💆', name:'Телесные практики',         desc:'Дыхательные техники, работа с напряжением через тело и тактильный контакт.',          dur:'30–45 мин' },
+  { emoji:'🌸', name:'Арома-терапия',             desc:'Индивидуальные сессии с эфирными маслами — для глубокого расслабления.',              dur:'30 мин'    },
+  { emoji:'🌙', name:'Йога Нидра',               desc:'«Йогический сон» — восстанавливает нервную систему, снижает тревожность.',            dur:'45 мин'    },
 ];
 
-function buildPractices(data) {
-  // Use products to override names/descriptions if they look like practices
-  const grid = document.getElementById('practices-grid');
+function buildServices(data) {
+  const grid = document.getElementById('services-grid');
+  // use products for names/desc if available, otherwise defaults
+  const items = (data.products || []).slice(0,3).length
+    ? DEFAULT_SERVICES.slice(0,6)
+    : DEFAULT_SERVICES.slice(0,6);
+
   grid.innerHTML = '';
-  DEFAULT_PRACTICES.forEach((p, i) => {
-    // Try to enrich with GigaChat data
-    const d = (data.products && data.products[i]) ? data.products[i] : null;
-    const name = d ? d.name : p.name;
-    const desc = d ? d.desc : p.desc;
+  items.forEach((svc, i) => {
+    // override first 3 names/descs from products if present
+    const prod = data.products && data.products[i];
+    const svcName = prod ? prod.name : svc.name;
+    const svcDesc = prod ? prod.desc : svc.desc;
+    const price   = prod ? parseInt(prod.price) : null;
+    const isWide  = i === 0;
+    const imgId   = `svc-img-${i}`;
+    const imgQuery = prod ? prod.image_query : null;
+
     grid.innerHTML += `
-      <div class="practice-card reveal">
-        <div class="pc-icon">${p.icon}</div>
-        <div class="pc-name">${name}</div>
-        <div class="pc-sanskrit">${p.sanskrit}</div>
-        <div class="pc-desc">${desc}</div>
-        <div class="pc-meta">
-          <div class="pc-dur">${p.dur}</div>
-          <div class="pc-level">${p.level}</div>
+      <div class="service-card${isWide ? ' wide' : ''}" onclick="openModalFor('${svcName.replace(/'/g,"\\'")}', ${price||0})">
+        ${isWide ? `
+        <div class="svc-img-wrap">
+          <div class="svc-img-placeholder">${svc.emoji}</div>
+          <img class="svc-img-el" id="${imgId}" alt="">
+        </div>` : ''}
+        <div class="svc-num">0${i+1}</div>
+        <div class="svc-name">${svcName}</div>
+        <div class="svc-desc">${svcDesc}</div>
+        <div class="svc-meta">
+          <div class="svc-dur">${svc.dur}</div>
+          ${price ? `<div class="svc-price">от ${price.toLocaleString('ru-RU')} ₽</div>` : ''}
         </div>
       </div>`;
+
+    // load image only for wide card (most visible)
+    if (isWide) {
+      loadImg(imgId, imgQuery || 'spa wellness interior relaxation');
+    }
   });
 }
 
-// ── OFFERINGS ──────────────────────────────────────
-function buildOfferings(data, bizName) {
-  const grid = document.getElementById('offerings-grid');
+// ── PRICING ────────────────────────────────────────
+function buildPricing(data) {
+  const grid = document.getElementById('pricing-grid');
   let plans = data.products || [];
   if (!plans.length) {
-    const p = parseInt(data.avg_check) || 8900;
+    const p = parseInt(data.avg_check) || 8500;
     plans = [
-      { name:'Разовое',    desc:'Одно занятие на выбор.',                       price:'1400', badge:'',    features:['Любой формат','Онлайн или офлайн','Без записи заранее'] },
-      { name:'Практик',    desc:'8 занятий в месяц.',                           price:String(p), badge:'hit', features:['8 занятий любого формата','Онлайн включён','Личный кабинет','Приоритетная запись'] },
-      { name:'Погружение', desc:'Безлимит + индивидуальная сессия.',            price:String(Math.round(p*1.7)), badge:'', features:['Безлимитные занятия','1 индивидуальная','Видеозаписи','Персональный план'] }
+      { name:'Разовый',        desc:'Один сеанс на выбор.',                      price:'1500',  badge:'',    features:['Любой формат','Офлайн или онлайн','Без абонемента'] },
+      { name:'Восстановление', desc:'8 сеансов любого формата в месяц.',          price:String(p),badge:'hit',features:['8 сеансов','Онлайн включён','Приоритетная запись','Личный кабинет'] },
+      { name:'Погружение',     desc:'Безлимит + индивидуальная сессия.',          price:String(Math.round(p*1.75)),badge:'',features:['Безлимитные сеансы','1 индивидуальная','Видеозаписи','Персональный план'] }
     ];
   }
   grid.innerHTML = '';
   plans.slice(0,3).forEach((plan, i) => {
-    const isFeatured = plan.badge === 'hit' || i === 1;
+    const isFeat = plan.badge === 'hit' || i === 1;
     const priceNum = parseInt(plan.price) || 0;
     const priceHtml = priceNum > 0
       ? `${priceNum.toLocaleString('ru-RU')}<sub> ₽</sub>`
-      : 'Бесплатно';
+      : `<span style="font-size:28px">Бесплатно</span>`;
     const feats = Array.isArray(plan.features) ? plan.features : [plan.desc || ''];
-    const badgeHtml = plan.badge && plan.badge !== 'hit' ? `<div class="of-badge">${plan.badge === 'new' ? 'Новинка' : plan.badge === 'sale' ? 'Акция' : plan.badge}</div>` : (isFeatured ? `<div class="of-badge">Популярное</div>` : '');
-    const btnClass = isFeatured ? 'dark' : 'outline';
+    const btnCls = isFeat ? 'solid' : i === 2 ? 'inv' : 'outline';
+
     grid.innerHTML += `
-      <div class="offering-card${isFeatured ? ' featured' : ''} reveal">
-        ${badgeHtml}
-        <div class="of-name">${plan.name}</div>
-        <div class="of-price">${priceHtml}</div>
-        <div class="of-period">${priceNum > 0 ? 'в месяц' : 'первое занятие'}</div>
-        <div class="of-divider"></div>
-        <ul class="of-includes">
-          ${feats.map(f => `<li>${f}</li>`).join('')}
-        </ul>
-        <button class="of-btn ${btnClass}" onclick="openModalFor('${plan.name.replace(/'/g,"\\'")}', ${priceNum})">
-          ${i === 0 ? 'Попробовать бесплатно' : 'Начать практику'}
+      <div class="price-card${isFeat ? ' featured' : ''}">
+        ${isFeat ? '<div class="pc-badge">Популярное</div>' : ''}
+        <div class="pc-name">${plan.name}</div>
+        <div class="pc-price">${priceHtml}</div>
+        <div class="pc-period">${priceNum > 0 ? 'в месяц' : 'первый визит'}</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">${feats.map(f => `<li>${f}</li>`).join('')}</ul>
+        <button class="pc-btn ${btnCls}" onclick="openModalFor('${plan.name.replace(/'/g,"\\'")}', ${priceNum})">
+          ${i === 0 ? 'Попробовать' : 'Начать практику'}
         </button>
       </div>`;
   });
-}
-
-// ── BREATHING WIDGET ───────────────────────────────
-let breathRunning = false;
-let breathPhase = 'inhale'; // inhale | hold-in | exhale | hold-out
-let breathSeconds = 4;
-let breathTotal = 4;
-let breathCycles = 0;
-let breathTimer = null;
-const PHASES = [
-  { id: 'inhale',   label: 'Вдох',    dur: 4, progress: 'fill'  },
-  { id: 'hold-in',  label: 'Держите', dur: 4, progress: 'full'  },
-  { id: 'exhale',   label: 'Выдох',   dur: 6, progress: 'drain' },
-  { id: 'hold-out', label: 'Пауза',   dur: 2, progress: 'empty' },
-];
-let phaseIdx = 0;
-const CIRCUMFERENCE = 2 * Math.PI * 90; // 565.5
-
-function toggleBreath() {
-  if (breathRunning) {
-    clearInterval(breathTimer);
-    breathRunning = false;
-    document.getElementById('breath-hint').textContent = 'Нажмите, чтобы продолжить';
-  } else {
-    breathRunning = true;
-    document.getElementById('breath-hint').textContent = 'Нажмите, чтобы остановить';
-    startPhase();
-  }
-}
-
-function startPhase() {
-  const phase = PHASES[phaseIdx];
-  document.getElementById('breath-phase').textContent = phase.label;
-  breathSeconds = phase.dur;
-  breathTotal = phase.dur;
-  document.getElementById('breath-count').textContent = breathSeconds;
-  updateProgress(phase, breathSeconds, breathTotal);
-
-  clearInterval(breathTimer);
-  breathTimer = setInterval(() => {
-    breathSeconds--;
-    document.getElementById('breath-count').textContent = breathSeconds;
-    updateProgress(phase, breathSeconds, breathTotal);
-    if (breathSeconds <= 0) {
-      clearInterval(breathTimer);
-      phaseIdx = (phaseIdx + 1) % PHASES.length;
-      if (phaseIdx === 0) {
-        breathCycles++;
-        updateCycleDots();
-        if (breathCycles >= 5) {
-          finishBreath(); return;
-        }
-      }
-      if (breathRunning) startPhase();
-    }
-  }, 1000);
-}
-
-function updateProgress(phase, remaining, total) {
-  const el = document.getElementById('breath-progress');
-  let fraction;
-  if (phase.progress === 'fill')  fraction = 1 - (remaining / total);
-  if (phase.progress === 'full')  fraction = 1;
-  if (phase.progress === 'drain') fraction = remaining / total;
-  if (phase.progress === 'empty') fraction = 0;
-  el.style.strokeDashoffset = CIRCUMFERENCE * (1 - fraction);
-}
-
-function updateCycleDots() {
-  const dots = document.querySelectorAll('.cycle-dot');
-  dots.forEach((d, i) => d.classList.toggle('done', i < breathCycles));
-}
-
-function finishBreath() {
-  breathRunning = false;
-  clearInterval(breathTimer);
-  breathCycles = 0; phaseIdx = 0;
-  updateCycleDots();
-  document.getElementById('breath-phase').textContent = 'Готово';
-  document.getElementById('breath-count').textContent = '✓';
-  document.getElementById('breath-hint').textContent = 'Нажмите, чтобы начать снова';
-  document.getElementById('breath-progress').style.strokeDashoffset = CIRCUMFERENCE;
 }
 
 // ── STAT ANIMATION ─────────────────────────────────
 function animateStat(id, target) {
   const el = document.getElementById(id);
   if (!el) return;
-  const dur = 1800; const start = performance.now();
-  const step = (now) => {
-    const t = Math.min((now - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    el.textContent = Math.round(target * ease);
+  const dur = 1800; const t0 = performance.now();
+  const step = now => {
+    const t = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1-t, 3)));
     if (t < 1) requestAnimationFrame(step);
     else el.textContent = target;
   };
@@ -1328,46 +1023,43 @@ function animateStat(id, target) {
 }
 
 // ── SCROLL REVEAL ──────────────────────────────────
-const revealObs = new IntersectionObserver((entries) => {
+const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      revealObs.unobserve(e.target);
-    }
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
   });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
 // ── NAVBAR HIDE ────────────────────────────────────
 let lastY = 0;
-const nav = document.getElementById('navbar');
+const navEl = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   const y = window.scrollY;
-  nav.style.transform = (y > lastY && y > 80) ? 'translateY(-100%)' : '';
+  navEl.style.transform = (y > lastY && y > 80) ? 'translateY(-100%)' : '';
   lastY = y;
 }, { passive: true });
 
 // ── MODAL ──────────────────────────────────────────
 function openModal() { document.getElementById('modal').classList.add('active'); }
 function openModalFor(planName, price) {
-  document.getElementById('modal-plan').textContent = planName;
-  document.getElementById('modal-price').innerHTML = price > 0
+  document.getElementById('m-plan').textContent = planName;
+  document.getElementById('m-price').innerHTML = price > 0
     ? `${price.toLocaleString('ru-RU')} <sub>₽</sub>` : 'Бесплатно';
   openModal();
 }
 function closeModal() {
   document.getElementById('modal').classList.remove('active');
-  document.getElementById('modal-success').classList.remove('show');
-  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('m-success').classList.remove('show');
+  document.getElementById('m-form').style.display = 'block';
 }
-function handleOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
+function handleOvClick(e) { if (e.target === e.currentTarget) closeModal(); }
 function simulatePay() {
-  const btn = document.querySelector('.modal-submit');
+  const btn = document.querySelector('.m-submit');
   btn.textContent = 'Записываем...'; btn.disabled = true;
   setTimeout(() => {
-    document.getElementById('modal-form-view').style.display = 'none';
-    document.getElementById('modal-success').classList.add('show');
-    btn.disabled = false; btn.textContent = 'Записаться на первое занятие';
+    document.getElementById('m-form').style.display = 'none';
+    document.getElementById('m-success').classList.add('show');
+    btn.disabled = false; btn.textContent = 'Записаться';
   }, 1600);
 }
 function fmtCard(el) {
@@ -1376,7 +1068,7 @@ function fmtCard(el) {
 }
 
 // ═══════════════════════════════════════════════════
-// INIT
+// INIT — читает ?data= из URL или показывает демо
 // ═══════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   const payload = new URLSearchParams(window.location.search).get('data');
