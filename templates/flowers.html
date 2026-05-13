@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Цветочный магазин</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   FLOWERS TEMPLATE
+   Референс: 1-800-Flowers
+   Пастельный, нежный, живые фото.
+   Playfair Display (serif с росчерком) +
+   Jost (геометрический гротеск).
+   Палитра: кремовый, пудровый розовый, зелёный шалфей.
+   ════════════════════════════════════════════════ */
+
+:root {
+  --cream:    #fdf9f4;
+  --white:    #ffffff;
+  --petal:    #f7ede8;   /* пудрово-розовый фон */
+  --sage:     #e8ede6;   /* зелёный шалфей фон */
+  --rose:     #c8816a;   /* акцент — terra cotta rose */
+  --rose-h:   #b56c57;
+  --green:    #7a9178;   /* акцент — sage green */
+  --ink:      #2c2420;   /* тёплый почти-чёрный */
+  --mid:      #7a6e6a;
+  --dust:     #b0a49e;
+  --line:     rgba(44,36,32,0.08);
+  --line2:    rgba(44,36,32,0.13);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ─── LOADING ─────────────────────────────────── */
+.loading-screen {
+  position: fixed; inset: 0;
+  background: var(--petal);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px; z-index: 9999;
+  transition: opacity 0.7s ease;
+}
+.loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-bloom {
+  font-size: 36px;
+  animation: bloom 2s ease-in-out infinite;
+}
+@keyframes bloom {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50%       { transform: scale(1.15) rotate(3deg); }
+}
+.loading-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 400; letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.loading-dots {
+  display: flex; gap: 6px;
+}
+.loading-dots span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--rose); opacity: 0;
+  animation: dotPop 1.4s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPop {
+  0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* ─── DEMO BANNER ─────────────────────────────── */
+.demo-banner {
+  background: var(--green); color: var(--white);
+  padding: 11px 48px;
+  display: none; align-items: center; justify-content: center; gap: 20px;
+  font-size: 11px; letter-spacing: 0.1em; font-weight: 400;
+}
+.demo-banner.show { display: flex; }
+.demo-banner a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ─── NAVBAR ──────────────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(253,249,244,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+  height: 64px; padding: 0 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 400; letter-spacing: 0.03em;
+  color: var(--ink); text-decoration: none;
+}
+.nav-logo em { font-style: italic; color: var(--rose); }
+.nav-links {
+  display: flex; gap: 36px; list-style: none;
+}
+.nav-links a {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+  color: var(--mid); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  padding: 10px 26px;
+  background: var(--rose); color: var(--white); border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  cursor: pointer; transition: background 0.25s; border-radius: 100px;
+}
+.nav-cta:hover { background: var(--rose-h); }
+
+/* ─── HERO ────────────────────────────────────── */
+.hero {
+  margin-top: 64px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+/* левая — фото занимает весь экран */
+.hero-photo {
+  position: relative; overflow: hidden;
+  background: var(--petal);
+  order: 0;
+}
+.hero-photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 9s ease;
+}
+.hero-photo:hover img { transform: scale(1.03); }
+.hero-photo-ph {
+  width: 100%; height: 100%; min-height: 560px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #f7ede8 0%, #ecddd6 100%);
+  font-size: 72px;
+}
+/* плашка поверх фото */
+.hero-photo-badge {
+  position: absolute; bottom: 32px; right: 32px;
+  background: rgba(253,249,244,0.92);
+  backdrop-filter: blur(10px);
+  padding: 18px 22px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(44,36,32,0.08);
+}
+.hero-photo-badge-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 400; color: var(--ink); line-height: 1;
+}
+.hero-photo-badge-label {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--dust); margin-top: 4px; font-weight: 400;
+}
+
+/* правая — текст */
+.hero-text {
+  padding: 80px 64px 80px 56px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--cream);
+  order: 1;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
+  color: var(--rose); margin-bottom: 28px;
+}
+.hero-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--rose); }
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 5vw, 80px);
+  font-weight: 400; line-height: 1.08; letter-spacing: -0.01em;
+  color: var(--ink); margin-bottom: 12px;
+}
+.hero-title em { font-style: italic; color: var(--rose); }
+.hero-title-accent {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 5vw, 80px);
+  font-weight: 400; line-height: 1.08; letter-spacing: -0.01em;
+  color: var(--ink); margin-bottom: 28px;
+  font-style: italic;
+}
+.hero-desc {
+  font-size: 15px; line-height: 1.8; color: var(--mid);
+  max-width: 380px; margin-bottom: 48px; font-weight: 300;
+}
+.hero-actions { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.btn-rose {
+  padding: 15px 36px; border-radius: 100px;
+  background: var(--rose); color: var(--white); border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  cursor: pointer; transition: all 0.25s;
+}
+.btn-rose:hover { background: var(--rose-h); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,129,106,0.3); }
+.btn-ghost {
+  font-size: 12px; letter-spacing: 0.1em; color: var(--mid);
+  background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 4px;
+  font-family: 'Jost', sans-serif; font-weight: 400; transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--ink); }
+
+/* ─── MARQUEE ─────────────────────────────────── */
+.marquee {
+  background: var(--rose); overflow: hidden;
+  padding: 13px 0; white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex; gap: 0;
+  animation: marqueeScroll 24s linear infinite;
+}
+@keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 20px;
+  padding: 0 28px;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-style: italic; letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.88);
+}
+.marquee-sep { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+/* ─── BOUQUET GRID (catalogue) ────────────────── */
+.catalogue {
+  padding: 96px 48px;
+  border-bottom: 1px solid var(--line);
+}
+.catalogue-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 56px;
+}
+.catalogue-eyebrow {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
+  color: var(--rose); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.catalogue-eyebrow::before {
+  content: ''; width: 18px; height: 1px; background: var(--rose); display: block;
+}
+.catalogue-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 3.5vw, 52px); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.1; color: var(--ink);
+}
+.catalogue-title em { font-style: italic; }
+.catalogue-link {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--rose); background: none; border: none; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-weight: 500;
+  text-decoration: underline; text-underline-offset: 4px; padding-bottom: 4px;
+  transition: color 0.2s;
+}
+.catalogue-link:hover { color: var(--rose-h); }
+
+/* Неравномерная сетка: 3 колонки, первый элемент растянут */
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+.bouquet-card {
+  background: var(--white);
+  border-radius: 16px; overflow: hidden;
+  cursor: pointer; transition: box-shadow 0.3s, transform 0.3s;
+  border: 1px solid var(--line);
+}
+.bouquet-card:hover {
+  box-shadow: 0 16px 48px rgba(44,36,32,0.1);
+  transform: translateY(-3px);
+}
+.bouquet-card.featured { grid-row: span 2; }
+.bouquet-img {
+  position: relative; overflow: hidden;
+  background: var(--petal);
+}
+.bouquet-card.featured .bouquet-img { height: 460px; }
+.bouquet-card:not(.featured) .bouquet-img { height: 220px; }
+.bouquet-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 5s ease;
+}
+.bouquet-card:hover .bouquet-img img { transform: scale(1.06); }
+.bouquet-img-ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+}
+.bouquet-body {
+  padding: 18px 20px 20px;
+}
+.bouquet-tag {
+  display: inline-block;
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+  color: var(--rose); margin-bottom: 6px;
+}
+.bouquet-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 400; color: var(--ink); margin-bottom: 4px;
+  line-height: 1.2;
+}
+.bouquet-card.featured .bouquet-name { font-size: 22px; }
+.bouquet-meta {
+  display: flex; align-items: center; justify-content: space-between; margin-top: 12px;
+}
+.bouquet-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 400; color: var(--ink);
+}
+.bouquet-card.featured .bouquet-price { font-size: 24px; }
+.bouquet-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--rose); color: var(--white);
+  border: none; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.bouquet-btn:hover { background: var(--rose-h); transform: scale(1.1); }
+
+/* ─── OCCASIONS ───────────────────────────────── */
+.occasions {
+  padding: 96px 48px;
+  background: var(--sage);
+  border-bottom: 1px solid var(--line);
+}
+.occasions-header { margin-bottom: 52px; }
+.occasions-eyebrow {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
+  color: var(--green); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.occasions-eyebrow::before {
+  content: ''; width: 18px; height: 1px; background: var(--green); display: block;
+}
+.occasions-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 3.5vw, 52px); font-weight: 400;
+  letter-spacing: -0.01em; color: var(--ink);
+}
+.occasions-title em { font-style: italic; }
+.occasions-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.occasion-card {
+  background: var(--white); border-radius: 14px;
+  padding: 28px 24px; border: 1px solid var(--line);
+  cursor: pointer; transition: box-shadow 0.25s, transform 0.25s;
+  text-align: center;
+}
+.occasion-card:hover {
+  box-shadow: 0 12px 36px rgba(44,36,32,0.09);
+  transform: translateY(-2px);
+}
+.occasion-icon { font-size: 32px; margin-bottom: 14px; line-height: 1; }
+.occasion-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 400; color: var(--ink); margin-bottom: 6px;
+}
+.occasion-desc {
+  font-size: 12px; color: var(--mid); line-height: 1.6; font-weight: 300;
+}
+
+/* ─── PRODUCT (spotlight) ─────────────────────── */
+.spotlight {
+  padding: 96px 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.spotlight-left {}
+.spotlight-eyebrow {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
+  color: var(--rose); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.spotlight-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--rose); display: block; }
+.spotlight-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4vw, 62px); font-weight: 400;
+  line-height: 1.06; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 20px;
+}
+.spotlight-title em { font-style: italic; color: var(--rose); }
+.spotlight-desc {
+  font-size: 14px; color: var(--mid); line-height: 1.8; font-weight: 300; margin-bottom: 36px;
+}
+.spotlight-feats {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px;
+}
+.spotlight-feat {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px; color: var(--mid); font-weight: 300;
+}
+.spotlight-feat-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rose); flex-shrink: 0;
+}
+.spotlight-price-row {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px;
+}
+.spotlight-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px; font-weight: 400; color: var(--ink); line-height: 1;
+}
+.spotlight-price-old {
+  font-size: 18px; color: var(--dust); text-decoration: line-through;
+}
+.spotlight-right {}
+.spotlight-card {
+  border-radius: 24px; overflow: hidden;
+  background: var(--petal);
+  position: relative; cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.3s;
+  box-shadow: 0 12px 48px rgba(44,36,32,0.08);
+}
+.spotlight-card:hover {
+  box-shadow: 0 24px 72px rgba(44,36,32,0.14);
+  transform: translateY(-4px);
+}
+.spotlight-img {
+  width: 100%; height: 380px; overflow: hidden; position: relative;
+}
+.spotlight-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 6s ease;
+}
+.spotlight-card:hover .spotlight-img img { transform: scale(1.04); }
+.spotlight-img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 72px;
+}
+.spotlight-card-body {
+  padding: 24px 28px 28px;
+}
+.spotlight-card-tag {
+  display: inline-block;
+  background: var(--rose); color: var(--white);
+  padding: 4px 14px; border-radius: 100px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  margin-bottom: 12px;
+}
+.spotlight-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 400; color: var(--ink); margin-bottom: 8px;
+}
+.spotlight-card-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 400; color: var(--ink);
+}
+
+/* ─── REVIEWS ─────────────────────────────────── */
+.reviews {
+  padding: 96px 48px;
+  background: var(--petal);
+  border-bottom: 1px solid var(--line);
+}
+.reviews-eyebrow {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400;
+  color: var(--rose); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.reviews-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--rose); display: block; }
+.reviews-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 3.5vw, 52px); font-weight: 400;
+  letter-spacing: -0.01em; color: var(--ink); margin-bottom: 52px;
+}
+.reviews-title em { font-style: italic; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.review-card {
+  background: var(--white); border-radius: 16px;
+  padding: 32px 28px; border: 1px solid var(--line);
+  transition: box-shadow 0.25s;
+}
+.review-card:hover { box-shadow: 0 12px 36px rgba(44,36,32,0.07); }
+.review-stars {
+  font-size: 14px; color: var(--rose); letter-spacing: 2px; margin-bottom: 16px;
+}
+.review-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-style: italic; font-weight: 400;
+  color: var(--ink); line-height: 1.7; margin-bottom: 24px;
+}
+.review-author { display: flex; align-items: center; gap: 12px; }
+.review-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--petal); border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 400; color: var(--rose);
+}
+.review-name {
+  font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: 0.04em;
+}
+.review-verified {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dust); margin-top: 2px; font-weight: 400;
+}
+
+/* ─── FOOTER ──────────────────────────────────── */
+.footer {
+  padding: 72px 48px 40px; background: var(--cream);
+}
+.footer-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding-bottom: 48px; border-bottom: 1px solid var(--line);
+  margin-bottom: 28px; flex-wrap: wrap; gap: 32px;
+}
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 400; color: var(--ink); margin-bottom: 6px;
+}
+.footer-brand em { font-style: italic; color: var(--rose); }
+.footer-tagline {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dust); font-weight: 400;
+}
+.footer-cta {
+  padding: 12px 28px; border-radius: 100px;
+  background: transparent; border: 1.5px solid var(--rose);
+  font-family: 'Jost', sans-serif;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  color: var(--rose); cursor: pointer; transition: all 0.25s; align-self: flex-start;
+}
+.footer-cta:hover { background: var(--rose); color: var(--white); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 11px; color: var(--dust); letter-spacing: 0.06em; }
+.footer-izzzi { font-size: 11px; color: rgba(44,36,32,0.25); letter-spacing: 0.06em; }
+.footer-izzzi span { color: var(--dust); }
+
+/* ─── MODAL ───────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(44,36,32,0.4); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--white); border-radius: 20px;
+  width: 460px; max-width: 95vw;
+  padding: 48px; position: relative;
+  animation: modalIn 0.3s ease;
+  box-shadow: 0 32px 80px rgba(44,36,32,0.15);
+}
+@keyframes modalIn { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-close {
+  position: absolute; top: 20px; right: 22px;
+  background: none; border: none; font-size: 20px;
+  cursor: pointer; color: var(--dust); transition: color 0.2s;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-brand {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--dust); margin-bottom: 8px; font-weight: 400;
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 400; color: var(--ink); margin-bottom: 6px;
+}
+.modal-subtitle {
+  font-size: 13px; color: var(--mid); margin-bottom: 24px; font-weight: 300;
+}
+.modal-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 46px; font-weight: 400; color: var(--ink);
+  margin-bottom: 28px; line-height: 1;
+}
+.modal-input {
+  width: 100%; border: 1.5px solid var(--line2); border-radius: 10px;
+  padding: 13px 16px; font-family: 'Jost', sans-serif;
+  font-size: 14px; color: var(--ink); font-weight: 300;
+  background: var(--cream); outline: none; margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--rose); }
+.modal-input::placeholder { color: rgba(44,36,32,0.25); }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.modal-submit {
+  width: 100%; padding: 15px; border-radius: 100px;
+  background: var(--rose); color: var(--white); border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  cursor: pointer; transition: background 0.2s; margin-top: 6px;
+}
+.modal-submit:hover { background: var(--rose-h); }
+.modal-submit:disabled { opacity: 0.5; cursor: default; }
+.modal-secure {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--dust); text-align: center; margin-top: 12px; font-weight: 400;
+}
+.modal-success { text-align: center; display: none; }
+.modal-success.show { display: block; }
+.modal-success-icon { font-size: 56px; margin-bottom: 20px; }
+.modal-success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px; font-weight: 400; color: var(--ink); margin-bottom: 12px;
+}
+.modal-success-text { font-size: 14px; color: var(--mid); line-height: 1.7; font-weight: 300; }
+
+/* ─── BACK BUTTON ─────────────────────────────── */
+.back-btn {
+  position: fixed; bottom: 20px; right: 20px; z-index: 100;
+  padding: 10px 18px; border-radius: 100px;
+  background: rgba(255,255,255,0.92); border: 1px solid var(--line2);
+  backdrop-filter: blur(8px);
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mid); cursor: pointer; transition: color 0.2s;
+}
+.back-btn:hover { color: var(--ink); }
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 900px) {
+  .navbar { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-photo { min-height: 55vw; order: 0; }
+  .hero-text { padding: 52px 20px; order: 1; }
+  .catalogue { padding: 64px 20px; }
+  .catalogue-grid { grid-template-columns: 1fr 1fr; }
+  .bouquet-card.featured { grid-row: span 1; }
+  .bouquet-card.featured .bouquet-img { height: 240px; }
+  .occasions { padding: 64px 20px; }
+  .occasions-grid { grid-template-columns: 1fr 1fr; }
+  .spotlight { padding: 64px 20px; grid-template-columns: 1fr; gap: 48px; }
+  .reviews { padding: 64px 20px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .footer { padding: 56px 20px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-bloom">🌸</div>
+  <div class="loading-name" id="loading-logo-text">Цветочный магазин</div>
+  <div class="loading-dots">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-view">
+      <div class="modal-brand">ЮKassa · Безопасная оплата</div>
+      <div class="modal-title" id="modal-product-name">Заказать букет</div>
+      <div class="modal-subtitle">Доставим свежим в день заказа</div>
+      <div class="modal-amount" id="modal-amount">0 ₽</div>
+      <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)">
+      <div class="modal-row">
+        <input type="text" class="modal-input" placeholder="ММ / ГГ" maxlength="7" oninput="fmtExpiry(this)">
+        <input type="password" class="modal-input" placeholder="CVC" maxlength="3">
+      </div>
+      <input type="text" class="modal-input" placeholder="ИМЯ ДЕРЖАТЕЛЯ" oninput="this.value=this.value.toUpperCase()" style="text-transform:uppercase">
+      <button class="modal-submit" onclick="simulatePay()">Оплатить безопасно</button>
+      <div class="modal-secure">256-bit шифрование · PCI DSS</div>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-icon">💐</div>
+      <div class="modal-success-title">Заказ принят!</div>
+      <div class="modal-success-text">Мы уже собираем ваш букет. Свяжемся для уточнения деталей доставки.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" id="nav-logo" href="#"><em>Цветочный</em> магазин</a>
+  <ul class="nav-links">
+    <li><a href="#catalogue">Каталог</a></li>
+    <li><a href="#occasions">Поводы</a></li>
+    <li><a href="#spotlight">Хит сезона</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Заказать букет</button>
+</nav>
+
+<!-- DEMO BANNER -->
+<div class="demo-banner" id="demo-banner">
+  <span>Демо-версия сайта — создана в ИЗЗЗИ.</span>
+  <a href="https://www.sberbank.ru/ru/s_m_business/reg#start_reg" target="_blank">Открыть ИП бесплатно →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-photo" id="hero-img-wrap">
+    <div class="hero-photo-ph">🌺</div>
+    <div class="hero-photo-badge">
+      <div class="hero-photo-badge-num" id="hero-badge-num">500+</div>
+      <div class="hero-photo-badge-label">букетов в месяц</div>
+    </div>
+  </div>
+  <div class="hero-text">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      <span id="hero-eyebrow-text">Свежие цветы каждый день</span>
+    </div>
+    <h1 class="hero-title" id="hero-title">Букеты,<br>которые <em>говорят</em></h1>
+    <p class="hero-desc" id="hero-desc">Авторские букеты из свежих цветов с доставкой в день заказа. Каждый букет — маленькое признание.</p>
+    <div class="hero-actions">
+      <button class="btn-rose" onclick="openModal()">🌸 Заказать букет</button>
+      <button class="btn-ghost" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Смотреть каталог →</button>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track" id="marquee-track">
+    <!-- populated by render() -->
+  </div>
+</div>
+
+<!-- CATALOGUE (bouquet grid) -->
+<section class="catalogue" id="catalogue">
+  <div class="catalogue-header">
+    <div>
+      <div class="catalogue-eyebrow">Каталог</div>
+      <div class="catalogue-title">Свежие букеты<br><em>на любой повод</em></div>
+    </div>
+    <button class="catalogue-link" onclick="openModal()">Все букеты →</button>
+  </div>
+  <div class="catalogue-grid" id="catalogue-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- OCCASIONS -->
+<section class="occasions" id="occasions">
+  <div class="occasions-header">
+    <div class="occasions-eyebrow">Выбери повод</div>
+    <div class="occasions-title">Цветы для<br><em>каждого момента</em></div>
+  </div>
+  <div class="occasions-grid" id="occasions-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- SPOTLIGHT (product card) -->
+<section class="spotlight" id="spotlight">
+  <div class="spotlight-left">
+    <div class="spotlight-eyebrow">Хит этой недели</div>
+    <div class="spotlight-title" id="spotlight-title">Хит<br><em>сезона</em></div>
+    <div class="spotlight-desc" id="spotlight-desc">Самый популярный букет месяца. Собираем вручную из самых свежих цветов.</div>
+    <div class="spotlight-feats" id="spotlight-feats">
+      <!-- populated by render() -->
+    </div>
+    <div class="spotlight-price-row">
+      <div class="spotlight-price" id="spotlight-price">0 ₽</div>
+      <div class="spotlight-price-old" id="spotlight-price-old"></div>
+    </div>
+    <button class="btn-rose" onclick="openModal()">🌸 Заказать сейчас</button>
+  </div>
+  <div class="spotlight-right">
+    <div class="spotlight-card" onclick="openModal()">
+      <div class="spotlight-img" id="product-img-wrap">
+        <div class="spotlight-img-ph">💐</div>
+      </div>
+      <div class="spotlight-card-body">
+        <div class="spotlight-card-tag" id="spotlight-card-tag">Хит</div>
+        <div class="spotlight-card-name" id="spotlight-card-name">Букет дня</div>
+        <div class="spotlight-card-price" id="spotlight-card-price">0 ₽</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-eyebrow">Отзывы клиентов</div>
+  <div class="reviews-title">Они уже <em>влюблены</em></div>
+  <div class="reviews-grid" id="reviews-grid">
+    <!-- populated by render() -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand" id="footer-brand"><em>Цветочный</em> магазин</div>
+      <div class="footer-tagline" id="footer-tagline">Цветы · Москва</div>
+    </div>
+    <button class="footer-cta" onclick="openModal()">Заказать букет</button>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy" id="footer-copy">© 2025 Цветочный магазин. Все права защищены.</div>
+    <div class="footer-izzzi">Сайт создан в <span>ИЗЗЗИ</span></div>
+  </div>
+</footer>
+
+<button class="back-btn" onclick="history.back()">← Назад</button>
+
+<script>
+// ─── SAFETY NET ────────────────────────────────────────────────
+window.onerror = function() {
+  var ls = document.getElementById('loading-screen');
+  if (ls) { ls.style.opacity = '0'; setTimeout(function(){ if (ls.parentNode) ls.parentNode.removeChild(ls); }, 500); }
+  return false;
+};
+
+// ═══════════════════════════════════════════════════════════════
+// FLOWERS TEMPLATE
+// JS-логика — паттерн beauty.html
+// ═══════════════════════════════════════════════════════════════
+
+// ─── HELPERS ──────────────────────────────────────────────────
+function setEl(id, val, asHtml) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (asHtml) el.innerHTML = val; else el.textContent = val;
+}
+
+function hideLoader() {
+  var ls = document.getElementById('loading-screen');
+  if (!ls) return;
+  ls.classList.add('hidden');
+  setTimeout(function() { if (ls.parentNode) ls.parentNode.removeChild(ls); }, 700);
+}
+
+// ─── UNIVERSAL IMAGE LOADER ────────────────────────────────────
+async function loadCardImage(query, id) {
+  try {
+    var resp = await fetch('/image?q=' + encodeURIComponent(query));
+    if (!resp.ok) throw new Error('no image');
+    var blob = await resp.blob();
+    var url = URL.createObjectURL(blob);
+    var wrap = document.getElementById(id);
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    var img = document.createElement('img');
+    img.src = url;
+    wrap.appendChild(img);
+  } catch(e) {
+    // keep placeholder
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────
+function render(data) {
+  var name = data.bizName || 'Цветочный магазин';
+  var city = data.bizCity || 'Москва';
+
+  // Navbar + loader
+  setEl('loading-logo-text', name);
+  var logoEl = document.getElementById('nav-logo');
+  if (logoEl) {
+    var parts = name.split(' ');
+    logoEl.innerHTML = '<em>' + (parts[0] || name) + '</em>' + (parts.length > 1 ? ' ' + parts.slice(1).join(' ') : '');
+  }
+  var footerBrandEl = document.getElementById('footer-brand');
+  if (footerBrandEl) {
+    var fp = name.split(' ');
+    footerBrandEl.innerHTML = '<em>' + (fp[0] || name) + '</em>' + (fp.length > 1 ? ' ' + fp.slice(1).join(' ') : '');
+  }
+
+  // Hero
+  setEl('hero-eyebrow-text', data.bizCity ? 'Свежие цветы · ' + data.bizCity : 'Свежие цветы каждый день');
+  setEl('hero-badge-num', (Math.floor(Math.random() * 300) + 300) + '+');
+
+  var heroTitleEl = document.getElementById('hero-title');
+  if (heroTitleEl) {
+    var raw = data.hero_title || 'Букеты, которые говорят';
+    var words = raw.split(/\s+/);
+    var last = words.splice(-2).join(' ');
+    heroTitleEl.innerHTML = (words.length ? words.join(' ') + '<br>' : '') + '<em>' + last + '</em>';
+  }
+  setEl('hero-desc', data.hero_desc || '');
+
+  // Marquee
+  var marqueeItems = [name, 'Доставка в день заказа', city, 'Свежие цветы', 'Авторские букеты', 'Всегда в наличии'];
+  var track = document.getElementById('marquee-track');
+  if (track) {
+    var doubled = marqueeItems.concat(marqueeItems);
+    track.innerHTML = doubled.map(function(t) {
+      return '<span class="marquee-item"><span class="marquee-sep">✿</span>' + t + '</span>';
+    }).join('');
+  }
+
+  // Catalogue grid — 5 карточек: 1 featured + 4 обычных
+  var bouquets = data.bouquets || [
+    { name: 'Нежный романтик', tag: 'Хит', price: '3200', query: 'romantic pink bouquet roses peonies' },
+    { name: 'Весенний сад',    tag: 'Новинка', price: '2800', query: 'spring garden flowers bouquet' },
+    { name: 'Белый балет',     tag: '',        price: '3600', query: 'white flowers bouquet elegant' },
+    { name: 'Солнечный день',  tag: '',        price: '2400', query: 'yellow sunflowers bouquet bright' },
+    { name: 'Лесная фея',      tag: 'Акция',   price: '2100', query: 'wildflowers bouquet forest' }
+  ];
+  var cgrid = document.getElementById('catalogue-grid');
+  if (cgrid) {
+    cgrid.innerHTML = '';
+    bouquets.forEach(function(b, i) {
+      var featured = i === 0 ? 'featured' : '';
+      var tagHtml = b.tag ? '<div class="bouquet-tag">' + b.tag + '</div>' : '';
+      cgrid.innerHTML += '<div class="bouquet-card ' + featured + '" onclick="openModal()">' +
+        '<div class="bouquet-img" id="bq-' + i + '">' +
+        '<div class="bouquet-img-ph">🌸</div>' +
+        '</div>' +
+        '<div class="bouquet-body">' +
+        tagHtml +
+        '<div class="bouquet-name">' + b.name + '</div>' +
+        '<div class="bouquet-meta">' +
+        '<div class="bouquet-price">' + Number(b.price).toLocaleString('ru-RU') + ' ₽</div>' +
+        '<button class="bouquet-btn" onclick="event.stopPropagation(); openModal()">+</button>' +
+        '</div></div></div>';
+      loadCardImage(b.query || 'flower bouquet', 'bq-' + i);
+    });
+  }
+
+  // Occasions
+  var occasions = data.occasions || [
+    { icon: '💍', name: 'Свадьба', desc: 'Букет невесты, оформление' },
+    { icon: '🎂', name: 'День рождения', desc: 'Яркие и нежные букеты' },
+    { icon: '💝', name: 'Романтика', desc: 'Для любимых и близких' },
+    { icon: '🎓', name: 'Выпускной', desc: 'Торжественные букеты' }
+  ];
+  var ogrid = document.getElementById('occasions-grid');
+  if (ogrid) {
+    ogrid.innerHTML = '';
+    occasions.forEach(function(o) {
+      ogrid.innerHTML += '<div class="occasion-card" onclick="openModal()">' +
+        '<div class="occasion-icon">' + o.icon + '</div>' +
+        '<div class="occasion-name">' + o.name + '</div>' +
+        '<div class="occasion-desc">' + o.desc + '</div>' +
+        '</div>';
+    });
+  }
+
+  // Spotlight / product
+  var basePrice = parseInt(data.avg_check) || 3500;
+  var price = Math.round(basePrice / 100) * 100 - 10;
+  if (price < 490) price = 490;
+  var oldPrice = Math.round(price * 1.3 / 100) * 100 - 10;
+
+  var priceStr = price.toLocaleString('ru-RU') + ' \u20BD';
+  var oldPriceStr = oldPrice.toLocaleString('ru-RU') + ' \u20BD';
+
+  setEl('spotlight-title', '<em>' + (data.product_name || 'Букет сезона') + '</em>', true);
+  setEl('spotlight-desc', data.product_desc || '');
+  setEl('spotlight-price', priceStr);
+  setEl('spotlight-price-old', oldPriceStr);
+  setEl('spotlight-card-tag', data.bizType || 'Хит');
+  setEl('spotlight-card-name', data.product_name || name);
+  setEl('spotlight-card-price', priceStr);
+  setEl('modal-amount', priceStr);
+  setEl('modal-product-name', data.product_name || name);
+
+  var sfeat = document.getElementById('spotlight-feats');
+  if (sfeat) {
+    sfeat.innerHTML = '';
+    (data.product_features || []).forEach(function(f) {
+      sfeat.innerHTML += '<div class="spotlight-feat"><div class="spotlight-feat-dot"></div>' + f + '</div>';
+    });
+  }
+
+  // Reviews
+  var rg = document.getElementById('reviews-grid');
+  if (rg) {
+    rg.innerHTML = '';
+    (data.reviews || []).forEach(function(r) {
+      rg.innerHTML += '<div class="review-card">' +
+        '<div class="review-stars">★★★★★</div>' +
+        '<div class="review-text">"' + r.text + '"</div>' +
+        '<div class="review-author">' +
+        '<div class="review-avatar">' + (r.avatar || r.name[0]) + '</div>' +
+        '<div>' +
+        '<div class="review-name">' + r.name + '</div>' +
+        '<div class="review-verified">Проверенный покупатель</div>' +
+        '</div></div></div>';
+    });
+  }
+
+  // Footer
+  setEl('footer-tagline', city + ' · Цветы');
+  setEl('footer-copy', '\u00A9 ' + new Date().getFullYear() + ' ' + name + '. Все права защищены.');
+
+  // Images
+  loadCardImage(data.hero_image_query || 'flower shop pink bouquet light', 'hero-img-wrap');
+  loadCardImage((data.hero_image_query || 'flowers') + ' bouquet close up pastel', 'product-img-wrap');
+
+  // Demo banner
+  if (data.isDemo) {
+    var banner = document.getElementById('demo-banner');
+    if (banner) banner.classList.add('show');
+  }
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-form-view').style.display = 'block';
+}
+function simulatePay() {
+  var btn = document.querySelector('.modal-submit');
+  btn.textContent = 'Обработка...';
+  btn.disabled = true;
+  setTimeout(function() {
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  }, 1600);
+}
+function fmtCard(el) {
+  var v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  var v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  el.value = v;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var payload = params.get('data');
+
+    if (payload) {
+      try {
+        var data = JSON.parse(decodeURIComponent(atob(payload)));
+        setEl('loading-logo-text', data.bizName || 'Цветочный магазин');
+        render(data);
+      } catch(e) {
+        console.error('Ошибка данных:', e);
+        render({});
+      }
+    } else {
+      render({
+        bizName: 'Ботаника',
+        bizCity: 'Москва',
+        bizType: 'Цветы',
+        hero_title: 'Букеты которые говорят',
+        hero_desc: 'Авторские букеты из самых свежих цветов. Собираем с любовью и доставляем в день заказа.',
+        bouquets: [
+          { name: 'Нежный романтик',  tag: 'Хит',     price: '3490', query: 'romantic pink roses peonies bouquet' },
+          { name: 'Весенний сад',      tag: 'Новинка', price: '2890', query: 'spring wildflowers pastel bouquet' },
+          { name: 'Белый балет',       tag: '',         price: '3690', query: 'white roses bouquet elegant minimal' },
+          { name: 'Солнечный день',    tag: '',         price: '2490', query: 'yellow sunflowers tulips bouquet' },
+          { name: 'Лесная нимфа',      tag: 'Акция',   price: '2190', query: 'wildflowers forest greenery bouquet' }
+        ],
+        occasions: [
+          { icon: '💍', name: 'Свадьба',        desc: 'Букет невесты и оформление' },
+          { icon: '🎂', name: 'День рождения',   desc: 'Яркие и нежные букеты' },
+          { icon: '💝', name: 'Романтика',       desc: 'Для любимых и близких' },
+          { icon: '🎓', name: 'Выпускной',       desc: 'Торжественные букеты' }
+        ],
+        product_name: 'Коллекционный букет',
+        product_desc: 'Авторский букет из пионов, кустовых роз и эвкалипта. Нежный аромат, который наполнит любое пространство.',
+        product_features: ['25–30 стеблей свежих цветов', 'Авторское оформление флористом', 'Доставка в тот же день', 'Открытка с пожеланием в подарок'],
+        avg_check: '3800',
+        reviews: [
+          { name: 'Анна К.',    text: 'Получила букет — расплакалась от счастья. Такой свежести и красоты я ещё не видела!', avatar: 'А' },
+          { name: 'Мария Т.',   text: 'Заказываю уже полгода. Каждый раз другой стиль, всегда безупречно свежо и красиво.', avatar: 'М' },
+          { name: 'Светлана Р.', text: 'Привезли точно в срок, букет простоял две недели. Лучший цветочный в городе!', avatar: 'С' }
+        ],
+        hero_image_query: 'flower shop pink roses bouquet pastel light',
+        isDemo: false
+      });
+    }
+  } catch(e) {
+    console.error('Init error:', e);
+  } finally {
+    setTimeout(hideLoader, 900);
+  }
+});
+</script>
+</body>
+</html>
