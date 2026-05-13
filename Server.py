@@ -6,11 +6,13 @@ import os
 import ssl
 import uuid
 import re
+import time
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+# На Render задаётся в Dashboard → Environment Variables
 # Только Base64-строка БЕЗ слова "Basic"
-GIGACHAT_KEY = os.environ.get('', '').strip()
+GIGACHAT_KEY = os.environ.get('GIGACHAT_KEY', '').strip()
 if GIGACHAT_KEY.lower().startswith('basic '):
     GIGACHAT_KEY = GIGACHAT_KEY[6:].strip()
 
@@ -37,8 +39,16 @@ def get_mime(path):
     ext = os.path.splitext(path)[1].lower()
     return MIME_MAP.get(ext, 'application/octet-stream')
 
+
+# ── Кеш токена — живёт 28 минут, обновляется автоматически ───────────
+_token_cache = {'token': None, 'expires': 0}
+
 def get_gigachat_token():
-    """Получить Bearer-токен GigaChat"""
+    now = time.time()
+    if _token_cache['token'] and now < _token_cache['expires']:
+        return _token_cache['token']
+
+    print('[GigaChat] Получаем новый токен...')
     req = urllib.request.Request(
         'https://ngw.devices.sberbank.ru:9443/api/v2/oauth',
         data=b'scope=GIGACHAT_API_PERS',
@@ -52,72 +62,80 @@ def get_gigachat_token():
     )
     with urllib.request.urlopen(req, timeout=10) as resp:
         data = json.loads(resp.read())
-    return data['access_token']
 
-def gigachat_generate_image(query, token):
+    _token_cache['token'] = data['access_token']
+    _token_cache['expires'] = now + 1700
+    print('[GigaChat] Токен получен, действителен ~28 минут')
+    return _token_cache['token']
+
+
+# ── Генерация картинки с retry ────────────────────────────────────────
+def gigachat_generate_image(query):
     """
-    Генерация картинки через GigaChat.
-    Возвращает bytes картинки или None.
-
-    Схема:
-      1. POST /chat/completions с промптом → получаем file_id из <img src="...">
-      2. GET /files/{file_id}/content → скачиваем байты
+    Возвращает (bytes, content_type) или (None, None).
+    Делает 2 попытки с автообновлением токена.
     """
-    prompt = (
-        f'Нарисуй фотореалистичное изображение для сайта: {query}. '
-        f'Горизонтальный формат 16:9, высокое качество, без текста на изображении.'
-    )
+    for attempt in range(2):
+        try:
+            token = get_gigachat_token()
+            prompt = f'Нарисуй картинку: {query}. Стиль: фотореалистичный. Формат: широкий 16:9.'
 
-    chat_req = urllib.request.Request(
-        'https://gigachat.devices.sberbank.ru/api/v1/chat/completions',
-        data=json.dumps({
-            'model': 'GigaChat-2',
-            'messages': [{'role': 'user', 'content': prompt}],
-            'function_call': 'auto'
-        }).encode(),
-        headers={
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {token}'
-        },
-        method='POST'
-    )
-    with urllib.request.urlopen(chat_req, timeout=60) as resp:
-        chat_data = json.loads(resp.read())
+            chat_req = urllib.request.Request(
+                'https://gigachat.devices.sberbank.ru/api/v1/chat/completions',
+                data=json.dumps({
+                    'model': 'GigaChat-2',
+                    'messages': [{'role': 'user', 'content': prompt}],
+                    'function_call': 'auto',
+                    'max_tokens': 512,
+                    'temperature': 0.7
+                }).encode(),
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {token}'
+                },
+                method='POST'
+            )
+            with urllib.request.urlopen(chat_req, timeout=90) as resp:
+                chat_data = json.loads(resp.read())
 
-    print(f'[GigaChat image] raw response: {json.dumps(chat_data)[:400]}')
+            content = chat_data.get('choices', [{}])[0].get('message', {}).get('content', '')
+            print(f'[GigaChat image] attempt {attempt+1}, content: {content[:150]}')
 
-    # Ищем file_id — GigaChat возвращает <img src="UUID" fuse="true"/>
-    file_id = None
-    content = chat_data.get('choices', [{}])[0].get('message', {}).get('content', '')
+            file_id = None
+            if '<img' in content:
+                match = re.search(r'src=["\']([^"\']+)["\']', content)
+                if match:
+                    file_id = match.group(1)
 
-    if '<img' in content:
-        match = re.search(r'src=["\']([^"\']+)["\']', content)
-        if match:
-            file_id = match.group(1)
+            if not file_id:
+                attachments = chat_data.get('choices', [{}])[0].get('message', {}).get('attachments', [])
+                if attachments:
+                    file_id = attachments[0].get('id') or attachments[0].get('file_id')
 
-    # Запасной вариант — attachments
-    if not file_id:
-        attachments = chat_data.get('choices', [{}])[0].get('message', {}).get('attachments', [])
-        if attachments:
-            file_id = attachments[0].get('id') or attachments[0].get('file_id')
+            if not file_id:
+                print(f'[GigaChat image] attempt {attempt+1}: file_id не найден, повтор...')
+                _token_cache['expires'] = 0
+                continue
 
-    if not file_id:
-        print(f'[GigaChat image] file_id не найден. content={content[:200]}')
-        return None, None
+            file_req = urllib.request.Request(
+                f'https://gigachat.devices.sberbank.ru/api/v1/files/{file_id}/content',
+                headers={
+                    'Accept': 'application/jpg',
+                    'Authorization': f'Bearer {token}'
+                }
+            )
+            with urllib.request.urlopen(file_req, timeout=30) as file_resp:
+                img_data = file_resp.read()
+                content_type = file_resp.headers.get('Content-Type', 'image/jpeg')
 
-    # Скачиваем файл
-    file_req = urllib.request.Request(
-        f'https://gigachat.devices.sberbank.ru/api/v1/files/{file_id}/content',
-        headers={
-            'Accept': 'application/jpg',
-            'Authorization': f'Bearer {token}'
-        }
-    )
-    with urllib.request.urlopen(file_req, timeout=30) as file_resp:
-        img_data = file_resp.read()
-        content_type = file_resp.headers.get('Content-Type', 'image/jpeg')
+            print(f'[GigaChat image] успешно, размер: {len(img_data)} байт')
+            return img_data, content_type
 
-    return img_data, content_type
+        except Exception as e:
+            print(f'[GigaChat image] attempt {attempt+1} error: {e}')
+            _token_cache['expires'] = 0
+
+    return None, None
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -136,6 +154,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._serve_file('landing.html')
         elif path == '/app' or path == '/app/' or path == '/index.html':
             self._serve_file('index.html')
+        elif path == '/health':
+            # Render периодически пингует этот эндпоинт
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                'status': 'ok',
+                'gigachat': bool(GIGACHAT_KEY)
+            }).encode())
         elif path.startswith('/templates/'):
             filename = os.path.basename(path)
             if not filename.endswith('.html') or '..' in path:
@@ -145,18 +173,19 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if '..' in path: self._send_404(); return
             self._serve_file_path(os.path.join(BASE_DIR, path[1:]))
         elif path.startswith('/generated/'):
+            # На Render generated/ эфемерная — файлы пропадают при деплое.
+            # Картинки отдаются напрямую через /image, HTML через /save-generated
             if '..' in path: self._send_404(); return
             self._serve_file_path(os.path.join(BASE_DIR, path[1:]))
         elif path.startswith('/images/'):
             if '..' in path: self._send_404(); return
             self._serve_file_path(os.path.join(BASE_DIR, path[1:]))
         elif path == '/image':
-            # GET /image?q=...&token=...
+            # GET /image?q=... — генерируем и отдаём картинку напрямую
             qs = self.path.split('?')[1] if '?' in self.path else ''
             params = dict(p.split('=', 1) for p in qs.split('&') if '=' in p)
             query = urllib.request.unquote(params.get('q', 'business'))
-            token = urllib.request.unquote(params.get('token', ''))
-            self._serve_gigachat_image(query, token)
+            self._serve_gigachat_image(query)
         else:
             self._send_404()
 
@@ -202,18 +231,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(svg)
 
-    def _serve_gigachat_image(self, query, token):
-        """GET /image?q=...&token=... — отдаёт картинку напрямую"""
+    def _serve_gigachat_image(self, query):
         try:
-            if not token:
-                token = get_gigachat_token()
-
-            img_data, content_type = gigachat_generate_image(query, token)
-
+            img_data, content_type = gigachat_generate_image(query)
             if not img_data:
                 self._send_svg_placeholder('изображение не сгенерировано')
                 return
-
             self.send_response(200)
             self.send_header('Content-Type', content_type)
             self.send_header('Access-Control-Allow-Origin', '*')
@@ -221,9 +244,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', str(len(img_data)))
             self.end_headers()
             self.wfile.write(img_data)
-
         except Exception as e:
-            print(f'GigaChat image error: {e}')
+            print(f'serve image error: {e}')
             self._send_svg_placeholder('ошибка генерации')
 
     def do_POST(self):
@@ -231,24 +253,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         # ── /token ────────────────────────────────────────────────────
         if self.path == '/token':
             try:
-                req = urllib.request.Request(
-                    'https://ngw.devices.sberbank.ru:9443/api/v2/oauth',
-                    data=b'scope=GIGACHAT_API_PERS',
-                    headers={
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json',
-                        'RqUID': str(uuid.uuid4()),
-                        'Authorization': f'Basic {GIGACHAT_KEY}'
-                    },
-                    method='POST'
-                )
-                with urllib.request.urlopen(req, timeout=10) as resp:
-                    data = resp.read()
+                token = get_gigachat_token()
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
-                self.wfile.write(data)
+                self.wfile.write(json.dumps({'access_token': token}).encode())
             except Exception as e:
                 print(f'Token error: {e}')
                 self.send_response(500)
@@ -262,14 +272,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             try:
                 length = int(self.headers['Content-Length'])
                 body = json.loads(self.rfile.read(length))
-                token = body['token']
                 messages = body['messages']
+                token = body.get('token') or get_gigachat_token()
+
                 req = urllib.request.Request(
                     'https://gigachat.devices.sberbank.ru/api/v1/chat/completions',
                     data=json.dumps({
                         'model': 'GigaChat-2',
                         'messages': messages,
-                        'max_tokens': 4000,
+                        'max_tokens': 3000,
                         'temperature': 0.7
                     }).encode(),
                     headers={
@@ -278,7 +289,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     },
                     method='POST'
                 )
-                with urllib.request.urlopen(req, timeout=30) as resp:
+                with urllib.request.urlopen(req, timeout=60) as resp:
                     data = resp.read()
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
@@ -293,34 +304,28 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': str(e)}).encode())
 
-        # ── /generate-image — POST, возвращает { url } ────────────────
-        # Тело: { "query": "...", "token": "..." }
+        # ── /generate-image ───────────────────────────────────────────
+        # На Render НЕ сохраняем на диск — возвращаем base64
+        # Тело: { "query": "..." }
+        # Ответ: { "ok": true, "base64": "...", "content_type": "image/jpeg" }
         elif self.path == '/generate-image':
             try:
                 length = int(self.headers['Content-Length'])
                 body = json.loads(self.rfile.read(length))
                 query = body.get('query', 'business')
-                token = body.get('token', '')
 
-                if not token:
-                    token = get_gigachat_token()
-
-                img_data, content_type = gigachat_generate_image(query, token)
+                img_data, content_type = gigachat_generate_image(query)
 
                 if not img_data:
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
                     self.send_header('Access-Control-Allow-Origin', '*')
                     self.end_headers()
-                    self.wfile.write(json.dumps({'error': 'file_id not found'}).encode())
+                    self.wfile.write(json.dumps({'error': 'не удалось сгенерировать после 2 попыток'}).encode())
                     return
 
-                # Сохраняем в /generated/
-                gen_dir = os.path.join(BASE_DIR, 'generated')
-                os.makedirs(gen_dir, exist_ok=True)
-                img_filename = f'img_{uuid.uuid4().hex[:8]}.jpg'
-                with open(os.path.join(gen_dir, img_filename), 'wb') as f:
-                    f.write(img_data)
+                import base64
+                b64 = base64.b64encode(img_data).decode('utf-8')
 
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
@@ -328,7 +333,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({
                     'ok': True,
-                    'url': f'/generated/{img_filename}'
+                    'base64': b64,
+                    'content_type': content_type,
+                    # data-url удобно вставлять прямо в src=""
+                    'data_url': f'data:{content_type};base64,{b64}'
                 }).encode())
 
             except Exception as e:
@@ -372,15 +380,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+    # Render сам передаёт PORT — не меняйте эту строку
     port = int(os.environ.get('PORT', 8000))
     print(f'Сервер запущен: http://localhost:{port}/')
     print(f'  GET  /              -> лендинг')
     print(f'  GET  /app           -> конструктор')
-    print(f'  GET  /image?q=...&token=...  -> GigaChat картинка (inline)')
-    print(f'  POST /token         -> получить токен')
-    print(f'  POST /chat          -> чат с GigaChat')
-    print(f'  POST /generate-image -> GigaChat картинка -> возвращает url')
+    print(f'  GET  /health        -> health check')
+    print(f'  GET  /image?q=...   -> GigaChat картинка (inline)')
+    print(f'  POST /token         -> токен (из кеша или свежий)')
+    print(f'  POST /chat          -> чат GigaChat (3000 токенов)')
+    print(f'  POST /generate-image -> картинка -> base64 + data_url')
     print(f'  POST /save-generated -> сохранить HTML')
-    print(f'GigaChat ключ: {"есть ✓" if GIGACHAT_KEY else "НЕТ ✗"}')
+    print(f'GigaChat ключ: {"есть ✓" if GIGACHAT_KEY else "НЕТ ✗ — задайте GIGACHAT_KEY в Environment Variables"}')
     httpd = http.server.HTTPServer(('0.0.0.0', port), Handler)
     httpd.serve_forever()
