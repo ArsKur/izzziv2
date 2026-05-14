@@ -83,10 +83,10 @@ def gigachat_generate_image(query):
             chat_req = urllib.request.Request(
                 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions',
                 data=json.dumps({
-                    'model': 'GigaChat-2',
+                    'model': 'GigaChat-2-Max',
                     'messages': [{'role': 'user', 'content': prompt}],
                     'function_call': 'auto',
-                    'max_tokens': 512,
+                    'max_tokens': 3000,
                     'temperature': 0.7
                 }).encode(),
                 headers={
