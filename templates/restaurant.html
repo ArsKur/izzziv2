@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Restaurant</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════════════
    RESTAURANT / FINE DINING
@@ -53,7 +53,7 @@ body::after{
 }
 #loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
 .loading-title{
-  font-family:'Bebas Neue',cursive;
+  font-family:'Unbounded',sans-serif;
   font-size:clamp(52px,8vw,100px);
   color:var(--cream);
   letter-spacing:0.08em;
@@ -74,22 +74,12 @@ body::after{
 .loading-sub{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);animation:fadeIn 0.5s ease 0.5s both;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ─── DEMO BANNER ──────────────────────────────── */
-.demo-banner{
-  display:none;position:sticky;top:0;left:0;right:0;z-index:301;
-  background:var(--fire);color:#fff;
-  padding:10px 24px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
-  text-align:center;align-items:center;justify-content:center;gap:20px;
-}
-.demo-banner.show{display:flex;}
-.demo-banner-btn{padding:5px 14px;border:1px solid rgba(255,255,255,0.5);color:#fff;text-decoration:none;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.2s;}
-.demo-banner-btn:hover{background:#fff;color:var(--fire);}
 
 /* ─── TICKER ───────────────────────────────────── */
 .ticker-bar{background:var(--fire);padding:11px 0;overflow:hidden;position:relative;z-index:200;}
 .ticker-inner{display:flex;white-space:nowrap;width:max-content;animation:tickerMove 28s linear infinite;}
 @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ticker-item{font-family:'Bebas Neue',cursive;font-size:15px;letter-spacing:0.15em;color:rgba(255,255,255,0.9);padding:0 24px;display:inline-flex;align-items:center;gap:18px;}
+.ticker-item{font-family:'Unbounded',sans-serif;font-size:15px;letter-spacing:0.15em;color:rgba(255,255,255,0.9);padding:0 24px;display:inline-flex;align-items:center;gap:18px;}
 .ticker-sep{width:5px;height:5px;background:rgba(255,255,255,0.5);border-radius:50%;display:inline-block;}
 
 /* ─── NAVBAR ───────────────────────────────────── */
@@ -99,7 +89,7 @@ body::after{
   border-bottom:1px solid var(--line);
   height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;
 }
-.nav-logo{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.2em;color:var(--cream);text-decoration:none;}
+.nav-logo{font-family:'Unbounded',sans-serif;font-size:22px;letter-spacing:0.2em;color:var(--cream);text-decoration:none;}
 .nav-links{display:flex;gap:32px;list-style:none;}
 .nav-links a{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color 0.2s;}
 .nav-links a:hover{color:var(--cream);}
@@ -116,18 +106,18 @@ body::after{
 
 .hero-left{
   background:var(--coal);display:flex;flex-direction:column;justify-content:flex-end;
-  padding:64px 52px 72px;position:relative;overflow:hidden;
+  padding:52px 40px 60px;position:relative;overflow:hidden;
   border-right:1px solid var(--line);z-index:2;
 }
 .hero-ghost-num{
   position:absolute;top:-40px;right:-20px;
-  font-family:'Bebas Neue',cursive;font-size:clamp(260px,30vw,420px);
+  font-family:'Unbounded',sans-serif;font-size:clamp(180px,22vw,340px);
   line-height:1;letter-spacing:-0.06em;color:rgba(255,255,255,0.025);
   pointer-events:none;user-select:none;
 }
 .hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:var(--fire);margin-bottom:24px;display:flex;align-items:center;gap:12px;}
 .hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--fire);}
-.hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(64px,8vw,124px);line-height:0.9;letter-spacing:0.04em;color:var(--cream);margin-bottom:28px;}
+.hero-title{font-family:'Unbounded',sans-serif;font-size:clamp(36px,5.5vw,80px);line-height:0.95;letter-spacing:-0.02em;color:var(--cream);margin-bottom:28px;overflow-wrap:break-word;word-break:break-word;}
 .hero-title .line-fire{color:var(--fire);}
 .hero-desc{font-size:14px;line-height:1.8;color:var(--dust);max-width:380px;margin-bottom:48px;font-weight:300;}
 .hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
@@ -148,7 +138,7 @@ body::after{
 .hero-right:hover #hero-img-wrap img{transform:scale(1.04);}
 .hero-img-placeholder{width:100%;height:100%;min-height:600px;background:radial-gradient(ellipse at 50% 40%,#2a1d0e 0%,#0d0c0a 70%);display:flex;align-items:center;justify-content:center;font-size:80px;opacity:0.2;}
 .hero-float-badge{position:absolute;bottom:36px;left:36px;background:var(--void);border-left:3px solid var(--fire);padding:16px 20px;backdrop-filter:blur(8px);}
-.hero-float-num{font-family:'Bebas Neue',cursive;font-size:36px;color:var(--cream);line-height:1;}
+.hero-float-num{font-family:'Unbounded',sans-serif;font-size:36px;color:var(--cream);line-height:1;}
 .hero-float-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);margin-top:3px;}
 
 /* ─── USP ROW ──────────────────────────────────── */
@@ -156,8 +146,8 @@ body::after{
 .usp-item{padding:36px 44px;border-right:1px solid var(--line);transition:background 0.25s;}
 .usp-item:last-child{border-right:none;}
 .usp-item:hover{background:rgba(255,255,255,0.02);}
-.usp-num{font-family:'Bebas Neue',cursive;font-size:11px;letter-spacing:0.2em;color:var(--fire);margin-bottom:16px;}
-.usp-title{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.06em;color:var(--cream);margin-bottom:10px;}
+.usp-num{font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.2em;color:var(--fire);margin-bottom:16px;}
+.usp-title{font-family:'Unbounded',sans-serif;font-size:20px;letter-spacing:-0.01em;color:var(--cream);margin-bottom:10px;}
 .usp-desc{font-size:12px;line-height:1.7;color:var(--dust);font-weight:300;}
 
 /* ─── MENU SECTION ─────────────────────────────── */
@@ -165,8 +155,8 @@ body::after{
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:52px;}
 .section-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:var(--fire);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .section-eyebrow::before{content:'';width:20px;height:1px;background:var(--fire);}
-.section-title{font-family:'Bebas Neue',cursive;font-size:clamp(40px,5vw,68px);letter-spacing:0.04em;color:var(--cream);line-height:0.95;}
-.section-count{font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:0.15em;color:rgba(255,255,255,0.18);padding-bottom:6px;}
+.section-title{font-family:'Unbounded',sans-serif;font-size:clamp(36px,4.5vw,60px);letter-spacing:-0.02em;color:var(--cream);line-height:0.95;}
+.section-count{font-family:'Unbounded',sans-serif;font-size:13px;letter-spacing:0.15em;color:rgba(255,255,255,0.18);padding-bottom:6px;}
 
 .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
 .menu-card{background:var(--coal);cursor:pointer;overflow:hidden;transition:transform 0.3s ease;position:relative;}
@@ -179,10 +169,10 @@ body::after{
 .menu-card--featured .menu-card__img{aspect-ratio:16/9;}
 .menu-card__badge{position:absolute;top:16px;left:16px;background:var(--fire);color:#fff;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:5px 10px;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%);}
 .menu-card__body{padding:24px;}
-.menu-card__name{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.06em;color:var(--cream);margin-bottom:6px;}
+.menu-card__name{font-family:'Unbounded',sans-serif;font-size:20px;letter-spacing:-0.01em;color:var(--cream);margin-bottom:6px;}
 .menu-card__desc{font-size:12px;line-height:1.65;color:var(--dust);font-weight:300;margin-bottom:18px;}
 .menu-card__footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;}
-.menu-card__price{font-family:'Bebas Neue',cursive;font-size:24px;letter-spacing:0.04em;color:var(--cream);}
+.menu-card__price{font-family:'Unbounded',sans-serif;font-size:22px;letter-spacing:-0.01em;color:var(--cream);}
 .menu-card__btn{padding:8px 18px;background:var(--fire);color:#fff;border:none;font-family:'Manrope',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
 .menu-card__btn:hover{background:var(--ember);}
 
@@ -196,31 +186,41 @@ body::after{
 .sig-text{padding:72px 56px;display:flex;flex-direction:column;justify-content:center;}
 .sig-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:var(--fire);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
 .sig-eyebrow::before{content:'';width:20px;height:1px;background:var(--fire);}
-.sig-title{font-family:'Bebas Neue',cursive;font-size:clamp(40px,4.5vw,64px);letter-spacing:0.04em;color:var(--cream);line-height:0.95;margin-bottom:20px;}
+.sig-title{font-family:'Unbounded',sans-serif;font-size:clamp(34px,4vw,56px);letter-spacing:-0.02em;color:var(--cream);line-height:0.95;margin-bottom:20px;}
 .sig-desc{font-size:14px;line-height:1.8;color:var(--dust);font-weight:300;margin-bottom:32px;max-width:400px;}
 .sig-features{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;}
 .sig-feat{font-size:12px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:14px;}
 .sig-feat::before{content:'';display:block;width:16px;height:1px;background:var(--fire);flex-shrink:0;}
 .sig-price-row{display:flex;align-items:center;gap:28px;padding-top:28px;border-top:1px solid var(--line);}
-.sig-price{font-family:'Bebas Neue',cursive;font-size:48px;color:var(--cream);line-height:1;}
+.sig-price{font-family:'Unbounded',sans-serif;font-size:48px;color:var(--cream);line-height:1;}
 .sig-price-old{font-size:16px;color:rgba(255,255,255,0.2);text-decoration:line-through;}
 
-/* ─── REVIEWS ──────────────────────────────────── */
-.reviews{padding:80px 40px;background:var(--void);border-top:1px solid var(--line);}
-.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;}
-.review-card{background:var(--coal);padding:36px 32px;transition:background 0.25s;}
-.review-card:hover{background:var(--iron);}
-.review-stars{font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:18px;}
-.review-text{font-size:15px;font-style:italic;font-weight:300;line-height:1.7;color:rgba(255,255,255,0.75);margin-bottom:24px;}
-.review-author{display:flex;align-items:center;gap:14px;}
-.review-avatar{width:36px;height:36px;background:var(--plate);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:16px;color:var(--cream);flex-shrink:0;}
-.review-name{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--cream);}
-.review-verified{font-size:10px;color:rgba(255,255,255,0.25);margin-top:3px;}
+/* ─── STATS SECTION ────────────────────────────── */
+.stats-section{padding:0;background:var(--void);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-item{padding:52px 40px;border-right:1px solid var(--line);position:relative;overflow:hidden;transition:background .3s;}
+.stat-item:last-child{border-right:none;}
+.stat-item:hover{background:rgba(255,255,255,0.02);}
+.stat-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--fire);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.stat-item:hover::before{transform:scaleX(1);}
+.stat-val{font-family:'Unbounded',sans-serif;font-size:clamp(44px,5vw,72px);font-weight:900;color:var(--cream);line-height:1;letter-spacing:-0.03em;margin-bottom:12px;}
+.stat-val em{color:var(--fire);font-style:normal;}
+.stat-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dust);font-weight:400;line-height:1.5;}
+
+/* ─── PRESS SECTION ────────────────────────────── */
+.press{padding:80px 40px;background:var(--coal);border-top:1px solid var(--line);}
+.press-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;}
+.press-card{background:var(--void);padding:40px 32px;transition:background .25s;display:flex;flex-direction:column;justify-content:space-between;min-height:260px;}
+.press-card:hover{background:var(--iron);}
+.press-quote{font-size:15px;font-style:italic;font-weight:300;line-height:1.75;color:rgba(255,255,255,.7);margin-bottom:28px;position:relative;padding-left:20px;}
+.press-quote::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:2px;background:var(--fire);}
+.press-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;}
+.press-source{font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.08em;color:var(--cream);}
+.press-year{font-size:10px;letter-spacing:0.1em;color:var(--dust);}
 
 /* ─── FOOTER ───────────────────────────────────── */
 .footer{background:var(--coal);border-top:1px solid var(--line);padding:60px 40px 36px;}
 .footer-top{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:44px;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap;gap:28px;}
-.footer-brand{font-family:'Bebas Neue',cursive;font-size:28px;letter-spacing:0.2em;color:var(--cream);margin-bottom:6px;}
+.footer-brand{font-family:'Unbounded',sans-serif;font-size:22px;letter-spacing:0.04em;color:var(--cream);margin-bottom:6px;}
 .footer-tagline{font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);}
 .footer-cta{padding:14px 32px;background:transparent;border:1px solid var(--fire);font-family:'Manrope',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--fire);cursor:pointer;transition:all 0.2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);}
 .footer-cta:hover{background:var(--fire);color:#fff;}
@@ -237,9 +237,9 @@ body::after{
 .modal-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:18px;cursor:pointer;color:rgba(255,255,255,0.3);transition:color 0.2s;}
 .modal-close:hover{color:var(--cream);}
 .modal-brand{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--fire);margin-bottom:8px;}
-.modal-product-name{font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:0.08em;color:var(--cream);}
+.modal-product-name{font-family:'Unbounded',sans-serif;font-size:22px;letter-spacing:-0.01em;color:var(--cream);}
 .modal-header{margin-bottom:28px;}
-.modal-amount{font-family:'Bebas Neue',cursive;font-size:42px;color:var(--cream);margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--line);}
+.modal-amount{font-family:'Unbounded',sans-serif;font-size:42px;color:var(--cream);margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--line);}
 .modal-input{width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);color:var(--cream);font-family:'Manrope',sans-serif;font-size:14px;margin-bottom:12px;outline:none;transition:border-color 0.2s;}
 .modal-input:focus{border-color:var(--fire);}
 .modal-input::placeholder{color:rgba(255,255,255,0.2);}
@@ -251,7 +251,7 @@ body::after{
 .modal-success{display:none;text-align:center;padding:20px 0;}
 .modal-success.show{display:block;}
 .modal-success-icon{width:52px;height:52px;border:1px solid var(--fire);color:var(--fire);font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
-.modal-success-title{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.1em;color:var(--cream);margin-bottom:10px;}
+.modal-success-title{font-family:'Unbounded',sans-serif;font-size:20px;letter-spacing:0em;color:var(--cream);margin-bottom:10px;}
 .modal-success-text{font-size:13px;color:var(--dust);line-height:1.65;}
 
 .back-btn{position:fixed;bottom:20px;left:20px;z-index:100;padding:9px 16px;background:rgba(13,12,10,0.92);border:1px solid var(--line);color:rgba(255,255,255,0.3);font-family:'Manrope',sans-serif;font-size:11px;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
@@ -259,11 +259,13 @@ body::after{
 
 @media(max-width:900px){
   .navbar{padding:0 20px;} .nav-links{display:none;}
-  .hero{grid-template-columns:1fr;} .hero-right{min-height:300px;} .hero-left{padding:48px 24px 56px;}
+  .hero{grid-template-columns:1fr;} .hero-right{min-height:300px;} .hero-left{padding:40px 20px 48px;}
   .usp-row{grid-template-columns:1fr;} .menu-section{padding:52px 20px;}
   .menu-grid{grid-template-columns:1fr;} .menu-card--featured{grid-column:span 1;} .menu-card--featured .menu-card__img{aspect-ratio:4/3;}
   .signature{grid-template-columns:1fr;} .sig-text{padding:48px 24px;}
-  .reviews{padding:52px 20px;} .reviews-grid{grid-template-columns:1fr;} .footer{padding:48px 20px 28px;}
+  .stats-section{grid-template-columns:1fr 1fr;} .stat-item{border-right:none;border-bottom:1px solid var(--line);}
+  .press{padding:52px 20px;} .press-grid{grid-template-columns:1fr;}
+  .footer{padding:48px 20px 28px;}
 }
 </style>
 </head>
@@ -303,11 +305,6 @@ body::after{
   </div>
 </div>
 
-<!-- DEMO BANNER -->
-<div class="demo-banner" id="demo-banner">
-  <span>Это демо-версия. Запустите свой бизнес в ИЗЗЗИ.</span>
-  <a class="demo-banner-btn" href="https://www.sberbank.ru/ru/s_m_business/reg#start_reg" target="_blank">Открыть ИП бесплатно</a>
-</div>
 
 <!-- TICKER -->
 <div class="ticker-bar">
@@ -320,7 +317,7 @@ body::after{
   <ul class="nav-links">
     <li><a href="#menu">Меню</a></li>
     <li><a href="#about">О нас</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#press">Пресса</a></li>
   </ul>
   <button class="nav-cta" onclick="openModal()">Забронировать стол</button>
 </nav>
@@ -382,15 +379,35 @@ body::after{
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="reviews" id="reviews">
+<!-- STATS -->
+<div class="stats-section" id="stats">
+  <div class="stat-item">
+    <div class="stat-val" id="stat-guests">200<em>+</em></div>
+    <div class="stat-label">гостей<br>за вечер</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val" id="stat-years">12<em>лет</em></div>
+    <div class="stat-label">живого<br>огня</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val" id="stat-dishes">40<em>+</em></div>
+    <div class="stat-label">позиций<br>в меню</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">№1<em></em></div>
+    <div class="stat-label">гриль в Москве<br>по версии TimeOut</div>
+  </div>
+</div>
+
+<!-- PRESS -->
+<section class="press" id="press">
   <div class="section-head">
     <div>
-      <div class="section-eyebrow">Гости о нас</div>
-      <div class="section-title">ОТЗЫВЫ</div>
+      <div class="section-eyebrow">Медиа о нас</div>
+      <div class="section-title">ПРЕССА</div>
     </div>
   </div>
-  <div class="reviews-grid" id="reviews-grid"></div>
+  <div class="press-grid" id="press-grid"></div>
 </section>
 
 <!-- FOOTER -->
@@ -499,17 +516,29 @@ function render(data) {
     loadSigImg(data.product_image_query || data.hero_image_query);
   }
 
-  // Reviews
-  const rg = document.getElementById('reviews-grid');
-  rg.innerHTML = '';
-  (data.reviews || []).forEach(r => {
-    rg.innerHTML += `
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"${r.text}"</div>
-        <div class="review-author">
-          <div class="review-avatar">${r.avatar || r.name[0]}</div>
-          <div><div class="review-name">${r.name}</div><div class="review-verified">Верифицированный гость</div></div>
+  // Stats
+  document.getElementById('stat-guests').innerHTML = '200<em>+</em>';
+  document.getElementById('stat-years').innerHTML  = '12<em>лет</em>';
+  document.getElementById('stat-dishes').innerHTML = '40<em>+</em>';
+
+  // Press — use reviews field repurposed, or defaults
+  const pressItems = (data.reviews || []).length
+    ? data.reviews.map(r => ({ quote: r.text, source: r.name, year: '2024' }))
+    : [
+        { quote: 'Место, где огонь — не метафора. Рибай здесь — лучший в городе, без оговорок.', source: 'TimeOut Москва', year: '2024' },
+        { quote: 'Горыныч держит планку уже десять лет. Редкое постоянство в мире, где рестораны живут сезон.', source: 'Афиша', year: '2023' },
+        { quote: 'Интерьер сырой, еда точная. Именно так и должен выглядеть настоящий гриль-ресторан.', source: 'The Village', year: '2024' }
+      ];
+
+  const pg = document.getElementById('press-grid');
+  pg.innerHTML = '';
+  pressItems.forEach(p => {
+    pg.innerHTML += `
+      <div class="press-card">
+        <div class="press-quote">${p.quote}</div>
+        <div class="press-footer">
+          <div class="press-source">${p.source}</div>
+          <div class="press-year">${p.year}</div>
         </div>
       </div>`;
   });
@@ -521,7 +550,7 @@ function render(data) {
 
   loadHeroImg(data.hero_image_query || 'dark restaurant fire grill moscow');
 
-  if (data.isDemo) document.getElementById('demo-banner').classList.add('show');
+
 }
 
 // ─── IMAGE LOADERS ────────────────────────────────────────────
