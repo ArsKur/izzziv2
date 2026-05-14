@@ -452,6 +452,7 @@
     <div class="site-url"><span></span><span class="url-text" id="site-url-text">izzzi.ru/my-business</span></div>
     <div class="topbar-actions">
       <button class="btn-secondary" onclick="publishSite()">🚀 Опубликовать сайт</button>
+      <button id="btn-open-ip" class="btn-secondary" style="display:none; background: linear-gradient(135deg,#1a9f3e,#00c9b1);" onclick="window.open('https://www.sberbank.ru/ru/s_m_business/reg#start_reg','_blank')">🏦 Открыть ИП/ООО в Сбере</button>
       <button class="btn-reset" onclick="resetToInput()">Изменить</button>
     </div>
   </div>
@@ -463,7 +464,6 @@
       <div class="theme-preview-icon" id="theme-preview-icon">✨</div>
       <div class="theme-preview-info">
         <div class="theme-preview-name" id="theme-preview-name">Выбранная тема</div>
-        <div class="theme-preview-desc" id="theme-preview-desc">Откройте сайт в новой вкладке</div>
       </div>
       <button class="theme-preview-btn" onclick="publishSite()">Открыть сайт →</button>
     </div>
@@ -515,7 +515,9 @@
           <button class="connect-btn" onclick="connectYukassa()">Подключить</button>
         </div>
         <div class="connect-card sbergetting" id="card-target">
-          <div class="connect-logo"></div>
+          <div class="connect-logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#1a9f3e"/><circle cx="16" cy="16" r="8" stroke="white" stroke-width="2" fill="none"/><circle cx="16" cy="16" r="4" stroke="white" stroke-width="1.5" fill="none"/><circle cx="16" cy="16" r="1.5" fill="white"/></svg>
+          </div>
           <div class="connect-info"><div class="connect-name">СберТаргет</div><div class="connect-desc">Реклама в экосистеме Сбера. Бесплатный доступ в ИЗЗЗИ Боксе.</div></div>
           <div class="connect-status"><span>✓</span> Подключено</div>
           <button class="connect-btn" onclick="connectTarget()">Запустить рекламу</button>
@@ -642,8 +644,15 @@ const TEMPLATE_REGISTRY = {
     name: 'Handmade / Мастерская',
     icon: '🎨',
     desc: 'Тёплый крафтовый, текстуры. Etsy / Ярмарка мастеров.',
-    keywords: ['handmade', 'ручная работа', 'мастерская', 'поделки', 'вязание', 'керамика', 'украшения', 'творчество'],
+    keywords: ['handmade', 'ручная работа', 'мастерская', 'поделки', 'вязание', 'керамика', 'творчество'],
     file: 'handmade.html'
+  },
+  jewelry: {
+    name: 'Ювелирные украшения',
+    icon: '💎',
+    desc: 'Тёмный люкс, золотые акценты, крупные фото изделий. Tiffany / Cartier.',
+    keywords: ['украшения', 'ювелир', 'ювелирный', 'бижутерия', 'кольцо', 'серьги', 'браслет', 'цепочка', 'подвеска', 'золото', 'серебро', 'камень', 'бриллиант', 'jewelry', 'accessories'],
+    file: 'jewelry.html'
   }
 };
 
@@ -875,11 +884,14 @@ function populateDashboard(data) {
   const slug = data.bizName.toLowerCase().replace(/[^a-zA-Zа-яё0-9]/gi, '-').replace(/-+/g, '-').substring(0, 30);
   document.getElementById('site-url-text').textContent = `izzzi.ru/${slug || 'my-business'}`;
 
-  // Превью темы
+  // Превью темы — только иконка и название, без референса
   const tpl = TEMPLATE_REGISTRY[data.template] || TEMPLATE_REGISTRY.beauty;
   document.getElementById('theme-preview-icon').textContent = tpl.icon;
   document.getElementById('theme-preview-name').textContent = tpl.name;
-  document.getElementById('theme-preview-desc').textContent = tpl.desc;
+
+  // Кнопка "Открыть ИП" — только для демо-пользователей
+  const btnIP = document.getElementById('btn-open-ip');
+  if (btnIP) btnIP.style.display = data.isDemo ? 'inline-flex' : 'none';
 
   // Аналитика
   const avgCheck = data.avg_check ? `${Number(data.avg_check).toLocaleString('ru-RU')} ₽` : '—';
