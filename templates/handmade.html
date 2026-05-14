@@ -142,10 +142,12 @@ body::before {
 }
 #hero-img-wrap {
   position: absolute; inset: 0;
+  width: 100%; height: 100%;
 }
 #hero-img-wrap img {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 10s ease;
+  display: block;
 }
 .hero-visual:hover #hero-img-wrap img { transform: scale(1.04); }
 
@@ -1043,8 +1045,8 @@ function getDemoData() {
     product_desc: 'Плетёный браслет из вощёной льняной нити с подвеской из терракотовой керамики. Застёжка из бронзы. Подходит на любое запястье.',
     product_features: ['Натуральная льняная нить', 'Авторская керамическая подвеска', 'Бронзовая застёжка-регулятор', 'Упакован в крафтовую коробку'],
     avg_check: '3200',
-    hero_image_query: 'handmade craft workshop linen',
-    product_image_query: 'handmade bracelet ceramic jewelry',
+    hero_image_query: 'ceramic clay pottery hands workshop natural light',
+    product_image_query: 'handmade linen bracelet ceramic pendant jewelry flatlay',
     isDemo: false
   };
 }
@@ -1086,9 +1088,9 @@ function render(data) {
   });
   // Load images for each step card
   const stepQueries = [
-    'craft sketch drawing hands',
-    'natural linen fabric texture materials',
-    'handmade gift wrapping kraft box'
+    'pencil sketch drawing notebook wooden table closeup',
+    'natural linen fabric leather texture materials flatlay overhead',
+    'kraft gift box ribbon wrapping paper handmade tag'
   ];
   feats.forEach((f, i) => {
     const q = (f.image_query) || stepQueries[i] || 'handmade craft';
@@ -1123,10 +1125,10 @@ function render(data) {
     `© ${new Date().getFullYear()} ${name}. Все права защищены.`;
 
   // Hero image
-  loadCardImage(data.hero_image_query || 'handmade craft studio', 'hero-img-wrap');
+  loadCardImage(data.hero_image_query || 'pottery clay hands workshop natural light', 'hero-img-wrap');
 
   // Product spotlight image
-  loadCardImage(data.product_image_query || data.hero_image_query || 'handmade jewelry bracelet craft', 'product-img-frame');
+  loadCardImage(data.product_image_query || 'handmade ceramic jewelry linen bracelet flatlay', 'product-img-frame');
 }
 
 // ─── IMAGE LOADING ────────────────────────────────────────────
@@ -1141,7 +1143,11 @@ async function loadCardImage(query, id) {
     wrap.innerHTML = '';
     const img = document.createElement('img');
     img.src = url;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    // Hero wrap is position:absolute inset:0 — needs absolute fill
+    const isHero = id === 'hero-img-wrap';
+    img.style.cssText = isHero
+      ? 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 10s ease;'
+      : 'width:100%;height:100%;object-fit:cover;display:block;';
     wrap.appendChild(img);
   } catch(e) {
     // keep placeholder
